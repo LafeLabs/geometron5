@@ -1,0 +1,742 @@
+<html>
+<head>
+    <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+        
+    <script src="javascript/mapfactory.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <script src = "javascript/currentMap.js"></script>
+    <script>
+    
+
+
+textFeed = [
+    "text"
+];
+
+imageFeed = [];
+
+linkFeed = [];
+
+</script>
+</head>
+<body>    
+
+    <div id = "mainmap"></div>
+    <div id = "hammerxy">
+        <!--this covers the map exactly, sits at higher z index, and is turned off when NOT editing xy-->
+    </div>
+    <div id = "margin">
+        <div id = "navigatorbar">
+            <img id = "editmapbutton" class = "button" style = "width:50px;" src = "icons/arrayicon.svg"/>
+
+            <a href = "scroll.html">
+                <img id = "scrollbutton" class = "button" style = "width:50px;" src = "icons/scrollicon.svg"/>
+            </a>
+    
+            <a href = "symbol.html">
+                <img id = "symbolbutton" class = "button" style = "width:50px;" src = "icons/symbolicon.svg"/>
+            </a>
+            <a href = "feed.html">
+                <img id = "feedbutton" class = "button" style = "width:50px;" src = "icons/feedicon.svg"/>
+            </a>
+    
+            <a href = "../">
+                <img id = "uplinkbutton" class = "button" style = "width:50px;" src = "icons/linkupicon.svg"/>
+            </a>
+
+            <img id = "importbutton" class = "button" style = "width:50px;" src = "icons/importicon.svg"/>
+            <img id = "branchdownbutton" class = "button" style = "width:50px;" src = "icons/branchdownicon.svg"/>
+            <img id = "createbutton" class = "button" style = "width:50px;" src = "icons/createicon.svg"/>
+
+            <table style = "display:none" id = "branchnametable">
+                <tr>
+                    <td>
+                        Branch Name:
+                    </td>
+                    <td>
+                        <input id = "branchnameinput"/>
+                    </td>
+                </tr>
+            </table>
+            <table style = "display:none" id = "importtable">
+                <tr>
+                    <td>
+                        Import Url Name:
+                    </td>
+                    <td>
+                        <input id = "importinput"/>
+                    </td>
+                </tr>
+            </table>
+    
+            <div id = "branchscroll">
+                <h3>Branches Down:</h3>
+                <ul id = "branchlist">
+
+                </ul>
+            </div>
+        </div>
+        <div id = "arrayeditbar">
+            <!--
+                top of array edit bar is "name: [input] "
+                each row has "edit", "up", "down","delete", the actual element, forced into the size with overflow hidden
+                when edit is clicked the linkeditbar opens and this closes
+            -->    
+            <table id = "arraynametable">
+                <tr>
+                    <td>
+                        <img id = "navbutton" class = "button" src = "icons/navigator.svg" style = "width:50px;"/>
+                    </td>        
+                    <td>Name:</td>
+                    <td><input id = "arraynameinput"/></td>
+                </tr>
+            </table>
+            <div id = "linkarrayscroll">
+
+            </div>
+        </div>            
+        <div id = "linkeditbar">
+
+            <div id = "buttonrow1">
+                <img id = "savebutton" src = "icons/savebutton.svg" class = "button" style = "width:50px"/>
+                <img id = "deletebutton" src = "icons/deletebutton.svg" class = "button" style = "width:50px"/>
+                <img id = "nextbutton" src = "icons/nextbutton.svg" class = "button" style = "width:50px"/>
+                <img id = "moveupbutton" src = "icons/moveupbutton.svg" class = "button" style = "width:50px"/>    
+            </div>
+            <div id = "buttonrow2">
+                <img id = "closebutton" src = "icons/closebutton.svg" class = "button" style = "width:50px"/>
+                <img id = "newbutton" src = "icons/newbutton.svg" class = "button" style = "width:50px"/>
+                <img id = "prevbutton" src = "icons/prevbutton.svg" class = "button" style = "width:50px"/>
+                <img id = "movedownbutton" src = "icons/movedownbutton.svg" class = "button" style = "width:50px"/>
+            </div>
+
+
+            <table id = "linkedittable">
+            <!--
+            table with: text, url, href, pulldown menu for type, x,y,angle,w,h,
+            -->
+                <tr><td>text:</td><td><input id = "textinput"/></td></tr>
+                <tr><td>url:</td><td><input id = "urlinput"/></td></tr>
+                <tr><td>href:</td><td><input id = "hrefinput"/></td></tr>
+                <tr><td>type:</td><td>
+                    <select id="typeselect">
+                        <option value="text">text</option>
+                        <option value="image">image</option>
+                        <option value="map">map</option>
+                        <option value="scroll">scroll</option>
+                    </select>                 
+                </td></tr>
+            </table>       
+            <div id = "feedscroll">
+
+            </div>
+            <div id = "sliderbar">
+            <!--slider bar for scale-->
+            <img id = "sliderimage" src = "icons/scaleslider.svg"/>
+            </div>
+            <div id = "sliderbar2">
+                <!--slider bar for rotate-->
+                <img id = "sliderimage" src = "icons/rotateslider.svg"/>
+            </div>
+        </div>
+            
+    </div>
+     
+
+
+<script>
+
+landscape = false;
+
+if(innerWidth > innerHeight){
+    mapWidth = innerHeight;
+    document.getElementById("margin").style.width = (innerWidth - mapWidth).toString() + "px";
+    document.getElementById("margin").style.height = (innerHeight).toString() + "px";
+    marginWidth = innerWidth - mapWidth;
+    landscape = true;
+}
+else{
+    mapWidth = innerWidth;
+    document.getElementById("margin").style.height = (innerHeight - mapWidth).toString() + "px";
+    document.getElementById("margin").style.width = (innerHeight).toString() + "px";
+    marginWidth = mapWidth - innerWidth;
+}
+
+document.getElementById("hammerxy").style.width = (mapWidth).toString() + "px";
+document.getElementById("hammerxy").style.height = (mapWidth).toString() + "px";
+
+mainmap = new Map("main map");
+mainmapbox = new MapBox(mapWidth,mapWidth,mainmap,document.getElementById("mainmap"));
+
+mainmap.name = currentMap.name;
+mainmap.array = currentMap.array;
+mainmapbox.draw(mainmapbox);
+
+document.getElementById("arraynameinput").value = mainmap.name;
+
+
+function initlinkarray(){
+    linkindex = 0;
+    for(var index = 0;index < mainmap.array.length; index++) {
+        var newdiv = document.createElement("DIV");
+        document.getElementById("linkarrayscroll").appendChild(newdiv);
+        if(mainmap.array[index].type == "image") {
+            var newimg = document.createElement("IMG");
+            newimg.src = mainmap.array[index].url;
+            newdiv.appendChild(newimg);
+            newimg.width = marginWidth*0.5;
+            newimg.style.display = "block";
+            newimg.style.margin = "auto";
+            if(mainmap.array[index].url.length > 0){
+                imageFeed.push(mainmap.array[index].url);
+            }   
+        }
+        if(mainmap.array[index].type == "text") {
+            newdiv.innerHTML = mainmap.array[index].text;
+        }
+        newdiv.classList.add("arraylink");
+        newdiv.classList.add("button");
+        newdiv.style.border = "solid";
+        newdiv.id = "link" + index.toString();
+        newdiv.onclick = function(){
+            document.getElementById("arrayeditbar").style.display = "none";
+            document.getElementById("linkeditbar").style.display = "block";
+            linkindex = parseInt(this.id.substring(4));
+            document.getElementById("textinput").value = mainmap.array[linkindex].text;   
+            document.getElementById("urlinput").value = mainmap.array[linkindex].url;   
+            document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
+            document.getElementById("hammerxy").style.zIndex = 100;
+
+            mainmapbox.linkArray[linkindex].style.border = "solid";
+            mainmapbox.linkArray[linkindex].style.borderWidth = "0.1px";
+
+        }
+        if(mainmap.array[index].href.length > 0){
+            linkFeed.push(mainmap.array[index].href);
+        }
+        if(mainmap.array[index].text.length > 0){
+            textFeed.push(mainmap.array[index].text);
+        }
+
+    }
+
+}
+initlinkarray();
+
+document.getElementById("closebutton").onclick = function() {
+    document.getElementById("arrayeditbar").style.display = "block";
+    document.getElementById("linkeditbar").style.display = "none";
+    document.getElementById("hammerxy").style.zIndex = -100;
+    mainmapbox.linkArray[linkindex].style.border = "none";
+
+}
+
+document.getElementById("savebutton").onclick = function() {
+    
+    mainmapbox.map.array[linkindex].x = parseInt(mainmapbox.linkArray[linkindex].style.left.substring(0,mainmapbox.linkArray[linkindex].style.left.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].y = parseInt(mainmapbox.linkArray[linkindex].style.top.substring(0,mainmapbox.linkArray[linkindex].style.top.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].w = parseInt(mainmapbox.linkArray[linkindex].style.width.substring(0,mainmapbox.linkArray[linkindex].style.width.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].angle = parseInt(mainmapbox.linkArray[linkindex].style.transform.substring(7,mainmapbox.linkArray[linkindex].style.transform.length - 4));
+
+    var url = "filesaver.php";        
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST", url, true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc.send("data="+encodeURIComponent("currentMap = " + JSON.stringify(mainmapbox.map,null,"    ") + ";")+"&filename=javascript/currentMap.js");//send text to filesaver.php
+
+
+}
+
+document.getElementById("nextbutton").onclick = function() {
+    mainmapbox.linkArray[linkindex].style.border = "none";
+
+    mainmapbox.map.array[linkindex].x = parseInt(mainmapbox.linkArray[linkindex].style.left.substring(0,mainmapbox.linkArray[linkindex].style.left.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].y = parseInt(mainmapbox.linkArray[linkindex].style.top.substring(0,mainmapbox.linkArray[linkindex].style.top.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].w = parseInt(mainmapbox.linkArray[linkindex].style.width.substring(0,mainmapbox.linkArray[linkindex].style.width.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].angle = parseInt(mainmapbox.linkArray[linkindex].style.transform.substring(7,mainmapbox.linkArray[linkindex].style.transform.length - 4));
+
+
+    linkindex++;
+    if(linkindex > mainmap.array.length - 1){
+        linkindex = 0;
+    }
+    document.getElementById("textinput").value = mainmap.array[linkindex].text;   
+    document.getElementById("urlinput").value = mainmap.array[linkindex].url;   
+    document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
+    document.getElementById("typeselect").value = mainmap.array[linkindex].type;
+    mainmapbox.linkArray[linkindex].style.border = "solid";
+    mainmapbox.linkArray[linkindex].style.borderWidth = "0.1px";
+
+}
+
+document.getElementById("prevbutton").onclick = function() {
+    mainmapbox.linkArray[linkindex].style.border = "none";
+    mainmapbox.map.array[linkindex].x = parseInt(mainmapbox.linkArray[linkindex].style.left.substring(0,mainmapbox.linkArray[linkindex].style.left.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].y = parseInt(mainmapbox.linkArray[linkindex].style.top.substring(0,mainmapbox.linkArray[linkindex].style.top.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].w = parseInt(mainmapbox.linkArray[linkindex].style.width.substring(0,mainmapbox.linkArray[linkindex].style.width.length-2))/mainmapbox.w;
+    mainmapbox.map.array[linkindex].angle = parseInt(mainmapbox.linkArray[linkindex].style.transform.substring(7,mainmapbox.linkArray[linkindex].style.transform.length - 4));
+
+    linkindex--;
+    if(linkindex < 0){
+        linkindex = mainmap.array.length - 1;
+    }
+    document.getElementById("textinput").value = mainmap.array[linkindex].text;   
+    document.getElementById("urlinput").value = mainmap.array[linkindex].url;   
+    document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
+    document.getElementById("typeselect").value = mainmap.array[linkindex].type;
+    mainmapbox.linkArray[linkindex].style.border = "solid";
+    mainmapbox.linkArray[linkindex].style.borderWidth = "0.1px";
+
+}
+
+document.getElementById("newbutton").onclick = function() {
+    mainmapbox.linkArray[linkindex].style.border = "none";
+
+    var newLink  = new MapLink(mainmap.array[linkindex].x + mainmap.array[linkindex].w*0.05,mainmap.array[linkindex].y + mainmap.array[linkindex].w*0.05,mainmap.array[linkindex].w,mainmap.array[linkindex].h,mainmap.array[linkindex].angle,mainmap.array[linkindex].text,mainmap.array[linkindex].href,mainmap.array[linkindex].url,mainmap.array[linkindex].type);
+  //  var newLink = new MapLink(0,0,0.1,1,0,"","","","text");
+    mainmap.array.push(newLink);
+    linkindex = mainmap.array.length - 1;
+    document.getElementById("textinput").value = mainmap.array[linkindex].text;   
+    document.getElementById("urlinput").value = mainmap.array[linkindex].url;   
+    document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
+    document.getElementById("typeselect").value = mainmap.array[linkindex].type;
+
+
+    mainmapbox.draw(mainmapbox);
+    mainmapbox.linkArray[linkindex].style.border = "solid";
+    mainmapbox.linkArray[linkindex].style.borderWidth = "0.1px";
+
+}
+
+
+document.getElementById("deletebutton").onclick = function() {
+
+    var localArray = [];
+    for(var index = 0;index < mainmap.array.length;index++){
+        if(index != linkindex) {
+            localArray.push(mainmap.array[index]);
+        }
+    }
+    mainmap.array = localArray;
+    mainmapbox.draw(mainmapbox);
+    linkindex--;
+    if(linkindex < 0){
+        linkindex = 0;
+    }
+    if(mainmap.array.length > 0){
+        document.getElementById("textinput").value = mainmap.array[linkindex].text;   
+        document.getElementById("urlinput").value = mainmap.array[linkindex].url;   
+        document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
+        document.getElementById("typeselect").value = mainmap.array[linkindex].type;
+
+    }
+
+}
+
+document.getElementById("moveupbutton").onclick  = function() {
+
+    if(linkindex < mainmap.array.length - 1) {
+        var localArray = [];
+        for(var index = 0;index < mainmap.array.length;index++){
+            if(index < linkindex || index > linkindex + 1) {
+                localArray.push(mainmap.array[index]);
+            }
+            if(index == linkindex) {
+                localArray.push(mainmap.array[linkindex + 1]);
+            }
+            if(index == linkindex + 1) {
+                localArray.push(mainmap.array[linkindex]);
+            }
+        }
+        mainmap.array = localArray;
+        linkindex++;
+        mainmapbox.draw(mainmapbox);
+    }
+
+}
+document.getElementById("movedownbutton").onclick  = function() {
+
+    if(linkindex > 0) {
+        var localArray = [];
+        for(var index = 0;index < mainmap.array.length;index++){
+            if(index < linkindex - 1 || index > linkindex) {
+                localArray.push(mainmap.array[index]);
+            }
+            if(index == linkindex - 1) {
+                localArray.push(mainmap.array[linkindex]);
+            }
+            if(index == linkindex) {
+                localArray.push(mainmap.array[linkindex - 1]);
+            }
+        }
+        mainmap.array = localArray;
+        linkindex--;
+        mainmapbox.draw(mainmapbox);
+    }
+
+
+}
+
+document.getElementById("textinput").onchange = function() {
+    mainmap.array[linkindex].text = this.value;
+    textFeed.push(this.value);
+    mainmapbox.draw(mainmapbox);
+
+    //also need to update the array editor
+}
+
+document.getElementById("urlinput").onchange = function() {
+    mainmap.array[linkindex].url = this.value;
+    if(mainmap.array[linkindex].type == "image"){
+        imageFeed.push(this.value);
+    }
+    mainmapbox.draw(mainmapbox);
+    //also need to update the array editor
+}
+
+document.getElementById("hrefinput").onchange = function() {
+    mainmap.array[linkindex].href = this.value;
+    mainmapbox.draw(mainmapbox);
+    //also need to update the array editor
+}
+
+mc = new Hammer(document.getElementById("hammerxy"));
+mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+mc.on("panleft panright panup pandown tap press rotate", function(ev) {
+    mainmapbox.linkArray[linkindex].style.left = (ev.deltaX + mainmapbox.map.array[linkindex].x*mainmapbox.w).toString() +  "px";
+    mainmapbox.linkArray[linkindex].style.top = (ev.deltaY + mainmapbox.map.array[linkindex].y*mainmapbox.w).toString() +  "px";
+
+});    
+
+
+mczoom = new Hammer(document.getElementById("sliderbar"));
+mczoom.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+mczoom.on("panleft panright panup pandown tap press rotate", function(ev) {
+
+    if(landscape){
+        mainmapbox.linkArray[linkindex].style.width = (Math.abs(mainmapbox.map.array[linkindex].w*mainmapbox.w - 2*ev.deltaY)).toString() +  "px";
+    }
+    else{
+        mainmapbox.linkArray[linkindex].style.width = (Math.abs(mainmapbox.map.array[linkindex].w*mainmapbox.w - 2*ev.deltaX)).toString() +  "px";
+    }
+
+    if(mainmap.array[linkindex].type == "text") {
+        mainmapbox.linkArray[linkindex].style.fontSize = (Math.abs(mainmapbox.map.array[linkindex].w*mainmapbox.w - 2*ev.deltaX)/mainmapbox.map.array[linkindex].text.length).toString() + "px"; 
+    }
+});    
+
+mcrotate = new Hammer(document.getElementById("sliderbar2"));
+mcrotate.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+mcrotate.on("panleft panright panup pandown tap press rotate", function(ev) {
+    if(landscape) {
+        mainmapbox.linkArray[linkindex].style.transform = "rotate(" + (mainmapbox.map.array[linkindex].angle + ev.deltaY*Math.PI/5).toString() + "deg)";
+    }
+    else{
+        mainmapbox.linkArray[linkindex].style.transform = "rotate(" + (mainmapbox.map.array[linkindex].angle + ev.deltaX*Math.PI/5).toString() + "deg)";
+    }
+});    
+
+
+document.getElementById("typeselect").onchange = function() {
+
+    mainmap.array[linkindex].type = this.value;
+    mainmapbox.draw(mainmapbox);
+
+}
+document.getElementById("typeselect").value = mainmap.array[linkindex].type;
+
+document.getElementById("navbutton").onclick = function(){
+    document.getElementById("arrayeditbar").style.display = "none";
+    document.getElementById("navigatorbar").style.display = "block";
+}
+document.getElementById("arrayeditbar").style.display = "none";
+document.getElementById("navigatorbar").style.display = "block";
+
+document.getElementById("editmapbutton").onclick = function() {
+    document.getElementById("arrayeditbar").style.display = "block";
+    document.getElementById("navigatorbar").style.display = "none";
+}
+
+document.getElementById("branchdownbutton").onclick = function() {
+    document.getElementById("branchnametable").style.display = "block";
+}
+
+var httpc = new XMLHttpRequest();
+httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        branches = JSON.parse(this.responseText);
+        for(var index = 0;index < branches.length;index++) {
+            var newa = document.createElement("A");
+            newa.href = branches[index] + "/";
+            newa.innerHTML = branches[index] + "/";
+            var newli = document.createElement("LI");
+            newli.appendChild(newa);
+            document.getElementById("branchlist").appendChild(newli);
+            var newimg = document.createElement("IMG");
+            newimg.classList.add("button");
+            newimg.style.width = "50px";
+            newimg.style.height = "50px";
+            newimg.id = "del" + branches[index];
+            newimg.src  = "icons/deletebutton.svg";
+
+            newli.appendChild(newimg);
+            newimg.onclick = function() {
+                var branchname = this.id.substring(3);
+                var httpc = new XMLHttpRequest();
+                httpc.open("GET","deletebranch.php?filename=" + branchname, true);
+                httpc.send();//send text to deletebranch.php
+                this.parentElement.parentElement.removeChild(this.parentElement);
+            }    
+            
+        }
+    }
+};
+
+httpc.open("GET","dir.php?type=dir", true);
+httpc.send();//send text to newbranch.php
+
+
+document.getElementById("branchnameinput").onchange = function() {
+
+    var newbranchname = this.value;
+
+    var newa = document.createElement("A");
+    newa.href = newbranchname + "/";
+    newa.innerHTML = newbranchname + "/";
+    var newli = document.createElement("LI");
+    newli.appendChild(newa);
+    document.getElementById("branchlist").appendChild(newli);
+    var newimg = document.createElement("IMG");
+    newimg.classList.add("button");
+    newimg.style.width = "50px";
+    newimg.style.height = "50px";
+    newimg.id = "del" + newbranchname;
+    newimg.src  = "icons/deletebutton.svg";
+    newli.appendChild(newimg);
+    newimg.onclick = function() {
+        var branchname = this.id.substring(3);
+        var httpc = new XMLHttpRequest();
+        httpc.open("GET","deletebranch.php?filename=" + branchname, true);
+        httpc.send();//send text to deletebranch.php
+        this.parentElement.parentElement.removeChild(this.parentElement);
+    }    
+
+    var httpc = new XMLHttpRequest();
+    httpc.open("GET","newbranch.php?filename=" + newbranchname, true);
+    httpc.send();//send text to newbranch.php
+
+    this.style.display = "none";
+}
+
+uploadImages = [];
+var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        uploadImages = JSON.parse(this.responseText);
+        for(var index = 0;index < uploadImages.length;index++) {
+            var newuploadbox = document.createElement("DIV");
+            newuploadbox.classList.add("uploadbox");
+            var newimg = document.createElement("IMG");
+            newimg.src = "uploadimages/" + uploadImages[index];
+            newimg.classList.add("uploadimage");
+            newimg.classList.add("button");
+            newuploadbox.appendChild(newimg);
+            document.getElementById("feedscroll").appendChild(newuploadbox);
+            newimg.onclick = function() {
+                document.getElementById("urlinput").value = this.src;
+                mainmap.array[linkindex].url = this.src;
+                if(mainmap.array[linkindex].type == "image"){
+                    imageFeed.push(this.value);
+                }
+                mainmapbox.draw(mainmapbox);
+            }
+        }
+    }
+};
+
+httpc.open("GET", "dir.php?filename=uploadimages", true);
+httpc.send();
+
+symbolfeed = [];
+var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        uploadImages = JSON.parse(this.responseText);
+        for(var index = 0;index < uploadImages.length;index++) {
+            var newuploadbox = document.createElement("DIV");
+            newuploadbox.classList.add("uploadbox");
+            var newimg = document.createElement("IMG");
+            newimg.src = "symbolfeed/" + uploadImages[index];
+            newimg.classList.add("uploadimage");
+            newuploadbox.appendChild(newimg);
+            document.getElementById("feedscroll").appendChild(newuploadbox);
+            newimg.onclick = function() {
+                document.getElementById("urlinput").value = this.src;
+                mainmap.array[linkindex].url = this.src;
+                if(mainmap.array[linkindex].type == "image"){
+                    imageFeed.push(this.value);
+                }
+                mainmapbox.draw(mainmapbox);
+            }
+
+        }
+    }
+};
+httpc.open("GET", "dir.php?filename=symbolfeed", true);
+httpc.send();
+
+</script>
+<style>
+body{
+    overflow:hidden;
+}
+input,table,select{
+    font-family:courier;
+    font-size:16px;
+}
+
+#mainmap{
+    position:absolute;
+    left:0px;
+    top:0px;
+    overflow:hidden;
+}
+#mainmap a{
+    font-family:Helvetica;
+    border-width:0.1px;
+}
+#hammerxy{
+    position:absolute;
+    left:0px;
+    top:0px;
+    z-index:-100;
+    overflow:hidden;
+}
+#margin{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    border:solid;
+    border-color:red;
+    border-width:0.2px;
+}
+#arrayeditbar{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    top:0px;
+    left:0px;
+    overflow:scroll;
+    font-family:courier;
+}
+#linkarrayscroll{
+    position:absolute;
+    right:50%;
+    bottom:0px;
+    top:80px;
+    left:0px;
+    overflow:scroll;
+    font-family:courier;
+}
+#linkarrayscroll img{
+    max-width:50%;
+}
+.arraylink{
+    border:solid;
+    border-width:0.1px;
+    border-radius:10px;
+    margin-top:15px;
+}
+.button{
+    cursor:pointer;
+    margin-bottom:1em;
+}
+.button:hover{
+    background-color:#50ff50;
+}
+.button:active{
+    background-color:yellow;
+}
+#linkeditbar{
+    display:none;
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    top:0px;
+    left:0px;
+    overflow:scroll;
+    font-family:courier;
+}
+#sliderbar{
+    position:absolute;
+    left:0px;
+    right:50%;
+    top:50%;
+    bottom:0px;
+    z-index:1;
+    border-right:solid;
+    border-top:solid;
+    border-width:0.2px;
+}
+#sliderbar2{
+    position:absolute;
+    right:0px;
+    left:50%;
+    top:50%;
+    bottom:0px;
+    z-index:1;
+    border-top:solid;
+    border-width:0.2px;
+
+}
+#navbutton{
+    display:block;
+}
+#navigatorbar{
+    display:none;
+}
+#sliderimage{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    bottom:0px;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+#rotateimage{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    bottom:0px;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+#linkedittable{
+    position:absolute;
+    left:0px;
+    bottom:50%;
+}
+#feedscroll{
+    width:50%;
+    height:50%;
+    position:absolute;
+    right:0px;
+    top:0px;
+    overflow:scroll;
+}
+.uploadimage{
+    max-width:50%;
+    display:block;
+    margin:auto;
+}
+.deletebutton{
+    width:50px;
+}
+</style>
+</body>
+</html>

@@ -1,0 +1,4 @@
+textFeed = [
+    "foo",
+    "bar"
+];

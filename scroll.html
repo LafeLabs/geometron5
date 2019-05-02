@@ -1,0 +1,281 @@
+<html>
+    <head>
+            <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADf+wAA3/sAAAfgAACv9QAAoAUAAK/1AACv9QAAqBUAAK/1AACoFQAAr/UAAKAFAACv9QAAB+AAAN/7AADf+wAA" rel="icon" type="image/x-icon" />
+            <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script>
+            MathJax.Hub.Config({
+                tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true,
+                processClass: "mathjax",
+                ignoreClass: "no-mathjax"
+                }
+            });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+        </script>
+        
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.js"></script>
+
+    </head>
+    <body>
+        <!--
+            scroll.html 
+            scroll is a html scroll, which can have math or not, be bootstrap or not, use markdown or not, but 
+            generally does all of these
+        
+        -->
+        <div id = "square" class = "no-mathjax">
+            <div id = "scrollscroll">
+            </div>
+            <textarea id = "maintextarea"></textarea>
+        </div>
+        <div id = "margin">
+            <a href = "index.html">
+               <img style = "width:50px;" src = "icons/navigator.svg"/>
+            </a>
+            <a href = "feed.html">
+                <img style = "width:50px;" src = "icons/feedicon.svg"/>
+            </a>    
+            <a href = "symbol.html">
+                <img style = "width:50px;" src = "icons/symbolicon.svg"/>
+            </a>    
+            <table id = "modetable">
+               
+                <!--
+                <tr>
+                    <td class = "button" id = "mathbutton">Math Mode On/Off:</td>
+                    <td id = "mathindicator" class = "indicator"></td>
+                </tr>
+            -->
+                <tr>
+                    <td class = "button" id = "editbutton">Edit Mode On/Off:</td>
+                    <td id = "editindicator" class = "indicator"></td>
+                </tr>    
+                <tr>
+                    <td class = "button" id = "splitbutton">Split Mode On/Off:</td>
+                    <td id = "splitindicator" class = "indicator"></td>
+                </tr>    
+
+<!--                <tr>
+                    <td class = "button" id = "bootstrapbutton">Bootstrap Mode On/Off:</td>
+                    <td id = "splitindicator" class = "indicator"></td>
+                </tr>        
+            -->
+            </table>        
+            <div id = "markdownhelp">
+<h2>Markdown Reference:</h2>
+                <pre>
+
+    link:    [link](url)
+    image: ![alt](src)
+    # header 
+    ## smaller header 
+    - list element 
+    - another element 
+    1. enumerated list element 
+    2. another 
+    *italic* 
+    **bold** 
+
+</pre>
+            </div>
+        </div>
+        <script>
+            landscape = false;
+            if(innerWidth > innerHeight){
+                squareWidth = innerHeight;
+                document.getElementById("margin").style.width = (innerWidth - squareWidth).toString() + "px";
+                document.getElementById("margin").style.height = (innerHeight).toString() + "px";
+                document.getElementById("square").style.width = squareWidth.toString() + "px";
+                document.getElementById("square").style.height = squareWidth.toString() + "px";
+                document.getElementById("maintextarea").style.width = squareWidth.toString() + "px";
+                document.getElementById("maintextarea").style.height = squareWidth.toString() + "px";
+
+                marginWidth = innerWidth - squareWidth;
+                landscape = true;
+            }
+            else{
+                squareWidth = innerWidth;
+                document.getElementById("margin").style.height = (innerHeight - squareWidth).toString() + "px";
+                document.getElementById("margin").style.width = (innerHeight).toString() + "px";
+                document.getElementById("square").style.width = squareWidth.toString() + "px";
+                document.getElementById("square").style.height = squareWidth.toString() + "px";
+                document.getElementById("maintextarea").style.width = squareWidth.toString() + "px";
+                document.getElementById("maintextarea").style.height = squareWidth.toString() + "px";
+
+                marginWidth = squareWidth - innerWidth;
+            }
+
+
+/*
+            mathMode = false;
+            document.getElementById("mathbutton").onclick = function() {
+                mathMode = !mathMode;
+                if(mathMode){
+                    document.getElementById("mathindicator").style.backgroundColor = "#00ff00";
+                }
+                else{
+                    document.getElementById("mathindicator").style.backgroundColor = "white";
+                }
+            }
+  */          
+            editMode = false;
+
+            document.getElementById("editbutton").onclick = function() {
+                editMode = !editMode;
+                if(editMode){
+                    document.getElementById("maintextarea").style.display = "block";
+                    document.getElementById("scrollscroll").style.display = "none";
+                    document.getElementById("editindicator").style.backgroundColor = "#00ff00";
+                }
+                else{
+                    document.getElementById("maintextarea").style.display = "none";
+                    document.getElementById("scrollscroll").style.display = "block";
+                    document.getElementById("editindicator").style.backgroundColor = "white";
+                    rawhtml = converter.makeHtml(readme_md);
+                    document.getElementById("scrollscroll").innerHTML = rawhtml;
+                }
+            }
+            
+            splitMode = false;
+            document.getElementById("splitbutton").onclick = function() {
+                editMode = !editMode;
+                if(editMode){
+                    document.getElementById("maintextarea").style.display = "block";
+                    document.getElementById("scrollscroll").style.display = "block";
+                    document.getElementById("splitindicator").style.backgroundColor = "#00ff00";
+                    document.getElementById("scrollscroll").style.right = "0%";
+                    document.getElementById("scrollscroll").style.left = "50%";
+                    document.getElementById("scrollscroll").style.position = "absolute";
+                    
+//                    document.getElementById("scrollscroll").style.width = (0.5*squareWidth).toString() + "px";
+                    document.getElementById("maintextarea").style.width = (0.5*squareWidth).toString() + "px";
+                }
+                else{
+                    document.getElementById("maintextarea").style.display = "none";
+                    document.getElementById("scrollscroll").style.display = "block";
+                    document.getElementById("splitindicator").style.backgroundColor = "white";
+                    rawhtml = converter.makeHtml(readme_md);
+                    document.getElementById("scrollscroll").innerHTML = rawhtml;
+                    document.getElementById("scrollscroll").style.width = (squareWidth).toString() + "px";
+                    document.getElementById("maintextarea").style.width = (squareWidth).toString() + "px";
+                    document.getElementById("scrollscroll").style.right = "0%";
+                    document.getElementById("scrollscroll").style.left = "0%";
+
+                }
+            }
+
+
+            //get readme.md, convert to html and display
+            var converter = new showdown.Converter();
+            converter.setOption('literalMidWordUnderscores', 'true');
+            converter.setOption('tables', 'true');
+        
+
+            readme_md = "";
+            rawhtml = "";
+            var httpc = new XMLHttpRequest();
+            httpc.onreadystatechange = function() {
+               if (this.readyState == 4 && this.status == 200) {
+                    readme_md = this.responseText;
+                    document.getElementById("maintextarea").value = readme_md;                 
+                    rawhtml = converter.makeHtml(readme_md);
+                    document.getElementById("scrollscroll").innerHTML = rawhtml;
+                }
+            };
+            httpc.open("GET", "fileloader.php?filename=README.md", true);
+            httpc.send();
+
+            document.getElementById("maintextarea").onkeyup = function() {
+                readme_md = this.value;
+                rawhtml = converter.makeHtml(this.value);
+                data = encodeURIComponent(this.value);
+                document.getElementById("scrollscroll").innerHTML = rawhtml;
+
+                var httpc = new XMLHttpRequest();
+                var url = "filesaver.php";        
+                httpc.open("POST", url, true);
+                httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+                httpc.send("data="+data+"&filename=README.md");//send text to filesaver.php
+            }
+        </script>
+        <style>
+            body{
+                overflow:hidden;
+            }
+            table{
+                font-family:courier;
+                font-size:16px;
+            }
+            #square{
+                position:absolute;
+                left:0px;
+                top:0px;
+                overflow:hidden;
+            }
+            #scrollscroll{
+                position:absolute;
+                left:0px;
+                right:0px;
+                top:0px;
+                bottom:0px;
+                overflow:scroll;
+                border:solid;
+                border-width:0.1px;
+                border-color:red;
+                padding-left:1em;
+                padding-right:1em;
+                padding-bottom:5em;
+            }
+            #scrollscroll img{
+                max-width:80%;
+                display:block;
+                margin:auto;
+            }
+            .deletebutton{
+                width:50px;
+                height:50px;
+                margin-right:1em;
+            }
+            #margin{
+                position:absolute;
+                right:0px;
+                bottom:0px;
+                border:solid;
+                border-width:0.1px;
+                border-color:blue;
+            }
+            .button{
+                cursor:pointer;
+            }
+            .button:hover{
+                background-color:green;
+            }
+            .button:active{
+                background-color:yellow;
+            }
+            .indicator{
+                background-color:white;
+                width:1em;
+                height:1em;
+                border-radius:0.5em;
+                border:solid;
+                border-width:2px;
+            }
+            #maintextarea{
+                position:absolute;
+                left:0px;
+                top:0px;
+                display:none;
+            }
+            #markdownhelp{
+                overflow:scroll;
+                left:0px;
+                right:0px;
+                padding-left:1em;
+                padding-right:1em;
+            }
+        </style>
+    </body>
+</html>
