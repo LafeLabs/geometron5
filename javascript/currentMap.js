@@ -26,7 +26,7 @@ mapArray = [
         "h": 1,
         "angle": 180,
         "text": "",
-        "href": "foo/",
+        "href": "",
         "src": "http://www.cherrytreemaryland.xyz/symbol/svg/svg1556330629.svg"
     },
     {

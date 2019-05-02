@@ -51,6 +51,7 @@
                 <img id = "prevbutton" src = "icons/prevbutton.svg" class = "button" style = "width:50px"/>
                 <img id = "movedownbutton" src = "icons/movedownbutton.svg" class = "button" style = "width:50px"/>
             </div>
+
             <table id = "linkedittable">
             <!--
             table with: text, url, href, pulldown menu for type, x,y,angle,w,h,
@@ -71,10 +72,16 @@
                     </tr>
                 </table>     
                 <ul id = "branchlist">
-                    
+
                 </ul>   
             </div>       
             <div id = "feedscroll">
+                    <form id = "uploadform" style = "margin-top:10px" action="upload.php" method="post" enctype="multipart/form-data">
+                        Select image to upload:
+                            <input type="file" name="fileToUpload" id="fileToUpload">
+                            <input type="submit" value="Upload Image" name="submit">
+                     </form>
+        
                 <!--
                     put the links here, also put the images here 
                 -->
@@ -335,6 +342,8 @@ document.getElementById("editmapbutton").onclick = function() {
         document.getElementById("feedscroll").style.display = "block";
         document.getElementById("branchscroll").style.display = "none";
         mainmap.linkArray[linkindex].style.border = "solid";
+        mainmap.linkArray[linkindex].style.borderWidth = "0.1px";
+
     }
     else {
         document.getElementById("hammerxy").style.display = "none";
@@ -446,11 +455,23 @@ var httpc = new XMLHttpRequest();
             document.getElementById("feedscroll").appendChild(newuploadbox);
             newimg.onclick = function() {
                 document.getElementById("srcinput").value = this.src;
-                mainmap.array[linkindex].url = this.src;
-                if(mainmap.array[linkindex].type == "image"){
-                    imageFeed.push(this.value);
-                }
-                mainmapbox.draw(mainmapbox);
+                mainmap.array[linkindex].src = this.src;
+                mainmap.draw();
+            }
+            var newimg = document.createElement("IMG");
+            newimg.src = "icons/deletebutton.svg";
+            newuploadbox.appendChild(newimg);
+            newimg.classList.add("button");
+            newimg.classList.add("deletebutton");
+            newimg.onclick = function(){
+                var imageurl =this.parentElement.getElementsByClassName("uploadimage")[0].src; 
+                var imagename = "uploadimages/" + imageurl.split("uploadimages/")[1];
+                var httpc = new XMLHttpRequest();
+                var url = "deletefile.php";         
+                httpc.open("POST", url, true);
+                httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+                httpc.send("filename=" + imagename);//send text to deletefile.php
+                this.parentElement.parentElement.removeChild(this.parentElement);
             }
         }
     }
@@ -471,13 +492,27 @@ var httpc = new XMLHttpRequest();
             newimg.src = "symbolfeed/" + uploadImages[index];
             newimg.classList.add("uploadimage");
             newimg.classList.add("button");
-
             newuploadbox.appendChild(newimg);
             document.getElementById("feedscroll").appendChild(newuploadbox);
             newimg.onclick = function() {
                 document.getElementById("srcinput").value = this.src;
                 mainmap.array[linkindex].src = this.src;
                 mainmap.draw();
+            }
+            var newimg = document.createElement("IMG");
+            newimg.src = "icons/deletebutton.svg";
+            newuploadbox.appendChild(newimg);
+            newimg.classList.add("button");
+            newimg.classList.add("deletebutton");
+            newimg.onclick = function(){
+                var imageurl =this.parentElement.getElementsByClassName("uploadimage")[0].src; 
+                var imagename = "symbolfeed/" + imageurl.split("symbolfeed/")[1];
+                var httpc = new XMLHttpRequest();
+                var url = "deletefile.php";         
+                httpc.open("POST", url, true);
+                httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+                httpc.send("filename=" + imagename);//send text to deletefile.php
+                this.parentElement.parentElement.removeChild(this.parentElement);
             }
 
         }
@@ -616,7 +651,7 @@ input,table,select{
 #linkedittable{
     position:absolute;
     left:0px;
-    bottom:50%;
+    bottom:0%;
 }
 #feedscroll{
     width:50%;
@@ -639,16 +674,25 @@ input,table,select{
     display:block;
     margin:auto;
 }
+
 .deletebutton{
     width:50px;
 }
 #marginsquare1{
-
+    position:absolute;
+    right:0px;
+    top:0px;
 }
 #marginsquare2{
     position:absolute;
     right:0px;
     bottom:0px;
+}
+.uploadbox{
+    border:solid;
+    border-width:0.5px;
+    border-radius:10px;
+    margin-top:1em;
 }
 </style>
 </body>
