@@ -78,7 +78,7 @@ function ActionInput(input,drawGVM,spellGVM) {
     }
 }
     
-function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
+function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     this.address = 0277;
     this.glyph = "";
     this.width = width;
@@ -162,30 +162,30 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         }
     }
 
-    this.bytecode = function(start,stop,GVM2d) {
+    this.bytecode = function(start,stop) {
         var jsonarray = [];
         for(var index = start;index < stop;index++) {
-            if(GVM2d.hypercube[index].length > 1) {
-                var bytecodestring = "0" + index.toString(8) + ":" + GVM2d.hypercube[index];
+            if(this.hypercube[index].length > 1) {
+                var bytecodestring = "0" + index.toString(8) + ":" + this.hypercube[index];
                 jsonarray.push(bytecodestring); 
             }
         }
         return JSON.stringify(jsonarray,null,"    ");
     }
 
-    this.importbytecode = function(bytecode,GVM2d){
+    this.importbytecode = function(bytecode){
         for(var index =0;index < bytecode.length;index++){
             var localaddress = parseInt(bytecode[index].split(":")[0],8);
             var localglyph = bytecode[index].split(":")[1];
-            GVM2d.hypercube[localaddress] = localglyph;
+            this.hypercube[localaddress] = localglyph;
         }
     }
     
-    this.pngcode = function(GVM2d) {
-        return GVM2d.canvas2d.toDataURL("image/png");
+    this.pngcode = function() {
+        return this.canvas2d.toDataURL("image/png");
     }
 
-    this.actionSequence = function(glyph,GVM2d) {
+    this.actionSequence = function(glyph) {
         var glyphArray = glyph.split(",");
         var actionSequence = [];
         for(var index = 0;index < glyphArray.length;index++){
@@ -194,38 +194,40 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             }
         }
         for(var index = 0;index < actionSequence.length;index++){
-                GVM2d.action(actionSequence[index],GVM2d);
+            this.action(actionSequence[index]);
         }
 
     }
 
-    this.drawGlyph = function(glyph,GVM2d) {
-        GVM2d.glyph = glyph;
-        GVM2d.ctx.clearRect(0,0,GVM2d.width,GVM2d.height);
-        GVM2d.ctx.strokeStyle = GVM2d.style.color0;
-        GVM2d.ctx.fillStyle = GVM2d.style.fill0;
-        GVM2d.ctx.lineWidth = GVM2d.style.line0;
-        GVM2d.svgString = "<svg width=\"" + this.width.toString() + "\" height=\"" + this.height.toString() + "\" viewbox = \"0 0 " + this.width.toString() + " " + this.height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
-        GVM2d.action(0300,GVM2d);
-        GVM2d.actionSequence(glyph,GVM2d);
-        GVM2d.svgString += "</svg>";
+    this.drawGlyph = function(glyph) {
+        
+        this.glyph = glyph;
+        this.ctx.clearRect(0,0,this.width,this.height);
+        this.ctx.strokeStyle = this.style.color0;
+        this.ctx.fillStyle = this.style.fill0;
+        this.ctx.lineWidth = this.style.line0;
+        this.svgString = "<svg width=\"" + this.width.toString() + "\" height=\"" + this.height.toString() + "\" viewbox = \"0 0 " + this.width.toString() + " " + this.height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
+        this.action(0300);
+        this.actionSequence(glyph);
+        this.svgString += "</svg>";
+
     }
 
-    this.saveGlyph = function(GVM2d){
-        var glyphArray = GVM2d.glyph.split(",");
+    this.saveGlyph = function(){
+        var glyphArray = this.glyph.split(",");
         var cleanGlyph = "";
         for(var index = 0;index < glyphArray.length;index++) {
             if(glyphArray[index] != "0207" && glyphArray[index].length> 1){
                 cleanGlyph += glyphArray[index] + ",";
             }
         }
-        GVM2d.hypercube[GVM2d.address] = cleanGlyph;        
+        this.hypercube[this.address] = cleanGlyph;        
     }
     
     
 
-    this.spellGlyph = function(glyph,GVM2d) {
-        GVM2d.glyph = glyph;
+    this.spellGlyph = function(glyph) {
+        this.glyph = glyph;
         var localGlyph = "";
         var glyphArray = glyph.split(",");
         for(var index = 0; index < glyphArray.length; index++){
@@ -238,29 +240,29 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             }
         }
         glyph = localGlyph;
-        GVM2d.glyph = glyph;
-        GVM2d.canvas2d.height = GVM2d.unit + 2;
-        GVM2d.canvas2d.width = GVM2d.unit*(glyphArray.length) + 4;
-        GVM2d.height = GVM2d.unit + 2;
-        GVM2d.x0 = 1;
-        GVM2d.y0 = GVM2d.unit +1;
-        GVM2d.side = GVM2d.unit;
-        GVM2d.ctx.clearRect(0,0,GVM2d.width,GVM2d.height);
-        GVM2d.ctx.strokeStyle = GVM2d.style.color0;
-        GVM2d.ctx.fillStyle = GVM2d.style.fill0;
-        GVM2d.ctx.lineWidth = GVM2d.style.line0;
-        GVM2d.action(0300,GVM2d);
-        GVM2d.actionSequence(glyph,GVM2d);
+        this.glyph = glyph;
+        this.canvas2d.height = this.unit + 2;
+        this.canvas2d.width = this.unit*(glyphArray.length) + 4;
+        this.height = this.unit + 2;
+        this.x0 = 1;
+        this.y0 = this.unit +1;
+        this.side = this.unit;
+        this.ctx.clearRect(0,0,this.width,this.height);
+        this.ctx.strokeStyle = this.style.color0;
+        this.ctx.fillStyle = this.style.fill0;
+        this.ctx.lineWidth = this.style.line0;
+        this.action(0300);
+        this.actionSequence(glyph);
         
     }
 
-    this.cursorAction = function(action,GVM2d) {           
+    this.cursorAction = function(action) {           
         //2d cursor is at address 0207, glyph cursor is therefore at 01207
-        var currentGlyph = GVM2d.glyph;
+        var currentGlyph = this.glyph;
         if(action < 040) {
-            GVM2d.action(action,GVM2d);
+            this.action(action);
         }
-        if(action > 037 && action <= 01777 && action != GVM2d.address) {
+        if(action > 037 && action <= 01777 && action != this.address) {
             var glyphSplit = currentGlyph.split(",");
             currentGlyph = "";
             for(var index = 0;index < glyphSplit.length;index++){
@@ -278,37 +280,37 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
                     currentGlyph += glyphSplit[index] + ",";
                 }
             }
-            GVM2d.glyph = currentGlyph; 
+            this.glyph = currentGlyph; 
         }
-        GVM2d.drawGlyph(GVM2d.glyph,GVM2d);
+        this.drawGlyph(this.glyph);
 
     }
 
-    this.action = function(address,GVM2d) {
+    this.action = function(address) {
         if(address == 010) {
             //delete
-            var bottomGlyph = GVM2d.glyph.split("0207")[0];   
-            var topGlyph = GVM2d.glyph.split("0207")[1]; 
+            var bottomGlyph = this.glyph.split("0207")[0];   
+            var topGlyph = this.glyph.split("0207")[1]; 
             var glyphSplit = bottomGlyph.split(",");
-            GVM2d.glyph = "";
+            this.glyph = "";
             for(var index = 0;index < glyphSplit.length - 2;index++){
                 if(glyphSplit[index].length > 0){
-                    GVM2d.glyph += glyphSplit[index] + ",";
+                    this.glyph += glyphSplit[index] + ",";
                 }
             }
-            GVM2d.glyph += "0207,";
-            GVM2d.glyph += topGlyph;
-            glyphSplit = GVM2d.glyph.split(",");
-            GVM2d.glyph = "";
+            this.glyph += "0207,";
+            this.glyph += topGlyph;
+            glyphSplit = this.glyph.split(",");
+            this.glyph = "";
             for(var index = 0;index < glyphSplit.length;index++){
                 if(glyphSplit[index].length > 0){
-                    GVM2d.glyph += glyphSplit[index] + ",";
+                    this.glyph += glyphSplit[index] + ",";
                 }
             }
         }        
         if(address == 020) {
             //cursor back
-            var currentGlyph = GVM2d.glyph;
+            var currentGlyph = this.glyph;
             var bottomGlyph = currentGlyph.split("0207")[0];   
             var topGlyph = currentGlyph.split("0207")[1]; 
             glyphSplit = bottomGlyph.split(",");
@@ -333,11 +335,11 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
                     currentGlyph += glyphSplit[index] + ",";
                 }
             }
-            GVM2d.glyph = currentGlyph;
+            this.glyph = currentGlyph;
         }        
         if(address == 021) {
             //cursor fwd
-            var currentGlyph = GVM2d.glyph;
+            var currentGlyph = this.glyph;
             var bottomGlyph = currentGlyph.split("0207")[0];   
             var topGlyph = currentGlyph.split("0207")[1]; 
             if(topGlyph == ","){
@@ -361,7 +363,7 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
                     currentGlyph += glyphSplit[index] + ",";
                 }
             }
-            GVM2d.glyph = currentGlyph;
+            this.glyph = currentGlyph;
 
         }        
         if(address == 022) {
@@ -374,310 +376,310 @@ function GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             //spell to draw, draw to spell
         }        
         if(address == 030) {
-            GVM2d.y0 -= GVM2d.viewStep;
+            this.y0 -= this.viewStep;
         }        
         if(address == 031) {
-            GVM2d.y0 += GVM2d.viewStep;
+            this.y0 += this.viewStep;
         }        
         if(address == 032) {
-            GVM2d.x0 -= GVM2d.viewStep;
+            this.x0 -= this.viewStep;
         }        
         if(address == 033) {
-            GVM2d.x0 += GVM2d.viewStep;
+            this.x0 += this.viewStep;
         }        
         if(address == 034) {
-            GVM2d.theta0 -= Math.PI/10;
+            this.theta0 -= Math.PI/10;
         }        
         if(address == 035) {
-            GVM2d.theta0 += Math.PI/10;
+            this.theta0 += Math.PI/10;
         }        
         if(address == 036) {
             
-            GVM2d.unit /= 1.1; 
-            GVM2d.x0 = 0.5*GVM2d.width + (GVM2d.x0 - 0.5*GVM2d.width)/1.1;
-            GVM2d.y0 = 0.5*GVM2d.height + (GVM2d.y0 - 0.5*GVM2d.height)/1.1;
+            this.unit /= 1.1; 
+            this.x0 = 0.5*this.width + (this.x0 - 0.5*this.width)/1.1;
+            this.y0 = 0.5*this.height + (this.y0 - 0.5*this.height)/1.1;
     
         }        
         if(address == 037) {
-            GVM2d.unit *= 1.1; 
-            GVM2d.x0 = 0.5*GVM2d.width + (GVM2d.x0 - 0.5*GVM2d.width)*1.1;
-            GVM2d.y0 = 0.5*GVM2d.height + (GVM2d.y0 - 0.5*GVM2d.height)*1.1;
+            this.unit *= 1.1; 
+            this.x0 = 0.5*this.width + (this.x0 - 0.5*this.width)*1.1;
+            this.y0 = 0.5*this.height + (this.y0 - 0.5*this.height)*1.1;
 
         }        
 
         //040-0176: put ASCII on the word stack, to be dumped out to screen via 0365 command
         if( address >= 040 && address <= 0176){
-            GVM2d.word += String.fromCharCode(address);
+            this.word += String.fromCharCode(address);
         }
 
         //02xx
         if( (address >= 0200 && address <= 0277) || (address >= 01000 && address <= 01777) ){
-            GVM2d.actionSequence(GVM2d.hypercube[address],GVM2d);
+            this.actionSequence(this.hypercube[address]);
 
         }
         //03xx
         if(address == 0300) {
-            GVM2d.x = GVM2d.x0;
-            GVM2d.y = GVM2d.y0;
-            GVM2d.side = GVM2d.unit;
-            GVM2d.thetaStep = Math.PI/2;
-            GVM2d.theta = GVM2d.theta0;
-            GVM2d.scaleFactor = 2;      
-            GVM2d.word = "";
+            this.x = this.x0;
+            this.y = this.y0;
+            this.side = this.unit;
+            this.thetaStep = Math.PI/2;
+            this.theta = this.theta0;
+            this.scaleFactor = 2;      
+            this.word = "";
         }
         if(address == 0304) {
-            GVM2d.thetaStep = Math.PI/2;
+            this.thetaStep = Math.PI/2;
         }
         if(address == 0305) {
-            GVM2d.thetaStep = 2*Math.PI/5;
+            this.thetaStep = 2*Math.PI/5;
         }
         if(address == 0306) {
-            GVM2d.thetaStep = Math.PI/3;
+            this.thetaStep = Math.PI/3;
         }
 
         if(address == 0310) {
-            GVM2d.scaleFactor = Math.sqrt(2);
+            this.scaleFactor = Math.sqrt(2);
         }
         if(address == 0311) {
-            GVM2d.scaleFactor = (Math.sqrt(5) + 1)/2;
+            this.scaleFactor = (Math.sqrt(5) + 1)/2;
         }
         if(address == 0312) {
-            GVM2d.scaleFactor = Math.sqrt(3);
+            this.scaleFactor = Math.sqrt(3);
         }
         if(address == 0313) {
-            GVM2d.scaleFactor = 2;
+            this.scaleFactor = 2;
         }
         if(address == 0314) {
-            GVM2d.scaleFactor = 3;
+            this.scaleFactor = 3;
         }
         if(address == 0316) {
-            GVM2d.scaleFactor = 5;
+            this.scaleFactor = 5;
         }
         if(address == 0320) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color0;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill0;
-            GVM2d.ctx.lineWidth = GVM2d.style.line0;    
+            this.ctx.strokeStyle = this.style.color0;
+            this.ctx.fillStyle = this.style.fill0;
+            this.ctx.lineWidth = this.style.line0;    
         }
         if(address == 0321) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color1;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill1;
-            GVM2d.ctx.lineWidth = GVM2d.style.line1;    
+            this.ctx.strokeStyle = this.style.color1;
+            this.ctx.fillStyle = this.style.fill1;
+            this.ctx.lineWidth = this.style.line1;    
         }
         if(address == 0322) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color2;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill2;
-            GVM2d.ctx.lineWidth = GVM2d.style.line2;    
+            this.ctx.strokeStyle = this.style.color2;
+            this.ctx.fillStyle = this.style.fill2;
+            this.ctx.lineWidth = this.style.line2;    
         }
         if(address == 0323) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color3;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill3;
-            GVM2d.ctx.lineWidth = GVM2d.style.line3;    
+            this.ctx.strokeStyle = this.style.color3;
+            this.ctx.fillStyle = this.style.fill3;
+            this.ctx.lineWidth = this.style.line3;    
         }
         if(address == 0324) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color4;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill4;
-            GVM2d.ctx.lineWidth = GVM2d.style.line4;    
+            this.ctx.strokeStyle = this.style.color4;
+            this.ctx.fillStyle = this.style.fill4;
+            this.ctx.lineWidth = this.style.line4;    
         }
         if(address == 0325) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color5;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill5;
-            GVM2d.ctx.lineWidth = GVM2d.style.line5;    
+            this.ctx.strokeStyle = this.style.color5;
+            this.ctx.fillStyle = this.style.fill5;
+            this.ctx.lineWidth = this.style.line5;    
         }
         if(address == 0326) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color6;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill6;
-            GVM2d.ctx.lineWidth = GVM2d.style.line6;    
+            this.ctx.strokeStyle = this.style.color6;
+            this.ctx.fillStyle = this.style.fill6;
+            this.ctx.lineWidth = this.style.line6;    
         }
         if(address == 0327) {
-            GVM2d.ctx.strokeStyle = GVM2d.style.color7;
-            GVM2d.ctx.fillStyle = GVM2d.style.fill7;
-            GVM2d.ctx.lineWidth = GVM2d.style.line7;    
+            this.ctx.strokeStyle = this.style.color7;
+            this.ctx.fillStyle = this.style.fill7;
+            this.ctx.lineWidth = this.style.line7;    
         }
 
         if(address == 0330) {
-            GVM2d.x += GVM2d.side*Math.cos(GVM2d.theta);
-            GVM2d.y += GVM2d.side*Math.sin(GVM2d.theta);    
+            this.x += this.side*Math.cos(this.theta);
+            this.y += this.side*Math.sin(this.theta);    
         }
         if(address == 0331){
-            GVM2d.x -= GVM2d.side*Math.cos(GVM2d.theta);
-            GVM2d.y -= GVM2d.side*Math.sin(GVM2d.theta);    
+            this.x -= this.side*Math.cos(this.theta);
+            this.y -= this.side*Math.sin(this.theta);    
         }
         if(address == 0332) {
-            GVM2d.x += GVM2d.side*Math.cos(GVM2d.theta - GVM2d.thetaStep);
-            GVM2d.y += GVM2d.side*Math.sin(GVM2d.theta - GVM2d.thetaStep);    
+            this.x += this.side*Math.cos(this.theta - this.thetaStep);
+            this.y += this.side*Math.sin(this.theta - this.thetaStep);    
         }
         if(address == 0333) {
-            GVM2d.x += GVM2d.side*Math.cos(GVM2d.theta + GVM2d.thetaStep);
-            GVM2d.y += GVM2d.side*Math.sin(GVM2d.theta + GVM2d.thetaStep);    
+            this.x += this.side*Math.cos(this.theta + this.thetaStep);
+            this.y += this.side*Math.sin(this.theta + this.thetaStep);    
         }
         if(address == 0334) {
-            GVM2d.theta -= GVM2d.thetaStep; // CCW
+            this.theta -= this.thetaStep; // CCW
         }
         if(address == 0335) {
-            GVM2d.theta += GVM2d.thetaStep; // CW
+            this.theta += this.thetaStep; // CW
         }
         if(address == 0336) {
-            GVM2d.side /= GVM2d.scaleFactor; // -
+            this.side /= this.scaleFactor; // -
         }
         if(address == 0337) {
-            GVM2d.side *= GVM2d.scaleFactor; // +
+            this.side *= this.scaleFactor; // +
         }
     
         if(address == 0340) {
-            GVM2d.ctx.beginPath();
-            GVM2d.ctx.arc(GVM2d.x, GVM2d.y, GVM2d.ctx.lineWidth, 0, 2 * Math.PI);
-            GVM2d.ctx.fill();	
-            GVM2d.ctx.closePath();
-            GVM2d.svgString += "<circle cx=\"";
-            GVM2d.svgString += Math.round(GVM2d.x).toString();
-            GVM2d.svgString += "\" cy = \"";
-            GVM2d.svgString += Math.round(GVM2d.y).toString();
-            GVM2d.svgString += "\" r = \"" + GVM2d.ctx.lineWidth.toString() + "\" stroke = \"" + GVM2d.ctx.strokeStyle + "\" stroke-width = \"" + (GVM2d.ctx.lineWidth).toString() + "\" ";
-            GVM2d.svgString += "fill = \"" + GVM2d.ctx.strokeStyle + "\" />\n";	
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.ctx.lineWidth, 0, 2 * Math.PI);
+            this.ctx.fill();	
+            this.ctx.closePath();
+            this.svgString += "<circle cx=\"";
+            this.svgString += Math.round(this.x).toString();
+            this.svgString += "\" cy = \"";
+            this.svgString += Math.round(this.y).toString();
+            this.svgString += "\" r = \"" + this.ctx.lineWidth.toString() + "\" stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" ";
+            this.svgString += "fill = \"" + this.ctx.strokeStyle + "\" />\n";	
         }
         if(address == 0341) {
-            GVM2d.ctx.beginPath();
-            GVM2d.ctx.arc(GVM2d.x, GVM2d.y, GVM2d.side, 0, 2 * Math.PI);
-            GVM2d.ctx.closePath();
-            GVM2d.ctx.stroke();   
-            GVM2d.svgString += "<circle cx=\"";
-            GVM2d.svgString += Math.round(GVM2d.x).toString();
-            GVM2d.svgString += "\" cy = \"";
-            GVM2d.svgString += Math.round(GVM2d.y).toString();
-            GVM2d.svgString += "\" r = \"" + GVM2d.side.toString() + "\" stroke = \"" + GVM2d.ctx.strokeStyle + "\" stroke-width = \"" + (GVM2d.ctx.lineWidth).toString() + "\" ";
-            GVM2d.svgString += "fill = \"" + GVM2d.ctx.strokeStyle + "\" />\n";			
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.side, 0, 2 * Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();   
+            this.svgString += "<circle cx=\"";
+            this.svgString += Math.round(this.x).toString();
+            this.svgString += "\" cy = \"";
+            this.svgString += Math.round(this.y).toString();
+            this.svgString += "\" r = \"" + this.side.toString() + "\" stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" ";
+            this.svgString += "fill = \"" + this.ctx.strokeStyle + "\" />\n";			
         }
         if(address == 0342) {
-            GVM2d.ctx.beginPath();
-            GVM2d.ctx.moveTo(GVM2d.x,GVM2d.y);
-            GVM2d.ctx.lineTo(GVM2d.x + GVM2d.side*Math.cos(GVM2d.theta),GVM2d.y + GVM2d.side*Math.sin(GVM2d.theta));
-            GVM2d.ctx.stroke();		
-            GVM2d.ctx.closePath();    
-            var x2 = Math.round(GVM2d.x + GVM2d.side*Math.cos(GVM2d.theta));
-            var y2 = Math.round(GVM2d.y + GVM2d.side*Math.sin(GVM2d.theta));
-            GVM2d.svgString += "    <line x1=\""+Math.round(GVM2d.x).toString()+"\" y1=\""+Math.round(GVM2d.y).toString()+"\" x2=\"" + x2.toString()+"\" y2=\"" + y2.toString()+"\" style=\"stroke:" + GVM2d.ctx.strokeStyle + ";stroke-width:" + (GVM2d.ctx.lineWidth).toString() + "\" />\n"
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.x,this.y);
+            this.ctx.lineTo(this.x + this.side*Math.cos(this.theta),this.y + this.side*Math.sin(this.theta));
+            this.ctx.stroke();		
+            this.ctx.closePath();    
+            var x2 = Math.round(this.x + this.side*Math.cos(this.theta));
+            var y2 = Math.round(this.y + this.side*Math.sin(this.theta));
+            this.svgString += "    <line x1=\""+Math.round(this.x).toString()+"\" y1=\""+Math.round(this.y).toString()+"\" x2=\"" + x2.toString()+"\" y2=\"" + y2.toString()+"\" style=\"stroke:" + this.ctx.strokeStyle + ";stroke-width:" + (this.ctx.lineWidth).toString() + "\" />\n"
     
         }
         if(address == 0343) {
             //arc
-            GVM2d.ctx.beginPath();
-            GVM2d.ctx.arc(GVM2d.x, GVM2d.y, GVM2d.side, GVM2d.theta - GVM2d.thetaStep,GVM2d.theta + GVM2d.thetaStep);
-            GVM2d.ctx.stroke();
-            GVM2d.ctx.closePath();
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.side, this.theta - this.thetaStep,this.theta + this.thetaStep);
+            this.ctx.stroke();
+            this.ctx.closePath();
         }
         if(address == 0344) {
             //line segment as part of path
-            GVM2d.ctx.lineTo(GVM2d.x + GVM2d.side*Math.cos(GVM2d.theta),GVM2d.y + GVM2d.side*Math.sin(GVM2d.theta));
-            GVM2d.ctx.stroke();		
+            this.ctx.lineTo(this.x + this.side*Math.cos(this.theta),this.y + this.side*Math.sin(this.theta));
+            this.ctx.stroke();		
         }
         if(address == 0345) {
             //arc as part of path, to the right (CW)
-            GVM2d.ctx.arc(GVM2d.x, GVM2d.y, GVM2d.side, GVM2d.theta - GVM2d.thetaStep,GVM2d.theta + GVM2d.thetaStep);
-            GVM2d.ctx.stroke();
+            this.ctx.arc(this.x, this.y, this.side, this.theta - this.thetaStep,this.theta + this.thetaStep);
+            this.ctx.stroke();
         }
         if(address == 0346) {
             //arc, reverse direction (CCW)
-            GVM2d.ctx.arc(GVM2d.x, GVM2d.y, GVM2d.side, GVM2d.theta + GVM2d.thetaStep,GVM2d.theta - GVM2d.thetaStep,true);
-            GVM2d.ctx.stroke();   
+            this.ctx.arc(this.x, this.y, this.side, this.theta + this.thetaStep,this.theta - this.thetaStep,true);
+            this.ctx.stroke();   
         }
         if(address == 0347) {
             //filled circle
-            GVM2d.ctx.beginPath();
-            GVM2d.ctx.arc(GVM2d.x, GVM2d.y, GVM2d.side, 0, 2 * Math.PI);
-            GVM2d.ctx.closePath();
-            GVM2d.ctx.stroke();
-            GVM2d.ctx.fill();
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.side, 0, 2 * Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+            this.ctx.fill();
         }
         if(address == 0350) {
-            GVM2d.thetaStep /= 2;  //angle/2
+            this.thetaStep /= 2;  //angle/2
         }
         if(address == 0351) {
-            GVM2d.thetaStep *= 2;  //angle/2
+            this.thetaStep *= 2;  //angle/2
         }
         if(address == 0352) {
-            GVM2d.thetaStep /= 3;  //angle/2
+            this.thetaStep /= 3;  //angle/2
         }
         if(address == 0353) {
-            GVM2d.thetaStep *= 3;  //angle/2
+            this.thetaStep *= 3;  //angle/2
         }
         if(address == 0354) {
             //end a closed but not filled path
-            GVM2d.ctx.closePath();
-            GVM2d.ctx.stroke();		
+            this.ctx.closePath();
+            this.ctx.stroke();		
         }
         if(address == 0360) {
             //first part of bezier in middle of a path
-            GVM2d.ctx.moveTo(Math.round(GVM2d.x),Math.round(GVM2d.y));
-            GVM2d.cpx1 = Math.round(GVM2d.x + GVM2d.side*Math.cos(GVM2d.theta));
-            GVM2d.cpy1 = Math.round(GVM2d.y + GVM2d.side*Math.sin(GVM2d.theta));
+            this.ctx.moveTo(Math.round(this.x),Math.round(this.y));
+            this.cpx1 = Math.round(this.x + this.side*Math.cos(this.theta));
+            this.cpy1 = Math.round(this.y + this.side*Math.sin(this.theta));
     
         }
         if(address == 0361) { 
             //second part of bezier in middle of a path
-            GVM2d.x2 = Math.round(GVM2d.x);
-            GVM2d.y2 = Math.round(GVM2d.y);
-            GVM2d.cpx2 = Math.round(GVM2d.x + GVM2d.side*Math.cos(GVM2d.theta));
-            GVM2d.cpy2 = Math.round(GVM2d.y + GVM2d.side*Math.sin(GVM2d.theta));
-            GVM2d.ctx.bezierCurveTo(GVM2d.cpx1,GVM2d.cpy1,GVM2d.cpx2,GVM2d.cpy2,GVM2d.x2,GVM2d.y2);
-            GVM2d.ctx.stroke();
+            this.x2 = Math.round(this.x);
+            this.y2 = Math.round(this.y);
+            this.cpx2 = Math.round(this.x + this.side*Math.cos(this.theta));
+            this.cpy2 = Math.round(this.y + this.side*Math.sin(this.theta));
+            this.ctx.bezierCurveTo(this.cpx1,this.cpy1,this.cpx2,this.cpy2,this.x2,this.y2);
+            this.ctx.stroke();
         }
         if(address == 0362) {
             //start a path
-            GVM2d.ctx.beginPath();
-            GVM2d.ctx.moveTo(GVM2d.x,GVM2d.y);
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.x,this.y);
         }
         if(address == 0363) {
             //terminate a closed path with fill
-            GVM2d.ctx.closePath();
-            GVM2d.ctx.stroke();		
-            GVM2d.ctx.fill();		            
+            this.ctx.closePath();
+            this.ctx.stroke();		
+            this.ctx.fill();		            
         }
         if(address == 0364) {
-            GVM2d.ctx.closePath();
+            this.ctx.closePath();
         }
         if(address == 0365) {
-            GVM2d.ctx.translate(GVM2d.x, GVM2d.y);
-            GVM2d.ctx.rotate(-GVM2d.theta0 + GVM2d.theta);
-            GVM2d.ctx.translate(-GVM2d.x, -GVM2d.y);
-            GVM2d.ctx.font = GVM2d.side.toString(8) + "px " + GVM2d.font;
-            GVM2d.ctx.fillText(GVM2d.word,GVM2d.x,GVM2d.y);    
-            GVM2d.ctx.translate(GVM2d.x, GVM2d.y);
-            GVM2d.ctx.rotate(+GVM2d.theta0 - GVM2d.theta);
-            GVM2d.ctx.translate(-GVM2d.x, -GVM2d.y);
-            GVM2d.word = "";
-            GVM2d.ctx.setTransform(1, 0, 0, 1, 0, 0);
+            this.ctx.translate(this.x, this.y);
+            this.ctx.rotate(-this.theta0 + this.theta);
+            this.ctx.translate(-this.x, -this.y);
+            this.ctx.font = this.side.toString(8) + "px " + this.font;
+            this.ctx.fillText(this.word,this.x,this.y);    
+            this.ctx.translate(this.x, this.y);
+            this.ctx.rotate(+this.theta0 - this.theta);
+            this.ctx.translate(-this.x, -this.y);
+            this.word = "";
+            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
         if(address == 0366) {
             // start a self-contained cubic Bezier path        
-            GVM2d.ctx.beginPath();
-            GVM2d.ctx.moveTo(Math.round(GVM2d.x),Math.round(GVM2d.y));
-            GVM2d.cpx1 = Math.round(GVM2d.x + GVM2d.side*Math.cos(GVM2d.theta));
-            GVM2d.cpy1 = Math.round(GVM2d.y + GVM2d.side*Math.sin(GVM2d.theta)); 
+            this.ctx.beginPath();
+            this.ctx.moveTo(Math.round(this.x),Math.round(this.y));
+            this.cpx1 = Math.round(this.x + this.side*Math.cos(this.theta));
+            this.cpy1 = Math.round(this.y + this.side*Math.sin(this.theta)); 
         }
         if(address == 0367) {
             // finish a self-contained cubic Bezier path
-            GVM2d.x2 = Math.round(GVM2d.x);
-            GVM2d.y2 = Math.round(GVM2d.y);
-            GVM2d.cpx2 = Math.round(GVM2d.x + GVM2d.side*Math.cos(GVM2d.theta));
-            GVM2d.cpy2 = Math.round(GVM2d.y + GVM2d.side*Math.sin(GVM2d.theta));
-            GVM2d.ctx.bezierCurveTo(GVM2d.cpx1,GVM2d.cpy1,GVM2d.cpx2,GVM2d.cpy2,GVM2d.x2,GVM2d.y2);
-            GVM2d.ctx.stroke();
+            this.x2 = Math.round(this.x);
+            this.y2 = Math.round(this.y);
+            this.cpx2 = Math.round(this.x + this.side*Math.cos(this.theta));
+            this.cpy2 = Math.round(this.y + this.side*Math.sin(this.theta));
+            this.ctx.bezierCurveTo(this.cpx1,this.cpy1,this.cpx2,this.cpy2,this.x2,this.y2);
+            this.ctx.stroke();
         }
         if(address == 0370) {
-            GVM2d.xOne = GVM2d.x;
-            GVM2d.yOne = GVM2d.y;
-            GVM2d.thetaOne = GVM2d.theta;
-            GVM2d.sideOne = GVM2d.side;
-            GVM2d.thetaStepOne = GVM2d.thetaStep;
-            GVM2d.scaleFactorOne = GVM2d.scaleFactor;
+            this.xOne = this.x;
+            this.yOne = this.y;
+            this.thetaOne = this.theta;
+            this.sideOne = this.side;
+            this.thetaStepOne = this.thetaStep;
+            this.scaleFactorOne = this.scaleFactor;
         }
         if(address == 0371) {
-            GVM2d.x = GVM2d.xOne;
-            GVM2d.y = GVM2d.yOne;
-            GVM2d.theta = GVM2d.thetaOne;
-            GVM2d.side = GVM2d.sideOne;
-            GVM2d.thetaStep = GVM2d.thetaStepOne;
-            GVM2d.scaleFactor = GVM2d.scaleFactorOne;    
+            this.x = this.xOne;
+            this.y = this.yOne;
+            this.theta = this.thetaOne;
+            this.side = this.sideOne;
+            this.thetaStep = this.thetaStepOne;
+            this.scaleFactor = this.scaleFactorOne;    
         }
     }
 }

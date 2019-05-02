@@ -90,11 +90,11 @@
         <div id = "marginsquare2">
             <div id = "sliderbar">
                     <!--slider bar for scale-->
-                    <img id = "sliderimage" src = "icons/scaleslider.svg"/>
+                    <img class = "sliderimage" src = "icons/scaleslider.svg"/>
                 </div>
                 <div id = "sliderbar2">
                     <!--slider bar for rotate-->
-                    <img id = "sliderimage" src = "icons/rotateslider.svg"/>
+                    <img class = "sliderimage" src = "icons/rotateslider.svg"/>
             </div>            
         </div>        
     </div>
@@ -140,7 +140,7 @@ mainmap.draw();
 
 
 linkindex  = 0;
-
+mainmap.linkindex = 0;
 document.getElementById("savebutton").onclick = function() {
     
     mainmap.array[linkindex].x = parseInt(mainmap.linkArray[linkindex].style.left.substring(0,mainmap.linkArray[linkindex].style.left.length-2))/mainmap.w;
@@ -153,7 +153,6 @@ document.getElementById("savebutton").onclick = function() {
     httpc.open("POST", url, true);
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc.send("data="+encodeURIComponent("mapArray = " + JSON.stringify(mainmap.array,null,"    ") + ";")+"&filename=javascript/currentMap.js");//send text to filesaver.php
-
 
 }
 
@@ -174,7 +173,6 @@ document.getElementById("nextbutton").onclick = function() {
     document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
     mainmap.linkArray[linkindex].style.border = "solid";
     mainmap.linkArray[linkindex].style.borderWidth = "0.1px";
-
 }
 
 document.getElementById("prevbutton").onclick = function() {
@@ -312,7 +310,7 @@ mc.on("panleft panright panup pandown tap press rotate", function(ev) {
 
 mczoom = new Hammer(document.getElementById("sliderbar"));
 mczoom.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-mczoom.on("panleft panright panup pandown tap press rotate", function(ev) {
+mczoom.on("panleft panright panup pandown tap press", function(ev) {
 
     mainmap.linkArray[linkindex].style.width = (Math.abs(mainmap.array[linkindex].w*mainmap.w - 2*ev.deltaY)).toString() +  "px";
     mainmap.linkArray[linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[linkindex].w*mainmap.w - 2*ev.deltaY)).toString() + "px"; 
@@ -321,9 +319,11 @@ mczoom.on("panleft panright panup pandown tap press rotate", function(ev) {
 
 mcrotate = new Hammer(document.getElementById("sliderbar2"));
 mcrotate.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-mcrotate.on("panleft panright panup pandown tap press rotate", function(ev) {
+mcrotate.on("panleft panright panup pandown tap press", function(ev) {
 
     mainmap.linkArray[linkindex].style.transform = "rotate(" + (mainmap.array[linkindex].angle + ev.deltaY*Math.PI/5).toString() + "deg)";
+
+//mainmap.linkArray[linkindex].style.transform = "rotate(" + (mainmap.array[linkindex].angle + ev.deltaX*Math.PI/5).toString() + "deg)";
 
 });    
 
@@ -613,6 +613,9 @@ input,table,select{
     border-right:solid;
     border-top:solid;
     border-width:0.2px;
+    overflow:hidden;
+    z-index:1;
+
 }
 #sliderbar2{
     position:absolute;
@@ -623,12 +626,14 @@ input,table,select{
     z-index:1;
     border-top:solid;
     border-width:0.2px;
+    overflow:hidden;
+    z-index:1;
 
 }
 #navbutton{
     display:block;
 }
-#sliderimage{
+.sliderimage{
     position:absolute;
     left:0px;
     right:0px;
@@ -637,6 +642,7 @@ input,table,select{
     width:100%;
     height:100%;
     overflow:hidden;
+    z-index:-1;
 }
 #rotateimage{
     position:absolute;
@@ -682,11 +688,13 @@ input,table,select{
     position:absolute;
     right:0px;
     top:0px;
+    overflow:hidden;
 }
 #marginsquare2{
     position:absolute;
     right:0px;
     bottom:0px;
+    overflow:hidden;
 }
 .uploadbox{
     border:solid;

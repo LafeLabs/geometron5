@@ -9,6 +9,8 @@ function Map(w,h,div) {
     this.div.style.height = this.h + "px";//set height of div
     this.array = [];
     this.linkArray = [];
+    this.linkindex = 0;
+    this.editmode = false;
     //MapLink(x,y,w,angle,text,href,src)
     var newLink  = new MapLink(0.1,0.1,0.2,0,"text","","");
     this.array.push(newLink);
@@ -31,9 +33,6 @@ function Map(w,h,div) {
                 newimg.style.top = "0px";
                 newimg.style.width = "100%";
                 
-                if(this.array[index].href.length > 0){
-                    newa.href = this.array[index].href;
-                }
                 newa.appendChild(newimg);
                 newimg.src = this.array[index].src;
                 newimg.alt = this.array[index].text;
@@ -45,6 +44,10 @@ function Map(w,h,div) {
                 newa.innerHTML = this.array[index].text;
                 newa.style.fontSize = (0.1*this.array[index].w*this.w).toString() + "px"; 
             }
+            if(this.array[index].href.length > 0){
+                newa.href = this.array[index].href;
+            }
+
             this.linkArray.push(newa);
         }
     }

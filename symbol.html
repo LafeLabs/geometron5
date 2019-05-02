@@ -30,9 +30,6 @@
             <img style = "width:50px;" src = "icons/hypercubeicon.svg"/>
         </a>               
         <img id = "savebutton" class = "button" style = "width:50px;" src = "icons/savebutton.svg"/>
-        <a href = "feed.html">
-            <img style = "width:50px;" src = "icons/feedicon.svg"/>
-        </a>                   
     </div>    
     <div id = "spelldiv">
         <canvas id = "spellcanvas"></canvas>
@@ -65,15 +62,15 @@ else{
     marginWidth = innerHeight - squareWidth;
 }
 
-//GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+//GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
-var newGVM = new GVM2d(0.98*squareWidth,0.98*squareWidth,0.96*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),squareWidth,squareWidth,hypercube);
+var newGVM = new GVM(0.98*squareWidth,0.98*squareWidth,0.96*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),squareWidth,squareWidth,hypercube);
 
 invisibleWidth = 200;
-var invisibleGVM = new GVM2d(0.98*invisibleWidth,0.98*invisibleWidth,0.96*invisibleWidth,-Math.PI/2,document.getElementById("invisiblecanvas"),invisibleWidth,invisibleWidth,hypercube);
+var invisibleGVM = new GVM(0.98*invisibleWidth,0.98*invisibleWidth,0.96*invisibleWidth,-Math.PI/2,document.getElementById("invisiblecanvas"),invisibleWidth,invisibleWidth,hypercube);
 
 
-//newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,",newGVM);
+//newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,");
 
 newGVM.address = 0277;
 
@@ -85,11 +82,11 @@ if(glyphFeed.length > 0){
     newGVM.glyph = glyphFeed[glyphFeedIndex] + "0207,";        
 }
 
-newGVM.drawGlyph(newGVM.glyph,newGVM);
+newGVM.drawGlyph(newGVM.glyph);
 
-var spellGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
+var spellGVM = new GVM(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 
-spellGVM.spellGlyph(newGVM.glyph,spellGVM);
+spellGVM.spellGlyph(newGVM.glyph);
 
 //document.getElementById("textout").value = newGVM.bytecode(0220,0247,newGVM);
 
@@ -136,16 +133,16 @@ document.getElementById("actioninput").onkeydown = function(a) {
 
 bar = [];
 bar.push("0222:0341,0333,0341,");
-newGVM.importbytecode(bar,newGVM);
+newGVM.importbytecode(bar);
 
 document.getElementById("actioninput").onkeypress = function(a) {
 
     var charCode = a.keyCode || a.which;
     var localCursorAction = parseInt(newGVM.hypercube[charCode],8);     
-    newGVM.cursorAction(localCursorAction,newGVM);   
-    spellGVM.spellGlyph(newGVM.glyph,spellGVM);    
+    newGVM.cursorAction(localCursorAction);   
+    spellGVM.spellGlyph(newGVM.glyph);    
     this.value = "";
-    newGVM.saveGlyph(newGVM);
+    newGVM.saveGlyph();
 
 }
 
@@ -157,16 +154,16 @@ for(var index = 0;index < controlbuttons.length; index++) {
     var newcan = document.createElement("canvas");
     document.getElementById("controldiv").appendChild(newcan);
     newcan.classList.add("button");
-    //GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
-    var newg = new GVM2d(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
+    //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+    var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
 
     newg.drawGlyph("0300,0" + (controlbuttons[index] + 01000).toString(8) + ",",newg);
 
     newcan.id = "button0" + controlbuttons[index].toString(8);
     newcan.onclick = function(){
-        newGVM.cursorAction(parseInt(this.id.substring(6),8),newGVM);
-        spellGVM.spellGlyph(newGVM.glyph,spellGVM);    
-        newGVM.saveGlyph(newGVM);
+        newGVM.cursorAction(parseInt(this.id.substring(6),8));
+        spellGVM.spellGlyph(newGVM.glyph);    
+        newGVM.saveGlyph();
 
     }
 
@@ -191,7 +188,7 @@ document.getElementById("savebutton").onclick = function() {
             cleanGlyph += glyphArray[index] + ",";
         }
     }
-    invisibleGVM.drawGlyph(cleanGlyph,invisibleGVM);
+    invisibleGVM.drawGlyph(cleanGlyph);
     httpc.send("data="+encodeURIComponent(invisibleGVM.pngcode(invisibleGVM).substring(22))+"&filename=symbolfeed/symbol" + timestamp +  ".png");//send text to filesaver.php
 
     glyphFeed.push(cleanGlyph);

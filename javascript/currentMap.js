@@ -16,7 +16,7 @@ mapArray = [
         "h": 1,
         "angle": -4,
         "text": "Some text here",
-        "href": "",
+        "href": "editor.php",
         "src": ""
     },
     {
