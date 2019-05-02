@@ -1,7 +1,8 @@
-# Geometron 4
+# Geometron 5
 
+Geometron 5 is a rewrite of geometron 4, streamlining and drastically enough changing things that I wanted a clean slate.
 
-Geometron 4 further unifies the elements:
+Geometron 4 further unified the elements:
 
 
 - symbol

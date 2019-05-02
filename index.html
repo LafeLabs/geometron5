@@ -60,12 +60,6 @@
                 <tr><td>href:</td><td><input id = "hrefinput"/></td></tr>
             </table>
             <div id = "branchscroll">
-
-            </div>       
-            <div id = "feedscroll">
-                <!--
-                    put the links here, also put the images here 
-                -->
                 <table style = "display:none" id = "branchnametable">
                     <tr>
                         <td>
@@ -75,7 +69,15 @@
                             <input id = "branchnameinput"/>
                         </td>
                     </tr>
-                </table>
+                </table>     
+                <ul id = "branchlist">
+                    
+                </ul>   
+            </div>       
+            <div id = "feedscroll">
+                <!--
+                    put the links here, also put the images here 
+                -->
             </div>
         </div>
         <div id = "marginsquare2">
@@ -371,7 +373,7 @@ httpc.onreadystatechange = function() {
             newa.innerHTML = branches[index] + "/";
             var newli = document.createElement("LI");
             newli.appendChild(newa);
-            document.getElementById("feedscroll").appendChild(newli);
+            document.getElementById("branchscroll").appendChild(newli);
             var newimg = document.createElement("IMG");
             newimg.classList.add("button");
             newimg.style.width = "50px";
