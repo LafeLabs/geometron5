@@ -8,6 +8,7 @@ $dna = json_decode($dnaraw);
 
 mkdir("javascript");
 mkdir("icons");
+mkdir("data");
 mkdir("php");
 mkdir("symbolfeed");
 mkdir("uploadimages");
@@ -23,6 +24,10 @@ foreach($dna->javascript as $value){
 
 foreach($dna->icons as $value){
     copy($baseurl."icons/".$value,"icons/".$value);
+}
+
+foreach($dna->data as $value){
+    copy($baseurl."data/".$value,"data/".$value);
 }
 
 foreach($dna->php as $value){

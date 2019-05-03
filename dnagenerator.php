@@ -4,6 +4,7 @@
     $jsfiles = scandir(getcwd()."/javascript");
     $iconfiles = scandir(getcwd()."/icons");
     $phpfiles = scandir(getcwd()."/php");
+    $datafiles = scandir(getcwd()."/data");
 
     $htmlfiles = [];
     foreach($files as $value){
@@ -28,6 +29,14 @@
             array_push($dna->icons,$value);
         }
     }
+
+    $dna->data = [];
+    foreach($datafiles as $value){
+        if($value{0} != "."){
+            array_push($dna->data,$value);
+        }
+    }
+
     
     $dna->php = [];
     foreach($phpfiles as $value){
