@@ -203,7 +203,7 @@ document.getElementById("actioninput").onkeypress = function(a) {
 document.getElementById("actioninput").select();
 
 document.getElementById("savebutton").onclick = function() {
-   savebytecode(newGVM,startAddress,endAddress,"shapestemp");
+   savebytecode(newGVM,startAddress,endAddress,document.getElementById("tablenameinput").value);
 }
 
 function savebytecode(sourcegvm,start,end,filename){
@@ -219,7 +219,25 @@ function savebytecode(sourcegvm,start,end,filename){
     httpc.send("data=" + bytecodejson +"&filename=javascript/" + filename + ".js");//send text to filesaver.php
 }
 
-    document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
+loadbytecode(newGVM,"foo");
+
+function loadbytecode(destinationGVM,filename) {
+    var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var jsraw = this.responseText;
+            var newbytecode = JSON.parse(jsraw.split("=")[1].split(";")[0]);
+            for(var index = 0;index < newbytecode.length;index++) {
+                var localAddress = parseInt(newbytecode[index].split(":")[0],8);
+                destinationGVM.hypercube[localAddress] = newbytecode[index].split(":")[1];
+            }
+        }
+    };
+    httpc.open("GET", "fileloader.php?filename=javascript/" + filename + ".js", true);
+    httpc.send();    
+}
+
+document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
 
 </script>
 <style>

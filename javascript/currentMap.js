@@ -20,14 +20,14 @@ mapArray = [
         "src": ""
     },
     {
-        "x": 0.41646778042959426,
-        "y": 0.1431980906921241,
+        "x": 0.1909307875894988,
+        "y": 0.1324582338902148,
         "w": 0.09904534606205251,
         "h": 1,
-        "angle": 180,
+        "angle": 149,
         "text": "",
         "href": "",
-        "src": "http://www.cherrytreemaryland.xyz/symbol/svg/svg1556330629.svg"
+        "src": "http://localhost:8000/symbolfeed/symbol1556915544.png"
     },
     {
         "x": 0.08472553699284009,
@@ -70,12 +70,12 @@ mapArray = [
         "src": "icons/scrollicon.svg"
     },
     {
-        "x": 0.23389021479713604,
-        "y": 0.3460620525059666,
+        "x": 0.36992840095465396,
+        "y": 0.4200477326968974,
         "w": 0.12052505966587113,
         "angle": 20,
         "text": "",
         "href": "",
-        "src": "http://localhost:8000/symbolfeed/symbol1556915167.png"
+        "src": "http://localhost:8000/symbolfeed/symbol1556915544.png"
     }
 ];

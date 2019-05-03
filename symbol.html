@@ -138,6 +138,8 @@ bar = [];
 bar.push("0222:0341,0333,0341,");
 newGVM.importbytecode(bar);
 
+symbolEditMode = false;
+
 document.getElementById("actioninput").onkeypress = function(a) {
 
     var charCode = a.keyCode || a.which;
