@@ -21,34 +21,110 @@
         hypercube export and import
         
     -->
-    <a href = "symbol.html">
-        <img style = "width:50px;" src = "icons/symbolicon.svg"/>
-    </a>
 
-
-    <input id = "actioninput"/>
+<div id = "square">
     <canvas id = "maincanvas"></canvas>
-    <canvas id = "spellcanvas"></canvas>
-<textarea id = "textout"></textarea>
-<img id = "foo"/>
-<script>
+    <canvas id = "symbolcanvas"></canvas>
+    <input id = "spellinput"/>
+    <div id = "spellscroll">
+        <canvas id = "spellcanvas"></canvas>
+    </div>
+</div>
+<div id = "margin">
+    <div id = "marginsquare1">
+        <a href = "symbol.html">
+            <img style = "width:50px;" src = "icons/symbolicon.svg"/>
+        </a>
+        <img class = "button" style = "width:50px;" src = "icons/savebutton.svg"/>
+        
+        <textarea id = "textout"></textarea>
+        <table>
+            <tr>
+                <td>Action:</td>
+                <td><input id = "actioninput"/></td>
+            </tr>
+            <tr>
+                <td>Print:</td>
+                <td><input id = "printinput"/></td>
+            </tr>
+            <tr>
+                <td>Stack:</td>
+                <td><input id = "stackinput"/></td>
+            </tr>        
+            <tr>
+                <td>Current address:</td>
+                <td><input id = "addressinput"/></td>
+            </tr>        
+            <tr>
+                <td>Start address:</td>
+                <td><input id = "startinput"/></td>
+            </tr>
+            <tr>
+                <td>End address:</td>
+                <td><input id = "endinput"/></td>
+            </tr>    
+        </table>
+    </div>
+    <div id = "marginsquare2">
+        <!--this is where the various keys and symbols go which are used to select what is edited-->
+    </div>
+</div>
 
+
+<script>
+landscape = false;
+if(innerWidth > innerHeight){
+
+    squareWidth = innerHeight;
+    document.getElementById("margin").style.width = (innerWidth - squareWidth).toString() + "px";
+    document.getElementById("margin").style.height = (innerHeight).toString() + "px";
+    marginWidth = innerWidth - squareWidth;
+    landscape = true;
+    document.getElementById("marginsquare2").style.width = marginWidth.toString() + "px";
+    document.getElementById("marginsquare2").style.height = (0.5*squareWidth).toString() + "px";
+    document.getElementById("marginsquare1").style.width = marginWidth.toString() + "px";
+    document.getElementById("marginsquare1").style.height = (0.5*squareWidth).toString() + "px";
+
+}
+else{
+    
+    squareWidth = innerWidth;
+    document.getElementById("margin").style.height = (innerHeight - squareWidth).toString() + "px";
+    document.getElementById("margin").style.width = (innerHeight).toString() + "px";
+    marginWidth = squareWidth - innerWidth;
+    document.getElementById("marginsquare2").style.width = (0.5*squareWidth).toString() + "px";
+    document.getElementById("marginsquare2").style.height = marginWidth.toString() + "px";
+    document.getElementById("marginsquare1").style.width = (0.5*squareWidth).toString() + "px";
+    document.getElementById("marginsquare1").style.height = marginWidth.toString() + "px";
+
+}
+document.getElementById("square").style.width = (squareWidth).toString() + "px";
+document.getElementById("square").style.height = (squareWidth).toString() + "px";
 
 //GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
-var newGVM = new GVM(200,200,50,-Math.PI/2,document.getElementById("maincanvas"),400,400,hypercube);
+var newGVM = new GVM(0.2*squareWidth,0.2*squareWidth,0.1*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),0.4*squareWidth,0.4*squareWidth,hypercube);
+
+var symbolGVM = new GVM(10,0.4*squareWidth - 10,0.4*squareWidth - 20,-Math.PI/2,document.getElementById("symbolcanvas"),0.4*squareWidth,0.4*squareWidth,hypercube);
 
 //newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,",newGVM);
+
+startAddress = 0220;
+endAddress = 0247;
 
 newGVM.address = 0220;
 newGVM.glyph = newGVM.hypercube[newGVM.address];
 newGVM.drawGlyph(newGVM.glyph);
 
+symbolGVM.address = newGVM.address + 01000;
+symbolGVM.glyph = newGVM.hypercube[newGVM.address];
+symbolGVM.drawGlyph(symbolGVM.glyph);
+
 var spellGVM = new GVM(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 
 spellGVM.spellGlyph(newGVM.glyph);
 
-document.getElementById("textout").value = newGVM.bytecode(0220,0247);
+//document.getElementById("textout").value = newGVM.bytecode(0220,0247);
 
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
@@ -75,11 +151,32 @@ document.getElementById("actioninput").onkeydown = function(a) {
         newGVM.drawGlyph(newGVM.glyph);
 
     }
+    symbolGVM.address = newGVM.address + 01000;
+    symbolGVM.glyph = newGVM.hypercube[symbolGVM.address];
+    symbolGVM.drawGlyph(symbolGVM.glyph);
 
+    spellGVM.spellGlyph(newGVM.glyph);    
+    document.getElementById("addressinput").value = "0" + newGVM.address.toString(8);
+
+    document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
+}
+
+document.getElementById("addressinput").value = "0" + newGVM.address.toString(8);
+
+document.getElementById("startinput").value = "0" + startAddress.toString(8);
+document.getElementById("endinput").value = "0" + endAddress.toString(8);
+
+
+document.getElementById("addressinput").onchange = function() {
+    newGVM.address = parseInt(this.value,8);
+    symbolGVM.address = newGVM.address + 01000;
+    newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
+    newGVM.drawGlyph(newGVM.glyph);
+    symbolGVM.glyph = newGVM.hypercube[symbolGVM.address];
+    symbolGVM.drawGlyph(symbolGVM.glyph);
     spellGVM.spellGlyph(newGVM.glyph);    
 
 }
-
 
 bar = [];
 bar.push("0222:0341,0333,0341,");
@@ -94,14 +191,79 @@ document.getElementById("actioninput").onkeypress = function(a) {
     newGVM.saveGlyph();
 }
 
-document.getElementById("foo").src = newGVM.pngcode();
-
 document.getElementById("actioninput").select();
+
+document.getElementById("savebutton").onclick = function() {
+   savebytecode(newGVM,startAddress,endAddress,"shapestemp");
+}
+
+function savebytecode(sourcegvm,start,end,filename){
+    var bytecodeout = [];
+    for(var index = start;index <= end;index++){
+        bytecodeout.push(sourcegvm.hypercube[index]);
+    }
+    var bytecodejson = encodeURIComponent(filename +  " = " + JSON.stringify(bytecodeout,null,"    ") + ";");
+    var url = "filesaver.php";        
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST", url, true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc.send("data=" + bytecodejson +"&filename=javascript/" + filename + ".js");//send text to filesaver.php
+}
+
+    document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
 
 </script>
 <style>
+body{
+    overflow:hidden;
+    font-family:courier;
+    font-size:16px
+
+}
+#square{
+    position:absolute;
+    left:0px;
+    top:0px;
+    overflow:hidden;
+}
+#margin{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+}
+#marginsquare1{
+    position:absolute;
+    right:0px;
+    top:0px;
+    overflow:hidden;
+}
+#marginsquare2{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    overflow:scroll;
+}
+
 #maincanvas{
     border:solid;
+    cursor:pointer;
+}
+#maincanvas:hover{
+    background-color:green;
+}
+#maincanvas:active{
+    background-color:yellow;
+}
+
+#symbolcanvas{
+    border:solid;
+    cursor:pointer;
+}
+#symbolcanvas:hover{
+    background-color:green;
+}
+#symbolcanvas:active{
+    background-color:yellow;
 }
 #spellcanvas{
     border:solid;
@@ -109,10 +271,36 @@ document.getElementById("actioninput").select();
 #actioninput{
     width:1em;
 }
-#foo{
-    border:solid;
-    background-color:#afffaf;
-    width:150px;
+input,textarea{
+    font-family:courier;
+    font-size:16px
+
+}
+#spellscroll{
+    position:absolute;
+    overflow:scroll;
+    bottom:0px;
+    right:0px;
+    left:0px;
+    height:10%;
+}
+#printinput{
+    width:1em;
+}
+#stackinput{
+    width:1em;
+}
+#spellinput{
+    width:100%;
+}
+.button{
+    cursor:pointer;
+}
+.button:hover{
+    background-color: green;
+}
+.button:active{
+    background-color:yellow;
 }
 </style>
 </body>
