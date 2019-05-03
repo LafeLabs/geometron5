@@ -3,6 +3,13 @@
     <script src="javascript/geometron.js"></script>
     <script src="javascript/shapestemp.js"></script>
 
+    <script src="javascript/font.js"></script>
+    <script src="javascript/keyboard.js"></script>
+    <script src="javascript/symbols013xx.js"></script>
+    <script src="javascript/symbols010xx.js"></script>
+    <script src="javascript/shapetable.js"></script>
+    <script src="javascript/shapetablesymbols.js"></script>
+
     <!--    <script src="https://pastebin.com/raw/7fvF1seM"></script>-->
 </head>
 <body> 
@@ -73,6 +80,8 @@
     </div>
     <div id = "marginsquare2">
         <!--this is where the various keys and symbols go which are used to select what is edited-->
+        <div id = "sourcesymbols"></div>
+        <div id = "controlsymbols"></div>
     </div>
 </div>
 
@@ -329,6 +338,23 @@ input,textarea{
 .button:active{
     background-color:yellow;
 }
+#sourcesymbols{
+    position:absolute;
+    left:0px;
+    top:0px;
+    bottom:0px;
+    right:50%;
+    border:solid;
+}
+#controlsymbols{
+    position:absolute;
+    right:0px;
+    top:0px;
+    bottom:0px;
+    left:50%;
+    border:solid;
+}
+
 </style>
 </body>
 </html>
