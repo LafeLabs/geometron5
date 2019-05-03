@@ -36,65 +36,65 @@
 
 //GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
-var newGVM = new GVM2d(200,200,50,-Math.PI/2,document.getElementById("maincanvas"),400,400,hypercube);
+var newGVM = new GVM(200,200,50,-Math.PI/2,document.getElementById("maincanvas"),400,400,hypercube);
 
 //newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,",newGVM);
 
 newGVM.address = 0220;
 newGVM.glyph = newGVM.hypercube[newGVM.address];
-newGVM.drawGlyph(newGVM.glyph,newGVM);
+newGVM.drawGlyph(newGVM.glyph);
 
-var spellGVM = new GVM2d(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
+var spellGVM = new GVM(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 
-spellGVM.spellGlyph(newGVM.glyph,spellGVM);
+spellGVM.spellGlyph(newGVM.glyph);
 
-document.getElementById("textout").value = newGVM.bytecode(0220,0247,newGVM);
+document.getElementById("textout").value = newGVM.bytecode(0220,0247);
 
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
 
     if(charCode == 010) {
-        newGVM.cursorAction(010,newGVM);   
+        newGVM.cursorAction(010);   
     }
     if(charCode == 045){
-        newGVM.cursorAction(020,newGVM);             
+        newGVM.cursorAction(020);             
     }
     if(charCode == 047){
-        newGVM.cursorAction(021,newGVM);   
+        newGVM.cursorAction(021);   
     }
     if(charCode == 046){
         //up arrow: next
         newGVM.address++;
         newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
-        newGVM.drawGlyph(newGVM.glyph,newGVM);
+        newGVM.drawGlyph(newGVM.glyph);
     }
     if(charCode == 050){
         //down arrow: prev address
         newGVM.address--;
         newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
-        newGVM.drawGlyph(newGVM.glyph,newGVM);
+        newGVM.drawGlyph(newGVM.glyph);
 
     }
 
-    spellGVM.spellGlyph(newGVM.glyph,spellGVM);    
+    spellGVM.spellGlyph(newGVM.glyph);    
 
 }
 
 
 bar = [];
 bar.push("0222:0341,0333,0341,");
-newGVM.importbytecode(bar,newGVM);
+newGVM.importbytecode(bar);
 
 document.getElementById("actioninput").onkeypress = function(a) {
     var charCode = a.keyCode || a.which;
     var localCursorAction = parseInt(newGVM.hypercube[charCode],8);     
-    newGVM.cursorAction(localCursorAction,newGVM);   
-    spellGVM.spellGlyph(newGVM.glyph,spellGVM);    
+    newGVM.cursorAction(localCursorAction);   
+    spellGVM.spellGlyph(newGVM.glyph);    
     this.value = "";
-    newGVM.saveGlyph(newGVM);
+    newGVM.saveGlyph();
 }
 
-document.getElementById("foo").src = newGVM.pngcode(newGVM);
+document.getElementById("foo").src = newGVM.pngcode();
 
 document.getElementById("actioninput").select();
 

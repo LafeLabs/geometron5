@@ -566,21 +566,70 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             this.ctx.arc(this.x, this.y, this.side, this.theta - this.thetaStep,this.theta + this.thetaStep);
             this.ctx.stroke();
             this.ctx.closePath();
+            var localString = "";
+            localString += "  <path d=\"";	
+            localString += "M";
+            var localInt = this.x + this.side*Math.cos(this.theta - this.thetaStep);
+            localString += localInt.toString();
+            localString += " ";
+            localInt = this.y + this.side*Math.sin(this.theta - this.thetaStep);
+            localString += localInt.toString();
+            this.svgString += localString;
+            localString = "           A" + this.side.toString() + " " + this.side.toString() + " 0 0 1 ";
+            localInt = this.x + this.side*Math.cos(this.theta + this.thetaStep);
+            localString += localInt.toString() + " ";
+            localInt = this.y + this.side*Math.sin(this.theta + this.thetaStep);
+            localString += localInt.toString() + "\" fill = \"none\" stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" />\n";
+            this.svgString += localString;
+
         }
         if(address == 0344) {
             //line segment as part of path
             this.ctx.lineTo(this.x + this.side*Math.cos(this.theta),this.y + this.side*Math.sin(this.theta));
             this.ctx.stroke();		
+            var x2 = Math.round(this.x + this.side*Math.cos(this.theta));
+            var y2 = Math.round(this.y + this.side*Math.sin(this.theta));
+            this.svgString += "L" + x2 + " " + y2 + " ";
+    
         }
         if(address == 0345) {
             //arc as part of path, to the right (CW)
             this.ctx.arc(this.x, this.y, this.side, this.theta - this.thetaStep,this.theta + this.thetaStep);
             this.ctx.stroke();
+            var localString = "";
+            localString += "M";
+            var localInt = this.x + this.side*Math.cos(this.theta - this.thetaStep);
+            localString += localInt.toString();
+            localString += " ";
+            localInt = this.y + this.side*Math.sin(this.theta - this.thetaStep);
+            localString += localInt.toString();
+            this.svgString += localString;
+            localString = "           A" + this.side.toString() + " " + this.side.toString() + " 0 0 1 ";
+            localInt = this.x + this.side*Math.cos(this.theta + this.thetaStep);
+            localString += localInt.toString() + " ";
+            localInt = this.y + this.side*Math.sin(this.theta + this.thetaStep);
+            localString += localInt.toString();
+            this.svgString += localString;
         }
         if(address == 0346) {
             //arc, reverse direction (CCW)
             this.ctx.arc(this.x, this.y, this.side, this.theta + this.thetaStep,this.theta - this.thetaStep,true);
             this.ctx.stroke();   
+            localString = "";
+            localString += "M";
+            var localInt = this.x + this.side*Math.cos(this.theta - this.thetaStep);
+            localString += localInt.toString();
+            localString += " ";
+            localInt = this.y + this.side*Math.sin(this.theta - this.thetaStep);
+            localString += localInt.toString();
+            this.svgString += localString;
+            localString = "           A" + this.side.toString() + " " + this.side.toString() + " 0 0 1 ";
+            localInt = this.x + this.side*Math.cos(this.theta + this.thetaStep);
+            localString += localInt.toString() + " ";
+            localInt = this.y + this.side*Math.sin(this.theta + this.thetaStep);
+            localString += localInt.toString();
+            this.svgString += localString;
+    
         }
         if(address == 0347) {
             //filled circle
@@ -589,6 +638,12 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             this.ctx.closePath();
             this.ctx.stroke();
             this.ctx.fill();
+            this.svgString += "    <circle cx=\"";
+            this.svgString += Math.round(this.x).toString();
+            this.svgString += "\" cy = \"";
+            this.svgString += Math.round(this.y).toString();
+            this.svgString += "\" r = \"" + this.side.toString() + "\" stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" ";
+            this.svgString += "fill = \"" + this.ctx.fillStyle + "\" />\n";
         }
         if(address == 0350) {
             this.thetaStep /= 2;  //angle/2
@@ -606,15 +661,22 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             //end a closed but not filled path
             this.ctx.closePath();
             this.ctx.stroke();		
+            this.svgString += "Z\""+ " stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" fill = \"" + "none" + "\" "+"/>";
+
         }
         if(address == 0360) {
             //first part of bezier in middle of a path
             this.ctx.moveTo(Math.round(this.x),Math.round(this.y));
             this.cpx1 = Math.round(this.x + this.side*Math.cos(this.theta));
             this.cpy1 = Math.round(this.y + this.side*Math.sin(this.theta));
-    
+            this.svgString += " M";
+            this.svgString += (Math.round(this.x)).toString() + ",";
+            this.svgString += (Math.round(this.y)).toString() + " C";
+            this.svgString += this.cpx1.toString() + "," + this.cpy1.toString() + " ";
+
         }
         if(address == 0361) { 
+
             //second part of bezier in middle of a path
             this.x2 = Math.round(this.x);
             this.y2 = Math.round(this.y);
@@ -622,20 +684,29 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             this.cpy2 = Math.round(this.y + this.side*Math.sin(this.theta));
             this.ctx.bezierCurveTo(this.cpx1,this.cpy1,this.cpx2,this.cpy2,this.x2,this.y2);
             this.ctx.stroke();
+            this.svgString += this.cpx2.toString() + "," + this.cpy2.toString() + " ";
+            this.svgString += this.x2.toString() + "," + this.y2.toString() + " ";		
+    
         }
         if(address == 0362) {
             //start a path
             this.ctx.beginPath();
             this.ctx.moveTo(this.x,this.y);
+            this.svgString += "	<path d = \"M";
+            this.svgString += Math.round(this.x).toString() + " ";
+            this.svgString += Math.round(this.y).toString() + " ";
+    
         }
         if(address == 0363) {
             //terminate a closed path with fill
             this.ctx.closePath();
             this.ctx.stroke();		
             this.ctx.fill();		            
+            this.svgString += "Z\""+ " stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" fill = \"" + this.ctx.fillStyle + "\" "+"/>";
         }
         if(address == 0364) {
             this.ctx.closePath();
+            this.svgString += "\""+ " stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" fill = \"" + "none" + "\" "+"/>";
         }
         if(address == 0365) {
             this.ctx.translate(this.x, this.y);
@@ -648,6 +719,7 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             this.ctx.translate(-this.x, -this.y);
             this.word = "";
             this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+            
         }
         if(address == 0366) {
             // start a self-contained cubic Bezier path        
