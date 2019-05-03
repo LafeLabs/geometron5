@@ -68,5 +68,14 @@ mapArray = [
         "text": "",
         "href": "scroll.html",
         "src": "icons/scrollicon.svg"
+    },
+    {
+        "x": 0.23389021479713604,
+        "y": 0.3460620525059666,
+        "w": 0.12052505966587113,
+        "angle": 20,
+        "text": "",
+        "href": "",
+        "src": "http://localhost:8000/symbolfeed/symbol1556915167.png"
     }
 ];

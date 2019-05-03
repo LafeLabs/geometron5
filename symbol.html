@@ -5,6 +5,8 @@
 
     <script src="javascript/geometron.js"></script>
     <script src="javascript/glyphFeed.js"></script>
+    <script src="javascript/shapestemp.js"></script>
+
 </head>
 <body> 
 
@@ -65,6 +67,7 @@ else{
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
 var newGVM = new GVM(0.98*squareWidth,0.98*squareWidth,0.96*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),squareWidth,squareWidth,hypercube);
+newGVM.importbytecode(shapestemp);
 
 invisibleWidth = 200;
 var invisibleGVM = new GVM(0.98*invisibleWidth,0.98*invisibleWidth,0.96*invisibleWidth,-Math.PI/2,document.getElementById("invisiblecanvas"),invisibleWidth,invisibleWidth,hypercube);
@@ -188,6 +191,7 @@ document.getElementById("savebutton").onclick = function() {
             cleanGlyph += glyphArray[index] + ",";
         }
     }
+    invisibleGVM.hypercube = newGVM.hypercube;
     invisibleGVM.drawGlyph(cleanGlyph);
     httpc.send("data="+encodeURIComponent(invisibleGVM.pngcode(invisibleGVM).substring(22))+"&filename=symbolfeed/symbol" + timestamp +  ".png");//send text to filesaver.php
 

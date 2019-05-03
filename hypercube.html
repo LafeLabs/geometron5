@@ -1,7 +1,9 @@
 <html>
 <head>
     <script src="javascript/geometron.js"></script>
-<!--    <script src="https://pastebin.com/raw/7fvF1seM"></script>-->
+    <script src="javascript/shapestemp.js"></script>
+
+    <!--    <script src="https://pastebin.com/raw/7fvF1seM"></script>-->
 </head>
 <body> 
 
@@ -35,7 +37,7 @@
         <a href = "symbol.html">
             <img style = "width:50px;" src = "icons/symbolicon.svg"/>
         </a>
-        <img class = "button" style = "width:50px;" src = "icons/savebutton.svg"/>
+        <img id = "savebutton" class = "button" style = "width:50px;" src = "icons/savebutton.svg"/>
         
         <textarea id = "textout"></textarea>
         <table>
@@ -51,6 +53,10 @@
                 <td>Stack:</td>
                 <td><input id = "stackinput"/></td>
             </tr>        
+            <tr>
+                <td>Table Name:</td>
+                <td><input id = "tablenameinput"/></td>
+            </tr>
             <tr>
                 <td>Current address:</td>
                 <td><input id = "addressinput"/></td>
@@ -104,6 +110,7 @@ document.getElementById("square").style.height = (squareWidth).toString() + "px"
 //GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
 var newGVM = new GVM(0.2*squareWidth,0.2*squareWidth,0.1*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),0.4*squareWidth,0.4*squareWidth,hypercube);
+newGVM.importbytecode(shapestemp);
 
 var symbolGVM = new GVM(10,0.4*squareWidth - 10,0.4*squareWidth - 20,-Math.PI/2,document.getElementById("symbolcanvas"),0.4*squareWidth,0.4*squareWidth,hypercube);
 
@@ -113,7 +120,7 @@ startAddress = 0220;
 endAddress = 0247;
 
 newGVM.address = 0220;
-newGVM.glyph = newGVM.hypercube[newGVM.address];
+newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
 newGVM.drawGlyph(newGVM.glyph);
 
 symbolGVM.address = newGVM.address + 01000;
@@ -161,8 +168,9 @@ document.getElementById("actioninput").onkeydown = function(a) {
     document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
 }
 
+tableName = "shapestemp";
+document.getElementById("tablenameinput").value = tableName;
 document.getElementById("addressinput").value = "0" + newGVM.address.toString(8);
-
 document.getElementById("startinput").value = "0" + startAddress.toString(8);
 document.getElementById("endinput").value = "0" + endAddress.toString(8);
 
@@ -178,9 +186,10 @@ document.getElementById("addressinput").onchange = function() {
 
 }
 
-bar = [];
-bar.push("0222:0341,0333,0341,");
-newGVM.importbytecode(bar);
+//bar = [];
+//bar.push("0222:0341,0333,0341,");
+//newGVM.importbytecode(bar);
+
 
 document.getElementById("actioninput").onkeypress = function(a) {
     var charCode = a.keyCode || a.which;
@@ -200,7 +209,7 @@ document.getElementById("savebutton").onclick = function() {
 function savebytecode(sourcegvm,start,end,filename){
     var bytecodeout = [];
     for(var index = start;index <= end;index++){
-        bytecodeout.push(sourcegvm.hypercube[index]);
+        bytecodeout.push("0" + index.toString(8) + ":" + sourcegvm.hypercube[index]);
     }
     var bytecodejson = encodeURIComponent(filename +  " = " + JSON.stringify(bytecodeout,null,"    ") + ";");
     var url = "filesaver.php";        
