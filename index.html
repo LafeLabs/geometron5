@@ -88,14 +88,8 @@
             </div>
         </div>
         <div id = "marginsquare2">
-            <div id = "sliderbar">
-                    <!--slider bar for scale-->
-                    <img class = "sliderimage" src = "icons/scaleslider.svg"/>
-                </div>
-                <div id = "sliderbar2">
-                    <!--slider bar for rotate-->
-                    <img class = "sliderimage" src = "icons/rotateslider.svg"/>
-            </div>            
+            <img src = "icons/scaleslider2.svg" id = "scalebar"/>
+            <img src = "icons/rotateslider2.svg" id = "rotatebar"/>
         </div>        
     </div>
      
@@ -234,20 +228,21 @@ mc.on("panleft panright panup pandown tap press rotate", function(ev) {
 });    
 
 
-mczoom = new Hammer(document.getElementById("sliderbar"));
+
+mczoom = new Hammer(document.getElementById("scalebar"));
 mczoom.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 mczoom.on("panleft panright panup pandown tap press", function(ev) {
 
-    mainmap.linkArray[mainmap.linkindex].style.width = (Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w - 2*ev.deltaY)).toString() +  "px";
-    mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w - 2*ev.deltaY)).toString() + "px"; 
+    mainmap.linkArray[mainmap.linkindex].style.width = (Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w + 2*ev.deltaX)).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w + 2*ev.deltaX)).toString() + "px"; 
 
 });    
 
-mcrotate = new Hammer(document.getElementById("sliderbar2"));
+mcrotate = new Hammer(document.getElementById("rotatebar"));
 mcrotate.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 mcrotate.on("panleft panright panup pandown tap press", function(ev) {
 
-    mainmap.linkArray[mainmap.linkindex].style.transform = "rotate(" + (mainmap.array[mainmap.linkindex].angle + ev.deltaY*Math.PI/5).toString() + "deg)";
+    mainmap.linkArray[mainmap.linkindex].style.transform = "rotate(" + (mainmap.array[mainmap.linkindex].angle + ev.deltaX*Math.PI/5).toString() + "deg)";
 
 //mainmap.linkArray[linkindex].style.transform = "rotate(" + (mainmap.array[linkindex].angle + ev.deltaX*Math.PI/5).toString() + "deg)";
 
@@ -530,56 +525,28 @@ input,table,select{
     overflow:scroll;
     font-family:courier;
 }
-#sliderbar{
+#scalebar{
     position:absolute;
     left:0px;
-    right:50%;
-    top:0px;
-    bottom:0px;
-    z-index:1;
-    border-right:solid;
-    border-top:solid;
-    border-width:0.2px;
-    overflow:hidden;
-    z-index:1;
-
-}
-#sliderbar2{
-    position:absolute;
     right:0px;
-    left:50%;
     top:0px;
-    bottom:0px;
-    z-index:1;
-    border-top:solid;
-    border-width:0.2px;
-    overflow:hidden;
-    z-index:1;
+    bottom:50%;
+    z-index:2;
+    width:100%;
 
 }
+#rotatebar{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:50%;
+    bottom:0px;
+    z-index:2;
+    width:100%;
+}
+
 #navbutton{
     display:block;
-}
-.sliderimage{
-    position:absolute;
-    left:0px;
-    right:0px;
-    top:0px;
-    bottom:0px;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    z-index:-1;
-}
-#rotateimage{
-    position:absolute;
-    left:0px;
-    right:0px;
-    top:0px;
-    bottom:0px;
-    width:100%;
-    height:100%;
-    overflow:hidden;
 }
 #linkedittable{
     position:absolute;
@@ -622,6 +589,7 @@ input,table,select{
     right:0px;
     bottom:0px;
     overflow:hidden;
+    background-color:#b0fbb0;
 }
 .uploadbox{
     border:solid;
