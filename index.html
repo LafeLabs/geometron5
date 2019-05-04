@@ -143,10 +143,10 @@ linkindex  = 0;
 mainmap.linkindex = 0;
 document.getElementById("savebutton").onclick = function() {
     
-    mainmap.array[linkindex].x = parseInt(mainmap.linkArray[linkindex].style.left.substring(0,mainmap.linkArray[linkindex].style.left.length-2))/mainmap.w;
-    mainmap.array[linkindex].y = parseInt(mainmap.linkArray[linkindex].style.top.substring(0,mainmap.linkArray[linkindex].style.top.length-2))/mainmap.w;
-    mainmap.array[linkindex].w = parseInt(mainmap.linkArray[linkindex].style.width.substring(0,mainmap.linkArray[linkindex].style.width.length-2))/mainmap.w;
-    mainmap.array[linkindex].angle = parseInt(mainmap.linkArray[linkindex].style.transform.substring(7,mainmap.linkArray[linkindex].style.transform.length - 4));
+    mainmap.array[mainmap.linkindex].x = parseInt(mainmap.linkArray[mainmap.linkindex].style.left.substring(0,mainmap.linkArray[mainmap.linkindex].style.left.length-2))/mainmap.w;
+    mainmap.array[mainmap.linkindex].y = parseInt(mainmap.linkArray[mainmap.linkindex].style.top.substring(0,mainmap.linkArray[mainmap.linkindex].style.top.length-2))/mainmap.w;
+    mainmap.array[mainmap.linkindex].w = parseInt(mainmap.linkArray[mainmap.linkindex].style.width.substring(0,mainmap.linkArray[mainmap.linkindex].style.width.length-2))/mainmap.w;
+    mainmap.array[mainmap.linkindex].angle = parseInt(mainmap.linkArray[mainmap.linkindex].style.transform.substring(7,mainmap.linkArray[mainmap.linkindex].style.transform.length - 4));
 
     var url = "filesaver.php";        
     var httpc = new XMLHttpRequest();
@@ -157,149 +157,70 @@ document.getElementById("savebutton").onclick = function() {
 }
 
 document.getElementById("nextbutton").onclick = function() {
-    mainmap.linkArray[linkindex].style.border = "none";
 
-    mainmap.array[linkindex].x = parseInt(mainmap.linkArray[linkindex].style.left.substring(0,mainmap.linkArray[linkindex].style.left.length-2))/mainmap.w;
-    mainmap.array[linkindex].y = parseInt(mainmap.linkArray[linkindex].style.top.substring(0,mainmap.linkArray[linkindex].style.top.length-2))/mainmap.w;
-    mainmap.array[linkindex].w = parseInt(mainmap.linkArray[linkindex].style.width.substring(0,mainmap.linkArray[linkindex].style.width.length-2))/mainmap.w;
-    mainmap.array[linkindex].angle = parseInt(mainmap.linkArray[linkindex].style.transform.substring(7,mainmap.linkArray[linkindex].style.transform.length - 4));
+    mainmap.nextlink();
+    tableupdate();
 
-    linkindex++;
-    if(linkindex > mainmap.array.length - 1){
-        linkindex = 0;
-    }
-    document.getElementById("textinput").value = mainmap.array[linkindex].text;   
-    document.getElementById("srcinput").value = mainmap.array[linkindex].src;   
-    document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
-    mainmap.linkArray[linkindex].style.border = "solid";
-    mainmap.linkArray[linkindex].style.borderWidth = "0.1px";
 }
 
 document.getElementById("prevbutton").onclick = function() {
-    mainmap.linkArray[linkindex].style.border = "none";
-    mainmap.array[linkindex].x = parseInt(mainmap.linkArray[linkindex].style.left.substring(0,mainmap.linkArray[linkindex].style.left.length-2))/mainmap.w;
-    mainmap.array[linkindex].y = parseInt(mainmap.linkArray[linkindex].style.top.substring(0,mainmap.linkArray[linkindex].style.top.length-2))/mainmap.w;
-    mainmap.array[linkindex].w = parseInt(mainmap.linkArray[linkindex].style.width.substring(0,mainmap.linkArray[linkindex].style.width.length-2))/mainmap.w;
-    mainmap.array[linkindex].angle = parseInt(mainmap.linkArray[linkindex].style.transform.substring(7,mainmap.linkArray[linkindex].style.transform.length - 4));
 
-    linkindex--;
-    if(linkindex < 0){
-        linkindex = mainmap.array.length - 1;
-    }
-    document.getElementById("textinput").value = mainmap.array[linkindex].text;   
-    document.getElementById("srcinput").value = mainmap.array[linkindex].src;   
-    document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
-    mainmap.linkArray[linkindex].style.border = "solid";
-    mainmap.linkArray[linkindex].style.borderWidth = "0.1px";
+    mainmap.prevlink();
+    tableupdate();
 
 }
 
 document.getElementById("newbutton").onclick = function() {
-    mainmap.linkArray[linkindex].style.border = "none";
-    
-    if(mainmap.array.length > 0 ){
-        var newLink  = new MapLink(mainmap.array[linkindex].x + mainmap.array[linkindex].w*0.05,mainmap.array[linkindex].y + mainmap.array[linkindex].w*0.05,mainmap.array[linkindex].w,mainmap.array[linkindex].angle,mainmap.array[linkindex].text,mainmap.array[linkindex].href,mainmap.array[linkindex].src);
-    }
-    else{
-        var newLink  = new MapLink(0.1,0.1,0.1,0,"text","","");
-    }
-  //  var newLink = new MapLink(0,0,0.1,1,0,"","","","text");
-    mainmap.array.push(newLink);
-    linkindex = mainmap.array.length - 1;
-    document.getElementById("textinput").value = mainmap.array[linkindex].text;   
-    document.getElementById("srcinput").value = mainmap.array[linkindex].src;   
-    document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
 
-    mainmap.draw();
-    mainmap.linkArray[linkindex].style.border = "solid";
-    mainmap.linkArray[linkindex].style.borderWidth = "0.1px";
+    mainmap.newlink();
+    tableupdate();
 
 }
 
 
+function tableupdate() {
+    if(mainmap.array.length > 0){
+        document.getElementById("textinput").value = mainmap.array[mainmap.linkindex].text;   
+        document.getElementById("srcinput").value = mainmap.array[mainmap.linkindex].src;   
+        document.getElementById("hrefinput").value = mainmap.array[mainmap.linkindex].href;   
+
+    }
+}
+
 document.getElementById("deletebutton").onclick = function() {
 
-    var localArray = [];
-    for(var index = 0;index < mainmap.array.length;index++){
-        if(index != linkindex) {
-            localArray.push(mainmap.array[index]);
-        }
-    }
-    mainmap.array = localArray;
-    mainmap.draw();
-    linkindex--;
-    if(linkindex < 0){
-        linkindex = 0;
-    }
-    if(mainmap.array.length > 0){
-        document.getElementById("textinput").value = mainmap.array[linkindex].text;   
-        document.getElementById("srcinput").value = mainmap.array[linkindex].src;   
-        document.getElementById("hrefinput").value = mainmap.array[linkindex].href;   
-
-    }
+    mainmap.deletelink();
+    tableupdate();
 
 }
 
 document.getElementById("moveupbutton").onclick  = function() {
 
-    if(linkindex < mainmap.array.length - 1) {
-        var localArray = [];
-        for(var index = 0;index < mainmap.array.length;index++){
-            if(index < linkindex || index > linkindex + 1) {
-                localArray.push(mainmap.array[index]);
-            }
-            if(index == linkindex) {
-                localArray.push(mainmap.array[linkindex + 1]);
-            }
-            if(index == linkindex + 1) {
-                localArray.push(mainmap.array[linkindex]);
-            }
-        }
-        mainmap.array = localArray;
-        linkindex++;
-        mainmap.draw();
-    }
+    mainmap.movelinkup();
 
 }
 document.getElementById("movedownbutton").onclick  = function() {
 
-    if(linkindex > 0) {
-        var localArray = [];
-        for(var index = 0;index < mainmap.array.length;index++){
-            if(index < linkindex - 1 || index > linkindex) {
-                localArray.push(mainmap.array[index]);
-            }
-            if(index == linkindex - 1) {
-                localArray.push(mainmap.array[linkindex]);
-            }
-            if(index == linkindex) {
-                localArray.push(mainmap.array[linkindex - 1]);
-            }
-        }
-        mainmap.array = localArray;
-        linkindex--;
-        mainmap.draw();
-    }
-
+    mainmap.movelinkdown();
 
 }
 
 document.getElementById("textinput").onchange = function() {
-    mainmap.array[linkindex].text = this.value;
+    mainmap.array[mainmap.linkindex].text = this.value;
     mainmap.draw();
 }
 
 document.getElementById("srcinput").onchange = function() {
 
-    mainmap.array[linkindex].src = this.value;
+    mainmap.array[mainmap.linkindex].src = this.value;
     mainmap.draw();
 
 }
 
 document.getElementById("hrefinput").onchange = function() {
 
-    mainmap.array[linkindex].href = this.value;
-    mainmap.linkArray[linkindex].href = this.value;
+    mainmap.array[mainmap.linkindex].href = this.value;
+    mainmap.linkArray[mainmap.linkindex].href = this.value;
 
 }
 
@@ -307,8 +228,8 @@ mc = new Hammer(document.getElementById("hammerxy"));
 mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 mc.on("panleft panright panup pandown tap press rotate", function(ev) {
 
-    mainmap.linkArray[linkindex].style.left = (ev.deltaX + mainmap.array[linkindex].x*mainmap.w).toString() +  "px";
-    mainmap.linkArray[linkindex].style.top = (ev.deltaY + mainmap.array[linkindex].y*mainmap.w).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.left = (ev.deltaX + mainmap.array[mainmap.linkindex].x*mainmap.w).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.top = (ev.deltaY + mainmap.array[mainmap.linkindex].y*mainmap.w).toString() +  "px";
 
 });    
 
@@ -317,8 +238,8 @@ mczoom = new Hammer(document.getElementById("sliderbar"));
 mczoom.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 mczoom.on("panleft panright panup pandown tap press", function(ev) {
 
-    mainmap.linkArray[linkindex].style.width = (Math.abs(mainmap.array[linkindex].w*mainmap.w - 2*ev.deltaY)).toString() +  "px";
-    mainmap.linkArray[linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[linkindex].w*mainmap.w - 2*ev.deltaY)).toString() + "px"; 
+    mainmap.linkArray[mainmap.linkindex].style.width = (Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w - 2*ev.deltaY)).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w - 2*ev.deltaY)).toString() + "px"; 
 
 });    
 
@@ -326,7 +247,7 @@ mcrotate = new Hammer(document.getElementById("sliderbar2"));
 mcrotate.get('pan').set({ direction: Hammer.DIRECTION_ALL });
 mcrotate.on("panleft panright panup pandown tap press", function(ev) {
 
-    mainmap.linkArray[linkindex].style.transform = "rotate(" + (mainmap.array[linkindex].angle + ev.deltaY*Math.PI/5).toString() + "deg)";
+    mainmap.linkArray[mainmap.linkindex].style.transform = "rotate(" + (mainmap.array[mainmap.linkindex].angle + ev.deltaY*Math.PI/5).toString() + "deg)";
 
 //mainmap.linkArray[linkindex].style.transform = "rotate(" + (mainmap.array[linkindex].angle + ev.deltaX*Math.PI/5).toString() + "deg)";
 
@@ -346,14 +267,14 @@ document.getElementById("editmapbutton").onclick = function() {
         document.getElementById("buttonrow2").style.display = "block";
         document.getElementById("feedscroll").style.display = "block";
         document.getElementById("branchscroll").style.display = "none";
-        mainmap.linkArray[linkindex].style.border = "solid";
-        mainmap.linkArray[linkindex].style.borderWidth = "0.1px";
+        mainmap.linkArray[mainmap.linkindex].style.border = "solid";
+        mainmap.linkArray[mainmap.linkindex].style.borderWidth = "0.1px";
 
     }
     else {
         document.getElementById("hammerxy").style.display = "none";
         document.getElementById("marginsquare2").style.display = "none";
-        mainmap.linkArray[linkindex].style.border = "none";
+        mainmap.linkArray[mainmap.linkindex].style.border = "none";
         document.getElementById("linkedittable").style.display = "none";
         document.getElementById("buttonrow1").style.display = "none";
         document.getElementById("buttonrow2").style.display = "none";

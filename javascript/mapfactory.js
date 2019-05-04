@@ -52,6 +52,112 @@ function Map(w,h,div) {
         }
     }
 
+    this.deletelink = function () {
+        var localArray = [];
+        for(var index = 0;index < this.array.length;index++){
+            if(index != this.linkindex) {
+                localArray.push(this.array[index]);
+            }
+        }
+        this.array = localArray;
+        this.draw();
+        this.linkindex--;
+        if(this.linkindex < 0){
+            this.linkindex = 0;
+        }
+    }
+
+    this.newlink = function() {
+        
+        this.linkArray[this.linkindex].style.border = "none";
+        if(this.array.length > 0 ){
+            var newLink  = new MapLink(this.array[this.linkindex].x + this.array[linkindex].w*0.05,this.array[this.linkindex].y + this.array[this.linkindex].w*0.05,this.array[this.linkindex].w,this.array[this.linkindex].angle,this.array[this.linkindex].text,this.array[this.linkindex].href,this.array[this.linkindex].src);
+        }
+        else{
+            var newLink  = new MapLink(0.1,0.1,0.1,0,"text","","");
+        }
+        //  var newLink = new MapLink(0,0,0.1,1,0,"","","","text");
+        this.array.push(newLink);
+        this.linkindex = this.array.length - 1;
+        this.draw();
+        this.linkArray[this.linkindex].style.border = "solid";
+        this.linkArray[this.linkindex].style.borderWidth = "0.1px";
+
+    }
+
+    this.nextlink = function() {
+
+        this.linkArray[this.linkindex].style.border = "none";
+        this.array[this.linkindex].x = parseInt(this.linkArray[this.linkindex].style.left.substring(0,this.linkArray[this.linkindex].style.left.length-2))/this.w;
+        this.array[this.linkindex].y = parseInt(this.linkArray[this.linkindex].style.top.substring(0,this.linkArray[this.linkindex].style.top.length-2))/this.w;
+        this.array[this.linkindex].w = parseInt(this.linkArray[this.linkindex].style.width.substring(0,this.linkArray[this.linkindex].style.width.length-2))/this.w;
+        this.array[this.linkindex].angle = parseInt(this.linkArray[this.linkindex].style.transform.substring(7,this.linkArray[this.linkindex].style.transform.length - 4));
+    
+        this.linkindex++;
+        if(this.linkindex > this.array.length - 1){
+            this.linkindex = 0;
+        }
+        this.linkArray[this.linkindex].style.border = "solid";
+        this.linkArray[this.linkindex].style.borderWidth = "0.1px";
+    }
+    this.prevlink = function() {
+
+        this.linkArray[this.linkindex].style.border = "none";
+        this.array[this.linkindex].x = parseInt(this.linkArray[this.linkindex].style.left.substring(0,this.linkArray[this.linkindex].style.left.length-2))/this.w;
+        this.array[this.linkindex].y = parseInt(this.linkArray[this.linkindex].style.top.substring(0,this.linkArray[this.linkindex].style.top.length-2))/this.w;
+        this.array[this.linkindex].w = parseInt(this.linkArray[this.linkindex].style.width.substring(0,this.linkArray[this.linkindex].style.width.length-2))/this.w;
+        this.array[this.linkindex].angle = parseInt(this.linkArray[this.linkindex].style.transform.substring(7,this.linkArray[this.linkindex].style.transform.length - 4));
+    
+        this.linkindex--;
+        if(this.linkindex < 0){
+            this.linkindex = this.array.length - 1;
+        }
+        
+        this.linkArray[this.linkindex].style.border = "solid";
+        this.linkArray[this.linkindex].style.borderWidth = "0.1px";
+    
+    }
+
+    this.movelinkup = function() {
+        if(this.linkindex < this.array.length - 1) {
+            var localArray = [];
+            for(var index = 0;index < this.array.length;index++){
+                if(index < this.linkindex || index > this.linkindex + 1) {
+                    localArray.push(this.array[index]);
+                }
+                if(index == this.linkindex) {
+                    localArray.push(this.array[this.linkindex + 1]);
+                }
+                if(index == this.linkindex + 1) {
+                    localArray.push(this.array[this.linkindex]);
+                }
+            }
+            this.array = localArray;
+            this.linkindex++;
+            this.draw();
+        }
+    }
+
+    this.movelinkdown = function() {
+        if(this.linkindex > 0) {
+            var localArray = [];
+            for(var index = 0;index < this.array.length;index++){
+                if(index < this.linkindex - 1 || index > this.linkindex) {
+                    localArray.push(this.array[index]);
+                }
+                if(index == this.linkindex - 1) {
+                    localArray.push(this.array[this.linkindex]);
+                }
+                if(index == this.linkindex) {
+                    localArray.push(this.array[this.linkindex - 1]);
+                }
+            }
+            this.array = localArray;
+            this.linkindex--;
+            this.draw();
+        }
+    }
+
 }
 
 
