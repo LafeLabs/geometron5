@@ -1,5 +1,20 @@
 <html>
 <head>
+    <!--
+
+        EVERYTHING IS PHYSICAL 
+        EVERYTHING IS FRACTAL
+        EVERYTHING IS RECURSIVE
+        NO MONEY 
+        MO MINING 
+        NO PROPERTY
+        LOOK AT THE INSECTS
+        LOOK AT THE FUNGI
+        LANGUAGE IS HOW THE MIND PARSES REALITY
+
+    -->
+    <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
     <script src="javascript/geometron.js"></script>
     <script src="javascript/shapestemp.js"></script>
 
@@ -245,8 +260,36 @@ function loadbytecode(destinationGVM,filename) {
     httpc.open("GET", "fileloader.php?filename=javascript/" + filename + ".js", true);
     httpc.send();    
 }
-
 document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
+
+
+buttonSize = 30;
+for(var index = 040;index < 0177;index++) {
+    
+    var newcan = document.createElement("canvas");
+    document.getElementById("sourcesymbols").appendChild(newcan);
+    newcan.classList.add("button");
+    newcan.classList.add("sourcebutton");
+    //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+    var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
+
+    newg.drawGlyph("0300,0" + (index + 01000).toString(8) + ",");
+    newcan.id = "source0" + index.toString(8);
+
+    newcan.onclick = function(){
+        var newcan = document.createElement("canvas");
+        document.getElementById("controlsymbols").appendChild(newcan);
+        newcan.classList.add("button");
+        newcan.classList.add("sourcebutton");
+        newcan.id = "control" + this.id.substring(6);
+        //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+        var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
+        
+        newg.drawGlyph("0300,0" + (01000 + parseInt(this.id.substring(6),8)).toString(8) + ",");
+
+    }
+
+}
 
 </script>
 <style>
@@ -345,6 +388,7 @@ input,textarea{
     bottom:0px;
     right:50%;
     border:solid;
+    overflow:scroll;
 }
 #controlsymbols{
     position:absolute;
@@ -353,6 +397,11 @@ input,textarea{
     bottom:0px;
     left:50%;
     border:solid;
+}
+.sourcebutton{
+    margin: 10px 10px 10px 10px;
+    border:solid;
+    border-width:0.5px;
 }
 
 </style>

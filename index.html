@@ -88,12 +88,16 @@
             </div>
         </div>
         <div id = "marginsquare2">
-            <img src = "icons/scaleslider2.svg" id = "scalebar"/>
-            <img src = "icons/rotateslider2.svg" id = "rotatebar"/>
-        </div>        
+            <div id = "scalebar">
+                <img src = "icons/scaleslider2.svg" id = "scalebarimage"/>
+            </div>
+            <div id = "rotatebar">
+                <img src = "icons/rotateslider2.svg" id = "rotatebarimage"/>
+            </div>
+        </div>    
+    
     </div>
      
-
 
 <script>
 
@@ -116,9 +120,14 @@ else{
     squareWidth = innerWidth;
     document.getElementById("margin").style.height = (innerHeight - squareWidth).toString() + "px";
     document.getElementById("margin").style.width = (innerHeight).toString() + "px";
-    marginWidth = squareWidth - innerWidth;
+    document.getElementById("margin").style.right = "0px";
+    document.getElementById("margin").style.bottom = "0px";
+    document.getElementById("margin").style.postion = "absolute";
+  
+    marginWidth = innerHeight - squareWidth;
     document.getElementById("marginsquare2").style.width = (0.5*squareWidth).toString() + "px";
     document.getElementById("marginsquare2").style.height = marginWidth.toString() + "px";
+
     document.getElementById("marginsquare1").style.width = (0.5*squareWidth).toString() + "px";
     document.getElementById("marginsquare1").style.height = marginWidth.toString() + "px";
 
@@ -515,16 +524,6 @@ input,table,select{
 .button:active{
     background-color:yellow;
 }
-#linkeditbar{
-    display:none;
-    position:absolute;
-    right:0px;
-    bottom:0px;
-    top:0px;
-    left:0px;
-    overflow:scroll;
-    font-family:courier;
-}
 #scalebar{
     position:absolute;
     left:0px;
@@ -538,10 +537,29 @@ input,table,select{
 #rotatebar{
     position:absolute;
     left:0px;
-    right:0px;
-    top:50%;
+    right:0px;    
+    height:50%;
     bottom:0px;
-    z-index:2;
+    z-index:20;
+    width:100%;
+}
+#scalebarimage{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    bottom:0px;
+    z-index:-2;
+    width:100%;
+
+}
+#rotatebarimage{
+    position:absolute;
+    left:0px;
+    right:0px;
+    top:0px;
+    bottom:0px;
+    z-index:-2;
     width:100%;
 }
 
@@ -580,16 +598,13 @@ input,table,select{
 }
 #marginsquare1{
     position:absolute;
-    right:0px;
+    left:0px;
     top:0px;
-    overflow:hidden;
 }
 #marginsquare2{
     position:absolute;
     right:0px;
     bottom:0px;
-    overflow:hidden;
-    background-color:#b0fbb0;
 }
 .uploadbox{
     border:solid;
