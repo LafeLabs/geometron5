@@ -1,6 +1,6 @@
 <html>
 <head>
-        <!--
+    <!--
 
         EVERYTHING IS PHYSICAL 
         EVERYTHING IS FRACTAL
@@ -20,6 +20,8 @@
     <script src="javascript/geometron.js"></script>
     <script src="javascript/glyphFeed.js"></script>
     <script src="javascript/shapestemp.js"></script>
+
+    <script src="data/controlbuttons.js"></script>
 
 </head>
 <body> 
@@ -165,7 +167,7 @@ document.getElementById("actioninput").onkeypress = function(a) {
 
 }
 
-controlbuttons = [0304,0305,0306,0310,0311,0312,0313,0200,0330,0331,0332,0333,0334,0335,0336,0337,020,010,021,0341,0201,0340,030,031,032,033,036,037,0350,0351];
+//controlbuttons = [0304,0305,0306,0310,0311,0312,0313,0200,0330,0331,0332,0333,0334,0335,0336,0337,020,010,021,0341,0201,0340,030,031,032,033,036,037,0350,0351];
 
 buttonSize = marginWidth/8;
 for(var index = 0;index < controlbuttons.length; index++) {
@@ -180,7 +182,13 @@ for(var index = 0;index < controlbuttons.length; index++) {
 
     newcan.id = "button0" + controlbuttons[index].toString(8);
     newcan.onclick = function(){
-        newGVM.cursorAction(parseInt(this.id.substring(6),8));
+        var thisaction = parseInt(this.id.substring(6),8);
+        if(thisaction >= 040 && thisaction < 0177) {
+            newGVM.cursorAction(thisaction + 01000);
+        }
+        else{
+            newGVM.cursorAction(thisaction);
+        }
         spellGVM.spellGlyph(newGVM.glyph);    
         newGVM.saveGlyph();
 
