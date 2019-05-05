@@ -95,7 +95,6 @@
                 <img src = "icons/rotateslider2.svg" id = "rotatebarimage"/>
             </div>
         </div>    
-    
     </div>
      
 
@@ -150,6 +149,7 @@ document.getElementById("savebutton").onclick = function() {
     mainmap.array[mainmap.linkindex].y = parseInt(mainmap.linkArray[mainmap.linkindex].style.top.substring(0,mainmap.linkArray[mainmap.linkindex].style.top.length-2))/mainmap.w;
     mainmap.array[mainmap.linkindex].w = parseInt(mainmap.linkArray[mainmap.linkindex].style.width.substring(0,mainmap.linkArray[mainmap.linkindex].style.width.length-2))/mainmap.w;
     mainmap.array[mainmap.linkindex].angle = parseInt(mainmap.linkArray[mainmap.linkindex].style.transform.substring(7,mainmap.linkArray[mainmap.linkindex].style.transform.length - 4));
+
 
     var url = "filesaver.php";        
     var httpc = new XMLHttpRequest();
@@ -385,7 +385,7 @@ var httpc = new XMLHttpRequest();
             document.getElementById("feedscroll").appendChild(newuploadbox);
             newimg.onclick = function() {
                 document.getElementById("srcinput").value = this.src;
-                mainmap.array[linkindex].src = this.src;
+                mainmap.array[mainmap.linkindex].src = this.src;
                 mainmap.draw();
             }
             var newimg = document.createElement("IMG");
@@ -426,7 +426,7 @@ var httpc = new XMLHttpRequest();
             document.getElementById("feedscroll").appendChild(newuploadbox);
             newimg.onclick = function() {
                 document.getElementById("srcinput").value = this.src;
-                mainmap.array[linkindex].src = this.src;
+                mainmap.array[mainmap.linkindex].src = this.src;
                 mainmap.draw();
             }
             var newimg = document.createElement("IMG");

@@ -22,6 +22,8 @@
     <script src="javascript/shapestemp.js"></script>
 
     <script src="data/controlbuttons.js"></script>
+    <script src="data/font.js"></script>
+    <script src="data/shapetable.js"></script>
 
 </head>
 <body> 
@@ -83,7 +85,9 @@ else{
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
 var newGVM = new GVM(0.98*squareWidth,0.98*squareWidth,0.96*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),squareWidth,squareWidth,hypercube);
-newGVM.importbytecode(shapestemp);
+//newGVM.importbytecode(shapestemp);
+newGVM.importbytecode(font);
+newGVM.importbytecode(shapetable);
 
 invisibleWidth = 200;
 var invisibleGVM = new GVM(0.98*invisibleWidth,0.98*invisibleWidth,0.96*invisibleWidth,-Math.PI/2,document.getElementById("invisiblecanvas"),invisibleWidth,invisibleWidth,hypercube);

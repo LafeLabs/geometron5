@@ -49,7 +49,6 @@
 
 <div id = "square">
     <canvas id = "maincanvas"></canvas>
-    <canvas id = "symbolcanvas"></canvas>
     <input id = "spellinput"/>
     <div id = "spellscroll">
         <canvas id = "spellcanvas"></canvas>
@@ -134,10 +133,11 @@ document.getElementById("square").style.height = (squareWidth).toString() + "px"
 
 //GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
-var newGVM = new GVM(0.2*squareWidth,0.2*squareWidth,0.1*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),0.4*squareWidth,0.4*squareWidth,hypercube);
+var newGVM = new GVM(0.4*squareWidth,0.4*squareWidth,0.2*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),0.8*squareWidth,0.8*squareWidth,hypercube);
 newGVM.importbytecode(shapestemp);
 
-var symbolGVM = new GVM(10,0.4*squareWidth - 10,0.4*squareWidth - 20,-Math.PI/2,document.getElementById("symbolcanvas"),0.4*squareWidth,0.4*squareWidth,hypercube);
+newGVM.importbytecode(shapetable);
+newGVM.importbytecode(font);
 
 //newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,",newGVM);
 
@@ -148,9 +148,6 @@ newGVM.address = 0220;
 newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
 newGVM.drawGlyph(newGVM.glyph);
 
-symbolGVM.address = newGVM.address + 01000;
-symbolGVM.glyph = newGVM.hypercube[newGVM.address];
-symbolGVM.drawGlyph(symbolGVM.glyph);
 
 var spellGVM = new GVM(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 
@@ -183,9 +180,6 @@ document.getElementById("actioninput").onkeydown = function(a) {
         newGVM.drawGlyph(newGVM.glyph);
 
     }
-    symbolGVM.address = newGVM.address + 01000;
-    symbolGVM.glyph = newGVM.hypercube[symbolGVM.address];
-    symbolGVM.drawGlyph(symbolGVM.glyph);
 
     spellGVM.spellGlyph(newGVM.glyph);    
     document.getElementById("addressinput").value = "0" + newGVM.address.toString(8);
@@ -202,11 +196,8 @@ document.getElementById("endinput").value = "0" + endAddress.toString(8);
 
 document.getElementById("addressinput").onchange = function() {
     newGVM.address = parseInt(this.value,8);
-    symbolGVM.address = newGVM.address + 01000;
     newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
     newGVM.drawGlyph(newGVM.glyph);
-    symbolGVM.glyph = newGVM.hypercube[symbolGVM.address];
-    symbolGVM.drawGlyph(symbolGVM.glyph);
     spellGVM.spellGlyph(newGVM.glyph);    
 
 }
@@ -228,7 +219,15 @@ document.getElementById("actioninput").onkeypress = function(a) {
 document.getElementById("actioninput").select();
 
 document.getElementById("savebutton").onclick = function() {
-   savebytecode(newGVM,startAddress,endAddress,document.getElementById("tablenameinput").value);
+
+    if(newGVM.address >= 01040 && newGVM.address <= 01176) {
+        savebytecode(newGVM,01040,01176,"font");
+    }
+    if(newGVM.address >= 0220 && newGVM.address <= 0247) {
+        savebytecode(newGVM,0220,0247,"shapetable");
+    }
+
+//   savebytecode(newGVM,startAddress,endAddress,document.getElementById("tablenameinput").value);
 }
 
 function savebytecode(sourcegvm,start,end,filename){
@@ -241,7 +240,7 @@ function savebytecode(sourcegvm,start,end,filename){
     var httpc = new XMLHttpRequest();
     httpc.open("POST", url, true);
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpc.send("data=" + bytecodejson +"&filename=javascript/" + filename + ".js");//send text to filesaver.php
+    httpc.send("data=" + bytecodejson +"&filename=data/" + filename + ".js");//send text to filesaver.php
 }
 
 loadbytecode(newGVM,"foo");
@@ -381,25 +380,8 @@ body{
 
 #maincanvas{
     border:solid;
-    cursor:pointer;
-}
-#maincanvas:hover{
-    background-color:green;
-}
-#maincanvas:active{
-    background-color:yellow;
 }
 
-#symbolcanvas{
-    border:solid;
-    cursor:pointer;
-}
-#symbolcanvas:hover{
-    background-color:green;
-}
-#symbolcanvas:active{
-    background-color:yellow;
-}
 #spellcanvas{
     border:solid;
 }
