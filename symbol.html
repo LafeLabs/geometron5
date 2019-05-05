@@ -24,6 +24,7 @@
     <script src="data/controlbuttons.js"></script>
     <script src="data/font.js"></script>
     <script src="data/shapetable.js"></script>
+    <script src="data/configxy.js"></script>
 
 </head>
 <body> 
@@ -88,6 +89,11 @@ var newGVM = new GVM(0.98*squareWidth,0.98*squareWidth,0.96*squareWidth,-Math.PI
 //newGVM.importbytecode(shapestemp);
 newGVM.importbytecode(font);
 newGVM.importbytecode(shapetable);
+
+newGVM.x0 = configxy.x0rel*newGVM.width;
+newGVM.y0 = configxy.y0rel*newGVM.width;
+newGVM.unit = configxy.unitrel*newGVM.width;
+newGVM.theta0 = configxy.theta0;
 
 invisibleWidth = 200;
 var invisibleGVM = new GVM(0.98*invisibleWidth,0.98*invisibleWidth,0.96*invisibleWidth,-Math.PI/2,document.getElementById("invisiblecanvas"),invisibleWidth,invisibleWidth,hypercube);
@@ -230,6 +236,18 @@ document.getElementById("savebutton").onclick = function() {
     httpc2.open("POST", url2, true);
     httpc2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc2.send("data="+encodeURIComponent("glyphFeed = " + JSON.stringify(glyphFeed,null,"  "))+"&filename=javascript/glyphFeed.js");//send text to filesaver.php
+
+
+    configxy = {};
+    configxy.x0rel = newGVM.x0/newGVM.width;
+    configxy.y0rel = newGVM.y0/newGVM.width;
+    configxy.unitrel = newGVM.unit/newGVM.width;
+    configxy.theta0 = newGVM.theta0;
+       
+    var httpc3 = new XMLHttpRequest();
+    httpc3.open("POST", url2, true);
+    httpc3.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc3.send("data="+encodeURIComponent("configxy = " + JSON.stringify(configxy,null,"  "))+"&filename=data/configxy.js");//send text to filesaver.php
 
 }
 
