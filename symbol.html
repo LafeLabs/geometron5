@@ -93,7 +93,7 @@ newGVM.importbytecode(shapetable);
 newGVM.x0 = configxy.x0rel*newGVM.width;
 newGVM.y0 = configxy.y0rel*newGVM.width;
 newGVM.unit = configxy.unitrel*newGVM.width;
-newGVM.theta0 = configxy.theta0;
+newGVM.theta0 = configxy.theta0;    
 
 invisibleWidth = 200;
 var invisibleGVM = new GVM(0.98*invisibleWidth,0.98*invisibleWidth,0.96*invisibleWidth,-Math.PI/2,document.getElementById("invisiblecanvas"),invisibleWidth,invisibleWidth,hypercube);
@@ -211,7 +211,15 @@ for(var index = 0;index < controlbuttons.length; index++) {
 
 document.getElementById("savebutton").onclick = function() {
 
-//for now this is just png, add svg later, which will require adding code to gvm
+    configxy = {};
+    configxy.x0rel = newGVM.x0/newGVM.width;
+    configxy.y0rel = newGVM.y0/newGVM.width;
+    configxy.unitrel = newGVM.unit/newGVM.width;
+    configxy.theta0 = newGVM.theta0;
+
+    invisibleGVM.x0 = invisibleGVM.width*configxy.x0rel;
+    invisibleGVM.y0 = invisibleGVM.width*configxy.y0rel;
+    invisibleGVM.unit = invisibleGVM.width*configxy.unitrel;
 
     var timestamp = Math.round((new Date().getTime())/1000).toString();
     var httpc = new XMLHttpRequest();
@@ -225,6 +233,7 @@ document.getElementById("savebutton").onclick = function() {
             cleanGlyph += glyphArray[index] + ",";
         }
     }
+
     invisibleGVM.hypercube = newGVM.hypercube;
     invisibleGVM.drawGlyph(cleanGlyph);
     httpc.send("data="+encodeURIComponent(invisibleGVM.pngcode(invisibleGVM).substring(22))+"&filename=symbolfeed/symbol" + timestamp +  ".png");//send text to filesaver.php
@@ -238,16 +247,17 @@ document.getElementById("savebutton").onclick = function() {
     httpc2.send("data="+encodeURIComponent("glyphFeed = " + JSON.stringify(glyphFeed,null,"  "))+"&filename=javascript/glyphFeed.js");//send text to filesaver.php
 
 
-    configxy = {};
-    configxy.x0rel = newGVM.x0/newGVM.width;
-    configxy.y0rel = newGVM.y0/newGVM.width;
-    configxy.unitrel = newGVM.unit/newGVM.width;
-    configxy.theta0 = newGVM.theta0;
+
        
     var httpc3 = new XMLHttpRequest();
     httpc3.open("POST", url2, true);
     httpc3.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc3.send("data="+encodeURIComponent("configxy = " + JSON.stringify(configxy,null,"  "))+"&filename=data/configxy.js");//send text to filesaver.php
+
+    var httpc4 = new XMLHttpRequest();
+    httpc4.open("POST",url2, true);
+    httpc4.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc4.send("data="+encodeURIComponent(invisibleGVM.svgString) +"&filename=symbolfeed/symbol" + timestamp +  ".svg");//send text to filesaver.php
 
 }
 

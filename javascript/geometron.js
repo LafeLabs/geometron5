@@ -547,7 +547,7 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             this.svgString += "\" cy = \"";
             this.svgString += Math.round(this.y).toString();
             this.svgString += "\" r = \"" + this.side.toString() + "\" stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" ";
-            this.svgString += "fill = \"" + this.ctx.strokeStyle + "\" />\n";			
+            this.svgString += "fill = \"none\" />\n";			
         }
         if(address == 0342) {
             this.ctx.beginPath();
