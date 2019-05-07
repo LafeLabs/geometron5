@@ -19,6 +19,7 @@
     <script src="javascript/mapfactory.js"></script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
     <script src = "data/currentMap.js"></script>
+    <script src = "data/deck.js"></script>
 
 <script>    
 </script>
@@ -85,6 +86,12 @@
                 <!--
                     put the links here, also put the images here 
                 -->
+            </div>
+            <div id = "deckscroll">
+                <h2>Deck:</h2>
+                <ul id = "pagelist">
+
+                </ul>
             </div>
         </div>
         <div id = "marginsquare2">
@@ -271,6 +278,7 @@ document.getElementById("editmapbutton").onclick = function() {
         document.getElementById("buttonrow2").style.display = "block";
         document.getElementById("feedscroll").style.display = "block";
         document.getElementById("branchscroll").style.display = "none";
+        document.getElementById("thingscroll").style.display = "none";
         mainmap.linkArray[mainmap.linkindex].style.border = "solid";
         mainmap.linkArray[mainmap.linkindex].style.borderWidth = "0.1px";
 
@@ -284,6 +292,7 @@ document.getElementById("editmapbutton").onclick = function() {
         document.getElementById("buttonrow2").style.display = "none";
         document.getElementById("feedscroll").style.display = "none";
         document.getElementById("branchscroll").style.display = "block";
+        document.getElementById("thingscroll").style.display = "block";
 
     }
 
@@ -451,6 +460,20 @@ var httpc = new XMLHttpRequest();
 httpc.open("GET", "dir.php?filename=symbolfeed", true);
 httpc.send();
 
+
+for(var index = 0;index < deck.length;index++) {
+    var newa = document.createElement("A");
+    newa.href = deck[index].url;
+    newa.innerHTML = deck[index].name;
+    var newli = document.createElement("LI");
+    newli.appendChild(newa);
+    document.getElementById("pagelist").appendChild(newli);
+    var newa = document.createElement("A");
+    newa.href = deck[index].replicator;
+    newa.innerHTML = " (replciator)";
+    newli.appendChild(newa);
+}
+
 </script>
 <style>
 body{
@@ -611,6 +634,14 @@ input,table,select{
     border-width:0.5px;
     border-radius:10px;
     margin-top:1em;
+}
+#deckscroll{
+    width:50%;
+    height:100%;
+    position:absolute;
+    right:0px;
+    top:100%;
+    overflow:scroll;
 }
 </style>
 </body>
