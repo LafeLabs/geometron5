@@ -1,4 +1,0 @@
-textFeed = [
-    "foo",
-    "bar"
-];

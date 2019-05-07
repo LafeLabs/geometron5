@@ -88,6 +88,12 @@
                 -->
             </div>
             <div id = "deckscroll">
+                <table id = "deckedittable">
+                    <tr>
+                        <td>New Page Added to Deck:</td>
+                        <td><input id = "newpageindeck"/></td>
+                    </tr>
+                </table>
                 <h2>Deck:</h2>
                 <ul id = "pagelist">
 
@@ -278,7 +284,7 @@ document.getElementById("editmapbutton").onclick = function() {
         document.getElementById("buttonrow2").style.display = "block";
         document.getElementById("feedscroll").style.display = "block";
         document.getElementById("branchscroll").style.display = "none";
-        document.getElementById("thingscroll").style.display = "none";
+        document.getElementById("deckscroll").style.display = "none";
         mainmap.linkArray[mainmap.linkindex].style.border = "solid";
         mainmap.linkArray[mainmap.linkindex].style.borderWidth = "0.1px";
 
@@ -292,7 +298,7 @@ document.getElementById("editmapbutton").onclick = function() {
         document.getElementById("buttonrow2").style.display = "none";
         document.getElementById("feedscroll").style.display = "none";
         document.getElementById("branchscroll").style.display = "block";
-        document.getElementById("thingscroll").style.display = "block";
+        document.getElementById("deckscroll").style.display = "block";
 
     }
 
@@ -470,7 +476,7 @@ for(var index = 0;index < deck.length;index++) {
     document.getElementById("pagelist").appendChild(newli);
     var newa = document.createElement("A");
     newa.href = deck[index].replicator;
-    newa.innerHTML = " (replciator)";
+    newa.innerHTML = " (replicator)";
     newli.appendChild(newa);
 }
 

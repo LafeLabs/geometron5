@@ -48,10 +48,10 @@
     $finalstring = "dna = ".json_encode($dna).";";
 
     echo json_encode($dna);
-    $file = fopen("javascript/dna.js","w");// create new file with this name
+    $file = fopen("data/dna.js","w");// create new file with this name
     fwrite($file,$finalstring); //write data to file
     fclose($file);  //close file
-        $file = fopen("javascript/dna.txt","w");// create new file with this name
+        $file = fopen("data/dna.txt","w");// create new file with this name
     fwrite($file,json_encode($dna)); //write data to file
     fclose($file);  //close file
 

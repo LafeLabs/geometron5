@@ -16,7 +16,6 @@
     <!--Stop Google:-->
     <META NAME="robots" CONTENT="noindex,nofollow">
     <script src="javascript/geometron.js"></script>
-    <script src="javascript/shapestemp.js"></script>
 
     <script src="data/font.js"></script>
     <script src="data/keyboard.js"></script>
@@ -134,7 +133,6 @@ document.getElementById("square").style.height = (squareWidth).toString() + "px"
 //GVM2d(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
 var newGVM = new GVM(0.4*squareWidth,0.4*squareWidth,0.2*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),0.8*squareWidth,0.8*squareWidth,hypercube);
-newGVM.importbytecode(shapestemp);
 
 newGVM.importbytecode(shapetable);
 newGVM.importbytecode(font);
@@ -243,7 +241,6 @@ function savebytecode(sourcegvm,start,end,filename){
     httpc.send("data=" + bytecodejson +"&filename=data/" + filename + ".js");//send text to filesaver.php
 }
 
-loadbytecode(newGVM,"foo");
 
 function loadbytecode(destinationGVM,filename) {
     var httpc = new XMLHttpRequest();
