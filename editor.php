@@ -32,6 +32,10 @@ EGO DEATH:
 
     <div class = "html file">index.html</div>
     <div class = "html file">symbol.html</div>
+    <div class = "html file">hypercube.html</div>
+    <div class = "html file">scroll.html</div>
+
+    <div class = "markdown file">README.md</div>
 
     <div class = "javascript file">jscode/geometron.js</div>
     <div class = "javascript file">jscode/mapfactory.js</div>
@@ -50,6 +54,19 @@ EGO DEATH:
     <div class = "php file">php/dnagenerator.txt</div>
     <div class = "php file">php/deletefile.txt</div>
 
+<?php 
+
+    $datafiles = scandir(getcwd()."/data");
+
+    foreach($datafiles as $value){
+        if($value{0} != "."){
+            echo "<div class = \"javascript file\">data/";
+            echo $value;
+            echo "</div>\n";
+        }
+    }
+
+?>
 
 </div>
 
@@ -115,6 +132,11 @@ for(var index = 0;index < files.length;index++){
             editor.getSession().setMode("ace/mode/json");
             document.getElementById("namediv").style.color = "orange";
             document.getElementById("namediv").style.borderColor = "orange";
+        }
+        if(this.classList[0] == "markdown"){
+            editor.getSession().setMode("ace/mode/markdown");
+            document.getElementById("namediv").style.color = "aqua";
+            document.getElementById("namediv").style.borderColor = "aqua";
         }
 
         document.getElementById("namediv").innerHTML = currentFile;
@@ -182,6 +204,9 @@ body{
 }
 .scrolls{
     color:#87ceeb;
+}
+.markdown{
+    color:aqua;
 }
 
 .file{
