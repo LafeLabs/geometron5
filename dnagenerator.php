@@ -1,7 +1,7 @@
 <?php
 
     $files = scandir(getcwd());
-    $jsfiles = scandir(getcwd()."/javascript");
+    $jsfiles = scandir(getcwd()."/jscode");
     $iconfiles = scandir(getcwd()."/icons");
     $phpfiles = scandir(getcwd()."/php");
     $datafiles = scandir(getcwd()."/data");

@@ -2,11 +2,11 @@
 
 
 $dnaurl = "https://raw.githubusercontent.com/LafeLabs/geometron5/master/data/dna.txt";
-$baseurl = explode("javascript/",$dnaurl)[0];
+$baseurl = explode("data/",$dnaurl)[0];
 $dnaraw = file_get_contents($dnaurl);
 $dna = json_decode($dnaraw);
 
-mkdir("javascript");
+mkdir("jscode");
 mkdir("icons");
 mkdir("data");
 mkdir("php");
@@ -19,7 +19,7 @@ foreach($dna->html as $value){
 }
 
 foreach($dna->javascript as $value){
-    copy($baseurl."javascript/".$value,"javascript/".$value);
+    copy($baseurl."jscode/".$value,"jscode/".$value);
 }
 
 foreach($dna->icons as $value){

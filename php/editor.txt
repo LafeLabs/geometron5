@@ -33,8 +33,8 @@ EGO DEATH:
     <div class = "html file">index.html</div>
     <div class = "html file">symbol.html</div>
 
-    <div class = "javascript file">javascript/geometron.js</div>
-    <div class = "javascript file">javascript/mapfactory.js</div>
+    <div class = "javascript file">jscode/geometron.js</div>
+    <div class = "javascript file">jscode/mapfactory.js</div>
     
     <div class = "php file">php/editor.txt</div>
     <div class = "php file">php/dir.txt</div>

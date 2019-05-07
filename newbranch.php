@@ -2,14 +2,14 @@
 
 $branchname = $_GET["filename"];//get url
 mkdir($branchname);
-mkdir($branchname."/javascript");
+mkdir($branchname."/jscode");
 mkdir($branchname."/icons");
 mkdir($branchname."/php");
 mkdir($branchname."/symbolfeed");
 mkdir($branchname."/uploadimages");
 
 $files = scandir(getcwd());
-$jsfiles = scandir(getcwd()."/javascript");
+$jsfiles = scandir(getcwd()."/jscode");
 $iconfiles = scandir(getcwd()."/icons");
 $phpfiles = scandir(getcwd()."/php");
 
@@ -26,7 +26,7 @@ foreach($htmlfiles as $value){
 
 foreach($jsfiles as $value){
     if($value{0} != "."){
-        copy("javascript/".$value,$branchname."/javascript/".$value);
+        copy("jscode/".$value,$branchname."/jscode/".$value);
     }
 }
 
