@@ -2,7 +2,7 @@
 
 Geometron 5 is a rewrite of geometron 4, streamlining and drastically enough changing things that I wanted a clean slate.
 
-test of edit here.
+
 Geometron 4 further unified the elements:
 
 
