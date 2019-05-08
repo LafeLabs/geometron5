@@ -44,6 +44,7 @@ EGO DEATH:
     <div class = "php file">php/dir.txt</div>
     <div class = "php file">php/upload.txt</div>
     <div class = "php file">php/replicator.txt</div>
+    <div class = "php file">php/deckreplicator.txt</div>
     <div class = "php file">php/newbranch.txt</div>
     <div class = "php file">php/deletebranch.txt</div>
     <div class = "php file">php/metareplicator.txt</div>
