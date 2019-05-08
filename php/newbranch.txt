@@ -4,6 +4,7 @@ $branchname = $_GET["filename"];//get url
 mkdir($branchname);
 mkdir($branchname."/jscode");
 mkdir($branchname."/icons");
+mkdir($branchname."/data");
 mkdir($branchname."/php");
 mkdir($branchname."/symbolfeed");
 mkdir($branchname."/uploadimages");
@@ -12,6 +13,7 @@ $files = scandir(getcwd());
 $jsfiles = scandir(getcwd()."/jscode");
 $iconfiles = scandir(getcwd()."/icons");
 $phpfiles = scandir(getcwd()."/php");
+$datafiles = scandir(getcwd()."/data");
 
 $htmlfiles = [];
 foreach($files as $value){
@@ -35,6 +37,13 @@ foreach($iconfiles as $value){
         copy("icons/".$value,$branchname."/icons/".$value);
     }
 }
+
+foreach($datafiles as $value){
+    if($value{0} != "."){
+        copy("data/".$value,$branchname."/data/".$value);
+    }
+}
+
 
 foreach($phpfiles as $value){
   if($value{0} != "."){
