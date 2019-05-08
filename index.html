@@ -21,8 +21,10 @@
     <script src="jscode/mapfactory.js"></script>
 
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
-    <script src = "data/currentMap.js"></script>
-    <script src = "data/deck.js"></script>
+
+<!--    <script src = "data/currentMap.js"></script> -->
+
+<!--    <script src = "data/deck.js"></script> -->
 
 <script>    
 </script>
@@ -97,6 +99,19 @@
                         <td><input id = "newpageindeck"/></td>
                     </tr>
                 </table>
+                <!--
+
+                    deck operations:
+
+                    - add a new page(click a button which opens a table with an input with an onchange event like branch)
+                    - delete a page(this can be a click delete link like in branch list)
+                    - edit a page(onclick populates edit table with 3 fields like link editor):
+
+                        - replicator
+                        - url
+                        - name
+        
+                -->
                 <h2>Deck:</h2>
                 <ul id = "pagelist">
 
@@ -153,8 +168,20 @@ document.getElementById("hammerxy").style.height = (squareWidth).toString() + "p
 
 mainmap = new Map(squareWidth,squareWidth,document.getElementById("mainmap"));
 
-mainmap.array = mapArray;
-mainmap.draw();
+//mainmap.array = mapArray;
+//mainmap.draw();
+
+var httpc2 = new XMLHttpRequest();
+    httpc2.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+        mainmap.array = JSON.parse(this.responseText);
+        mainmap.draw();
+
+    }
+};
+httpc2.open("GET", "fileloader.php?filename=data/currentMap.txt", true);
+httpc2.send();
 
 
 linkindex  = 0;
@@ -166,12 +193,17 @@ document.getElementById("savebutton").onclick = function() {
     mainmap.array[mainmap.linkindex].w = parseInt(mainmap.linkArray[mainmap.linkindex].style.width.substring(0,mainmap.linkArray[mainmap.linkindex].style.width.length-2))/mainmap.w;
     mainmap.array[mainmap.linkindex].angle = parseInt(mainmap.linkArray[mainmap.linkindex].style.transform.substring(7,mainmap.linkArray[mainmap.linkindex].style.transform.length - 4));
 
-
     var url = "filesaver.php";        
     var httpc = new XMLHttpRequest();
     httpc.open("POST", url, true);
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc.send("data="+encodeURIComponent("mapArray = " + JSON.stringify(mainmap.array,null,"    ") + ";")+"&filename=data/currentMap.js");//send text to filesaver.php
+
+    var url = "filesaver.php";        
+    var httpc2 = new XMLHttpRequest();
+    httpc2.open("POST", url, true);
+    httpc2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc2.send("data="+encodeURIComponent(JSON.stringify(mainmap.array,null,"    "))+"&filename=data/currentMap.txt");//send text to filesaver.php
 
 }
 
@@ -469,19 +501,27 @@ var httpc = new XMLHttpRequest();
 httpc.open("GET", "dir.php?filename=symbolfeed", true);
 httpc.send();
 
+var httpc3 = new XMLHttpRequest();
+    httpc3.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        deck = JSON.parse(this.responseText);
+        for(var index = 0;index < deck.length;index++) {
+            var newa = document.createElement("A");
+            newa.href = deck[index].url;
+            newa.innerHTML = deck[index].name;
+            var newli = document.createElement("LI");
+            newli.appendChild(newa);
+            document.getElementById("pagelist").appendChild(newli);
+            var newa = document.createElement("A");
+            newa.href = deck[index].replicator;
+            newa.innerHTML = " (replicator)";
+            newli.appendChild(newa);
+        }
+    }
+};
+httpc3.open("GET", "fileloader.php?filename=data/deck.txt", true);
+httpc3.send();
 
-for(var index = 0;index < deck.length;index++) {
-    var newa = document.createElement("A");
-    newa.href = deck[index].url;
-    newa.innerHTML = deck[index].name;
-    var newli = document.createElement("LI");
-    newli.appendChild(newa);
-    document.getElementById("pagelist").appendChild(newli);
-    var newa = document.createElement("A");
-    newa.href = deck[index].replicator;
-    newa.innerHTML = " (replicator)";
-    newli.appendChild(newa);
-}
 
 </script>
 <style>
