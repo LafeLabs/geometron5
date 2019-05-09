@@ -23,7 +23,6 @@
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
 
 <!--    <script src = "data/currentMap.js"></script> -->
-
 <!--    <script src = "data/deck.js"></script> -->
 
 <script>    
@@ -67,6 +66,7 @@
                 <tr><td>href:</td><td><input id = "hrefinput"/></td></tr>
             </table>
             <div id = "branchscroll">
+            
                 <table style = "display:none" id = "branchnametable">
                     <tr>
                         <td>
@@ -95,10 +95,27 @@
             <div id = "deckscroll">
                 <table id = "deckedittable">
                     <tr>
-                        <td>New Page Added to Deck:</td>
-                        <td><input id = "newpageindeck"/></td>
+                        <td class = "button" id = "prevpagebutton">PREV</td>
+                        <td class = "button" id = "nextpagebutton">NEXT</td>
                     </tr>
+                    <tr>
+                        <td class = "button" id = "deletepagebutton">DELETE</td>
+                        <td class = "button" id = "newpagebutton">NEW</td>
+                    </tr>
+                    <tr>
+                        <td>name:</td>
+                        <td><input id = "decknameinput"/></td>
+                    </tr>
+                    <tr>
+                        <td>url:</td>
+                        <td><input id = "deckurlinput"/></td>
+                    </tr>
+                    <tr>
+                        <td>replicator:</td>
+                        <td><input id = "deckreplicatorinput"/></td>
+                    </tr>            
                 </table>
+                    
                 <!--
 
                     deck operations:
@@ -186,6 +203,8 @@ httpc2.send();
 
 linkindex  = 0;
 mainmap.linkindex = 0;
+pageindex = 0;
+
 document.getElementById("savebutton").onclick = function() {
     
     mainmap.array[mainmap.linkindex].x = parseInt(mainmap.linkArray[mainmap.linkindex].style.left.substring(0,mainmap.linkArray[mainmap.linkindex].style.left.length-2))/mainmap.w;
@@ -517,6 +536,11 @@ var httpc3 = new XMLHttpRequest();
             newa.innerHTML = " (replicator)";
             newli.appendChild(newa);
         }
+
+        document.getElementById("decknameinput").value = deck[pageindex].name;
+        document.getElementById("deckurlinput").value = deck[pageindex].url;
+        document.getElementById("deckreplicatorinput").value = deck[pageindex].replicator;
+
     }
 };
 httpc3.open("GET", "fileloader.php?filename=data/deck.txt", true);
