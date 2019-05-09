@@ -45,7 +45,6 @@
                 <img id = "symbolbutton" class = "button" style = "width:50px;" src = "icons/symbolicon.svg"/>
             </a>
             <img id = "branchdownbutton" class = "button" style = "width:50px;" src = "icons/branchdownicon.svg"/>
-
             <div id = "buttonrow1">
                 <img id = "savebutton" src = "icons/savebutton.svg" class = "button" style = "width:50px"/>
                 <img id = "deletebutton" src = "icons/deletebutton.svg" class = "button" style = "width:50px"/>
@@ -56,17 +55,6 @@
                 <img id = "newbutton" src = "icons/newbutton.svg" class = "button" style = "width:50px"/>
                 <img id = "prevbutton" src = "icons/prevbutton.svg" class = "button" style = "width:50px"/>
                 <img id = "movedownbutton" src = "icons/movedownbutton.svg" class = "button" style = "width:50px"/>
-                <img id = "zoomoutbutton" src= "icons/zoomouticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "zoominbutton" src= "icons/zoominicon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlezoomoutbutton" src= "icons/littlezoomouticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlezoominbutton" src= "icons/littlezoominicon.svg" class = "button" style = "width:50px"/> 
-
-                <img id = "rotateleftbutton" src= "icons/rotatelefticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "rotaterightbutton" src= "icons/rotaterighticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlerotateleftbutton" src= "icons/littlerotatelefticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlerotaterightbutton" src= "icons/littlerotaterighticon.svg" class = "button" style = "width:50px"/> 
-
-
             </div>
 
             <table id = "linkedittable">
@@ -325,41 +313,6 @@ mczoom.on("panleft panright panup pandown tap press", function(ev) {
     mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w + 2*ev.deltaX)).toString() + "px"; 
 
 });    
-
-document.getElementById("zoomoutbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].w /= 1.25;
-    mainmap.draw();
-}
-document.getElementById("zoominbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].w *= 1.25;
-    mainmap.draw();
-}
-document.getElementById("littlezoomoutbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].w /= 1.01;
-    mainmap.draw();
-}
-document.getElementById("littlezoominbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].w *= 1.01;
-    mainmap.draw();
-}
-
-document.getElementById("rotateleftbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].angle -= 5;
-    mainmap.draw();
-}
-document.getElementById("rotaterightbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].angle += 5;
-    mainmap.draw();
-}
-document.getElementById("littlerotateleftbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].angle -= 0.5;
-    mainmap.draw();
-}
-document.getElementById("littlerotaterightbutton").onclick = function() {
-    mainmap.array[mainmap.linkindex].angle += 0.5;
-    mainmap.draw();
-}
-
 
 mcrotate = new Hammer(document.getElementById("rotatebar"));
 mcrotate.get('pan').set({ direction: Hammer.DIRECTION_ALL });
@@ -762,9 +715,6 @@ input,table,select{
     right:0px;
     top:100%;
     overflow:scroll;
-}
-#buttonrow2{
-    width:300px;
 }
 </style>
 </body>

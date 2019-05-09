@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+    <head>
+
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADf+wAA3/sAAAfgAACv9QAAoAUAAK/1AACv9QAAqBUAAK/1AACoFQAAr/UAAKAFAACv9QAAB+AAAN/7AADf+wAA" rel="icon" type="image/x-icon" />
+            <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+
+<!--       un comment to use math
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script>
+            MathJax.Hub.Config({
+                tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true,
+                processClass: "mathjax",
+                ignoreClass: "no-mathjax"
+                }
+            });//			MathJax.Hub.Typeset();//tell Mathjax to update the math
+        </script>
+    -->
+
+
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    </head>
+<body>
+    
+<div class = "mainscrollarea" id = "scrollscroll"></div>
+
+<div class = "mainscrollarea" id = "maintextareabox">
+    <textarea id = "maintextarea"></textarea>
+</div>
+
+
+<div id = "margin">
+    <a href = "index.html">
+        <img style = "width:50px;" src = "icons/navigator.svg"/>
+    </a>
+    <a href = "symbol.html">
+        <img style = "width:50px;" src = "icons/symbolicon.svg"/>
+    </a>    
+
+    <img id = "editbutton" class=  "button" style = "width:50px;" src = "icons/editor.svg"/>
+
+            <!--<img class=  "button" style = "width:50px;" src = "icons/helpicon.svg"/>-->
+    <div id = "markdownhelp">
+    <h2>Markdown Reference:</h2>
+    <pre>
+        paragraph break: two newlines
+        link:    [link text](destination url)
+        image: ![alt text](image url)
+        # header 
+        ## smaller header 
+        - list element 
+        - another element 
+        1. enumerated list element 
+        2. another 
+        *italic* 
+        **bold** 
+    </pre>
+
+</div>
+
+
+<script>
+
+    editMode = false;
+
+    document.getElementById("editbutton").onclick = function() {
+        editMode = !editMode;
+        if(editMode){
+            document.getElementById("maintextareabox").style.display = "block";
+            document.getElementById("scrollscroll").style.display = "none";
+        }
+        else{
+            document.getElementById("maintextareabox").style.display = "none";
+            document.getElementById("scrollscroll").style.display = "block";
+            rawhtml = converter.makeHtml(readme_md);
+            document.getElementById("scrollscroll").innerHTML = rawhtml;
+        }
+    }
+    
+
+    //get readme.md, convert to html and display
+    var converter = new showdown.Converter();
+    converter.setOption('literalMidWordUnderscores', 'true');
+    converter.setOption('tables', 'true');
+
+
+    readme_md = "";
+    rawhtml = "";
+    var httpc = new XMLHttpRequest();
+    httpc.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            readme_md = this.responseText;
+            document.getElementById("maintextarea").value = readme_md;                 
+            rawhtml = converter.makeHtml(readme_md);
+            document.getElementById("scrollscroll").innerHTML = rawhtml;
+        }
+    };
+    httpc.open("GET", "fileloader.php?filename=README.md", true);
+    httpc.send();
+
+    document.getElementById("maintextarea").onkeyup = function() {
+        readme_md = this.value;
+        data = encodeURIComponent(this.value);
+
+        var httpc = new XMLHttpRequest();
+        var url = "filesaver.php";        
+        httpc.open("POST", url, true);
+        httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        httpc.send("data="+data+"&filename=README.md");//send text to filesaver.php
+    }
+        </script>
+        <style>
+            body{
+                overflow:hidden;
+            }
+            .mainscrollarea{
+                position:absolute;
+                left:0px;
+                right:30em;
+                top:0px;
+                bottom:0px;
+            }
+            #scrollscroll{
+                overflow:scroll;
+                border-right:solid;
+                border-width:0.1px;
+                border-color:red;
+                padding-left:1em;
+                padding-right:1em;
+                padding-bottom:5em;
+            }
+            #scrollscroll img{
+                max-width:80%;
+                display:block;
+                margin:auto;
+            }
+            #scrollscroll h1,h2,h3,h4{
+                margin:auto;
+                text-align:center;
+            }
+            #margin{
+                position:absolute;
+                right:0px;
+                bottom:0px;
+                top:0px;
+                width:27em;
+            }
+            .button{
+                cursor:pointer;
+            }
+            .button:hover{
+                background-color:green;
+            }
+            .button:active{
+                background-color:yellow;
+            }
+            #maintextarea{
+                position:absolute;
+                left:0px;
+                top:0px;
+                width:100%;
+                height:100%;
+                padding-left:1em;
+                padding-top:1em;
+            }
+            #maintextareabox{
+                display:none;
+            }
+            #markdownhelp{
+                overflow:scroll;
+                padding-left:1em;
+                padding-right:1em;
+                width:25em;
+            }
+            @media only screen and (orientation: portrait) {
+                .mainscrollarea{
+                    position:absolute;
+                    left:0px;
+                    top:70px;
+                    right:0px;
+                    bottom:0px;
+                    font-size:3em;
+                }
+                #margin{
+                    position:absolute;
+                    right:0px;
+                    left:0px;
+                    top:0px;
+                    width:100%;
+                    height:70px;
+                    overflow:scroll;
+               }
+               #markdownhelp{
+                   display:none;
+               }
+            }
+        </style>
+    </body>
+</html>
