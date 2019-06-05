@@ -220,6 +220,9 @@ document.getElementById("savebutton").onclick = function() {
     if(newGVM.address >= 01040 && newGVM.address <= 01176) {
         savebytecode(newGVM,01040,01176,"font");
     }
+    if(newGVM.address >= 01220 && newGVM.address <= 01247) {
+        savebytecode(newGVM,01220,01247,"shapetablesymbols");
+    }
     if(newGVM.address >= 0220 && newGVM.address <= 0247) {
         savebytecode(newGVM,0220,0247,"shapetable");
     }
