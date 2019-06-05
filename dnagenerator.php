@@ -1,8 +1,11 @@
+<a href = "editor.php">editor.php</a>
+<br/>
+<pre>
 <?php
 
     $files = scandir(getcwd());
     $jsfiles = scandir(getcwd()."/jscode");
-    $iconfiles = scandir(getcwd()."/icons");
+    $iconfiles = scandir(getcwd()."/iconsymbols");
     $phpfiles = scandir(getcwd()."/php");
     $datafiles = scandir(getcwd()."/data");
 
@@ -23,10 +26,10 @@
         }
     }
     
-    $dna->icons = [];
+    $dna->iconsymbols = [];
     foreach($iconfiles as $value){
         if($value{0} != "."){
-            array_push($dna->icons,$value);
+            array_push($dna->iconsymbols,$value);
         }
     }
 
@@ -47,7 +50,7 @@
 
     $finalstring = "dna = ".json_encode($dna).";";
 
-    echo json_encode($dna);
+    echo json_encode($dna,JSON_PRETTY_PRINT);
     $file = fopen("data/dna.js","w");// create new file with this name
     fwrite($file,$finalstring); //write data to file
     fclose($file);  //close file
@@ -56,3 +59,4 @@
     fclose($file);  //close file
 
 ?>
+</pre>

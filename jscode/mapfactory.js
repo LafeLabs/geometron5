@@ -64,17 +64,18 @@ function Map(w,h,div) {
         this.linkindex--;
         if(this.linkindex < 0){
             this.linkindex = 0;
-        }
+        }    
     }
 
     this.newlink = function() {
         
-        this.linkArray[this.linkindex].style.border = "none";
         if(this.array.length > 0 ){
+            this.linkArray[this.linkindex].style.border = "none";
             var newLink  = new MapLink(this.array[this.linkindex].x + this.array[linkindex].w*0.05,this.array[this.linkindex].y + this.array[this.linkindex].w*0.05,this.array[this.linkindex].w,this.array[this.linkindex].angle,this.array[this.linkindex].text,this.array[this.linkindex].href,this.array[this.linkindex].src);
         }
         else{
             var newLink  = new MapLink(0.1,0.1,0.1,0,"text","","");
+            this.linkindex = 0;
         }
         //  var newLink = new MapLink(0,0,0.1,1,0,"","","","text");
         this.array.push(newLink);

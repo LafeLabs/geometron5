@@ -22,141 +22,113 @@
 
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
 
-<!--    <script src = "data/currentMap.js"></script> -->
-<!--    <script src = "data/deck.js"></script> -->
-
 <script>    
 </script>
 </head>
 <body>    
-
+<!--<datadiv/>-->
     <div id = "mainmap"></div>
     <div id = "hammerxy">
         <!--this covers the map exactly, sits at higher z index, and is turned off when NOT editing xy-->
     </div>
 
-    <div id = "margin">
-        <div id = "marginsquare1">
-            <img id = "editmapbutton" class = "button" style = "width:50px;" src = "icons/editor.svg"/>
-            <a href = "scroll.html">
-                <img id = "scrollbutton" class = "button" style = "width:50px;" src = "icons/scrollicon.svg"/>
-            </a>
-            <a href = "symbol.html">
-                <img id = "symbolbutton" class = "button" style = "width:50px;" src = "icons/symbolicon.svg"/>
-            </a>
-            <img id = "branchdownbutton" class = "button" style = "width:50px;" src = "icons/branchdownicon.svg"/>
+    <div id = "box1">
+        <img id = "editmapbutton" class = "button" style = "width:50px;" src = "iconsymbols/editor.svg"/>
+        <a href = "scroll.html">
+            <img id = "scrollbutton" class = "button" style = "width:50px;" src = "iconsymbols/scrollicon.svg"/>
+        </a>
+        <a href = "symbol.html">
+            <img style = "width:50px;" src = "iconsymbols/symbolicon.svg"/>
+        </a>  
 
-            <div id = "buttonrow1">
-                <img id = "savebutton" src = "icons/savebutton.svg" class = "button" style = "width:50px"/>
-                <img id = "deletebutton" src = "icons/deletebutton.svg" class = "button" style = "width:50px"/>
-                <img id = "nextbutton" src = "icons/nextbutton.svg" class = "button" style = "width:50px"/>
-                <img id = "moveupbutton" src = "icons/moveupbutton.svg" class = "button" style = "width:50px"/>    
-            </div>
-            <div id = "buttonrow2">
-                <img id = "newbutton" src = "icons/newbutton.svg" class = "button" style = "width:50px"/>
-                <img id = "prevbutton" src = "icons/prevbutton.svg" class = "button" style = "width:50px"/>
-                <img id = "movedownbutton" src = "icons/movedownbutton.svg" class = "button" style = "width:50px"/>
-                <img id = "zoomoutbutton" src= "icons/zoomouticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "zoominbutton" src= "icons/zoominicon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlezoomoutbutton" src= "icons/littlezoomouticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlezoominbutton" src= "icons/littlezoominicon.svg" class = "button" style = "width:50px"/> 
-
-                <img id = "rotateleftbutton" src= "icons/rotatelefticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "rotaterightbutton" src= "icons/rotaterighticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlerotateleftbutton" src= "icons/littlerotatelefticon.svg" class = "button" style = "width:50px"/> 
-                <img id = "littlerotaterightbutton" src= "icons/littlerotaterighticon.svg" class = "button" style = "width:50px"/> 
-
-
-            </div>
-
+        <div id = "linkeditstuff">
             <table id = "linkedittable">
-            <!--
-            table with: text, url, href, pulldown menu for type, x,y,angle,w,h,
-            -->
-                <tr><td>text:</td><td><input id = "textinput"/></td></tr>
-                <tr><td>src:</td><td><input id = "srcinput"/></td></tr>
-                <tr><td>href:</td><td><input id = "hrefinput"/></td></tr>
+                <tr>
+                    <td>
+                        <img id = "prevbutton" src = "iconsymbols/prevbutton.svg" class = "button" style = "width:50px"/>
+                    </td>
+                    <td>
+                        <img id = "nextbutton" src = "iconsymbols/nextbutton.svg" class = "button" style = "width:50px"/>
+                    </td>
+                    <td>
+                        <img id = "movedownbutton" src = "iconsymbols/movedownbutton.svg" class = "button" style = "width:50px"/>
+                    </td>
+                    <td>
+                        <img id = "moveupbutton" src = "iconsymbols/moveupbutton.svg" class = "button" style = "width:50px"/>    
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img id = "savebutton" src = "iconsymbols/savebutton.svg" class = "button" style = "width:50px"/>
+                    </td>
+                    <td>
+                        <img id = "deletebutton" src = "iconsymbols/deletebutton.svg" class = "button" style = "width:50px"/>
+                    </td>
+                    <td>
+                        <img id = "newbutton" src = "iconsymbols/newbutton.svg" class = "button" style = "width:50px"/>                    
+                    </td>
+                </tr>
+                <tr><td>text:</td><td  colspan="3"><input id = "textinput"/></td></tr>
+                <tr><td>src:</td><td colspan="3"><input id = "srcinput"/></td></tr>
+                <tr><td>href:</td><td colspan="3"><input id = "hrefinput"/></td></tr>
             </table>
-            <div id = "branchscroll">
-            
-                <table style = "display:none" id = "branchnametable">
-                    <tr>
-                        <td>
-                            Branch Name:
-                        </td>
-                        <td>
-                            <input id = "branchnameinput"/>
-                        </td>
-                    </tr>
-                </table>     
-                <ul id = "branchlist">
-
-                </ul>   
-            </div>       
-            <div id = "feedscroll">
-                    <form id = "uploadform" style = "margin-top:10px" action="upload.php" method="post" enctype="multipart/form-data">
-                        Select image to upload:
-                            <input type="file" name="fileToUpload" id="fileToUpload">
-                            <input type="submit" value="Upload Image" name="submit">
-                     </form>
-        
-                <!--
-                    put the links here, also put the images here 
-                -->
-            </div>
-            <div id = "deckscroll">
-                <table id = "deckedittable">
-                    <tr>
-                        <td class = "button" id = "prevpagebutton">PREV</td>
-                        <td class = "button" id = "nextpagebutton">NEXT</td>
-                    </tr>
-                    <tr>
-                        <td class = "button" id = "deletepagebutton">DELETE</td>
-                        <td class = "button" id = "newpagebutton">NEW</td>
-                    </tr>
-                    <tr>
-                        <td>name:</td>
-                        <td><input id = "decknameinput"/></td>
-                    </tr>
-                    <tr>
-                        <td>url:</td>
-                        <td><input id = "deckurlinput"/></td>
-                    </tr>
-                    <tr>
-                        <td>replicator:</td>
-                        <td><input id = "deckreplicatorinput"/></td>
-                    </tr>            
-                </table>
-                    
-                <!--
-
-                    deck operations:
-
-                    - add a new page(click a button which opens a table with an input with an onchange event like branch)
-                    - delete a page(this can be a click delete link like in branch list)
-                    - edit a page(onclick populates edit table with 3 fields like link editor):
-
-                        - replicator
-                        - url
-                        - name
-        
-                -->
-                <h2>Deck:</h2>
-                <ul id = "pagelist">
-
-                </ul>
-            </div>
         </div>
-        <div id = "marginsquare2">
-            <div id = "scalebar">
-                <img src = "icons/scaleslider2.svg" id = "scalebarimage"/>
-            </div>
-            <div id = "rotatebar">
-                <img src = "icons/rotateslider2.svg" id = "rotatebarimage"/>
-            </div>
-        </div>    
+
     </div>
-     
+    <div id = "box2">
+  
+        <div id = "feedscroll">
+            <form id = "uploadform" style = "margin-top:10px" action="upload.php" method="post" enctype="multipart/form-data">
+                Select image to upload:
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                    <input type="submit" value="Upload Image" name="submit">
+             </form>
+             <!--
+                put the links here, also put the images here 
+             -->
+        </div>
+
+    </div>
+    <div id = "box3">
+
+        <div id = "rotatezoombox">
+            <table id = "rotatezoomtable">
+                <tr>
+                    <td>
+                        <img id = "zoomoutbutton" src= "iconsymbols/zoomouticon.svg" class = "button" /> 
+                    </td>
+                    <td>
+                        <img id = "littlezoomoutbutton" src= "iconsymbols/littlezoomouticon.svg" class = "button"/> 
+                    </td>
+                    <td>
+                        <img id = "littlezoominbutton" src= "iconsymbols/littlezoominicon.svg" class = "button" /> 
+                    </td>
+                    <td>
+                        <img id = "zoominbutton" src= "iconsymbols/zoominicon.svg" class = "button"/> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img id = "rotateleftbutton" src= "iconsymbols/rotatelefticon.svg" class = "button" /> 
+                    </td>
+                    <td>
+                        <img id = "littlerotateleftbutton" src= "iconsymbols/littlerotatelefticon.svg" class = "button"/> 
+                    </td>
+                    <td>
+                        <img id = "littlerotaterightbutton" src= "iconsymbols/littlerotaterighticon.svg" class = "button"/> 
+                    </td>
+                    <td>
+                        <img id = "rotaterightbutton" src= "iconsymbols/rotaterighticon.svg" class = "button" /> 
+                    </td>
+                </tr>
+            </table>
+        
+                <img src = "iconsymbols/scaleslider.svg" id = "scalebar"/>
+                <img src = "iconsymbols/rotateslider.svg" id = "rotatebar"/>
+
+        </div>
+    </div>
+            
 
 <script>
 
@@ -164,31 +136,14 @@ landscape = false;
 if(innerWidth > innerHeight){
 
     squareWidth = innerHeight;
-    document.getElementById("margin").style.width = (innerWidth - squareWidth).toString() + "px";
-    document.getElementById("margin").style.height = (innerHeight).toString() + "px";
     marginWidth = innerWidth - squareWidth;
     landscape = true;
-    document.getElementById("marginsquare2").style.width = marginWidth.toString() + "px";
-    document.getElementById("marginsquare2").style.height = (0.5*squareWidth).toString() + "px";
-    document.getElementById("marginsquare1").style.width = marginWidth.toString() + "px";
-    document.getElementById("marginsquare1").style.height = (0.5*squareWidth).toString() + "px";
 
 }
 else{
     
     squareWidth = innerWidth;
-    document.getElementById("margin").style.height = (innerHeight - squareWidth).toString() + "px";
-    document.getElementById("margin").style.width = (innerHeight).toString() + "px";
-    document.getElementById("margin").style.right = "0px";
-    document.getElementById("margin").style.bottom = "0px";
-    document.getElementById("margin").style.postion = "absolute";
-  
     marginWidth = innerHeight - squareWidth;
-    document.getElementById("marginsquare2").style.width = (0.5*squareWidth).toString() + "px";
-    document.getElementById("marginsquare2").style.height = marginWidth.toString() + "px";
-
-    document.getElementById("marginsquare1").style.width = (0.5*squareWidth).toString() + "px";
-    document.getElementById("marginsquare1").style.height = marginWidth.toString() + "px";
 
 }
 
@@ -197,8 +152,6 @@ document.getElementById("hammerxy").style.height = (squareWidth).toString() + "p
 
 mainmap = new Map(squareWidth,squareWidth,document.getElementById("mainmap"));
 
-//mainmap.array = mapArray;
-//mainmap.draw();
 
 var httpc2 = new XMLHttpRequest();
     httpc2.onreadystatechange = function() {
@@ -224,11 +177,6 @@ document.getElementById("savebutton").onclick = function() {
     mainmap.array[mainmap.linkindex].w = parseInt(mainmap.linkArray[mainmap.linkindex].style.width.substring(0,mainmap.linkArray[mainmap.linkindex].style.width.length-2))/mainmap.w;
     mainmap.array[mainmap.linkindex].angle = parseInt(mainmap.linkArray[mainmap.linkindex].style.transform.substring(7,mainmap.linkArray[mainmap.linkindex].style.transform.length - 4));
 
-    var url = "filesaver.php";        
-    var httpc = new XMLHttpRequest();
-    httpc.open("POST", url, true);
-    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpc.send("data="+encodeURIComponent("mapArray = " + JSON.stringify(mainmap.array,null,"    ") + ";")+"&filename=data/currentMap.js");//send text to filesaver.php
 
     var url = "filesaver.php";        
     var httpc2 = new XMLHttpRequest();
@@ -328,36 +276,45 @@ mczoom.on("panleft panright panup pandown tap press", function(ev) {
 
 document.getElementById("zoomoutbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].w /= 1.25;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.width = (Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() + "px"; 
+
 }
 document.getElementById("zoominbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].w *= 1.25;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.width = (Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() + "px"; 
+
 }
 document.getElementById("littlezoomoutbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].w /= 1.01;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.width = (Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() + "px"; 
+
 }
 document.getElementById("littlezoominbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].w *= 1.01;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.width = (Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() +  "px";
+    mainmap.linkArray[mainmap.linkindex].style.fontSize = (0.1*Math.abs(mainmap.array[mainmap.linkindex].w*mainmap.w)).toString() + "px"; 
+
 }
 
 document.getElementById("rotateleftbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].angle -= 5;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.transform = "rotate(" + (mainmap.array[mainmap.linkindex].angle).toString() + "deg)";
+
 }
 document.getElementById("rotaterightbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].angle += 5;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.transform = "rotate(" + (mainmap.array[mainmap.linkindex].angle).toString() + "deg)";
 }
 document.getElementById("littlerotateleftbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].angle -= 0.5;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.transform = "rotate(" + (mainmap.array[mainmap.linkindex].angle).toString() + "deg)";
 }
 document.getElementById("littlerotaterightbutton").onclick = function() {
     mainmap.array[mainmap.linkindex].angle += 0.5;
-    mainmap.draw();
+    mainmap.linkArray[mainmap.linkindex].style.transform = "rotate(" + (mainmap.array[mainmap.linkindex].angle).toString() + "deg)";
 }
 
 
@@ -379,27 +336,19 @@ document.getElementById("editmapbutton").onclick = function() {
     editMode = !editMode;
     if(editMode) {
         document.getElementById("hammerxy").style.display = "block";
-        document.getElementById("marginsquare2").style.display = "block";
         document.getElementById("linkedittable").style.display = "block";
-        document.getElementById("buttonrow1").style.display = "block";
-        document.getElementById("buttonrow2").style.display = "block";
         document.getElementById("feedscroll").style.display = "block";
-        document.getElementById("branchscroll").style.display = "none";
-        document.getElementById("deckscroll").style.display = "none";
         mainmap.linkArray[mainmap.linkindex].style.border = "solid";
         mainmap.linkArray[mainmap.linkindex].style.borderWidth = "0.1px";
-
+        document.getElementById("rotatezoombox").style.display = "block";
+        tableupdate();
     }
     else {
         document.getElementById("hammerxy").style.display = "none";
-        document.getElementById("marginsquare2").style.display = "none";
         mainmap.linkArray[mainmap.linkindex].style.border = "none";
         document.getElementById("linkedittable").style.display = "none";
-        document.getElementById("buttonrow1").style.display = "none";
-        document.getElementById("buttonrow2").style.display = "none";
         document.getElementById("feedscroll").style.display = "none";
-        document.getElementById("branchscroll").style.display = "block";
-        document.getElementById("deckscroll").style.display = "block";
+        document.getElementById("rotatezoombox").style.display = "none";
 
     }
 
@@ -408,82 +357,9 @@ document.getElementById("editmapbutton").onclick = function() {
 
 document.getElementById("linkedittable").style.display = "none";
 document.getElementById("hammerxy").style.display = "none";
-document.getElementById("marginsquare2").style.display = "none";
-document.getElementById("buttonrow1").style.display = "none";
-document.getElementById("buttonrow2").style.display = "none";
 document.getElementById("feedscroll").style.display = "none";
-document.getElementById("branchscroll").style.display = "block";
+document.getElementById("rotatezoombox").style.display = "none";
 
-document.getElementById("branchdownbutton").onclick = function() {
-    document.getElementById("branchnametable").style.display = "block";
-}
-
-var httpc = new XMLHttpRequest();
-httpc.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        branches = JSON.parse(this.responseText);
-        for(var index = 0;index < branches.length;index++) {
-            var newa = document.createElement("A");
-            newa.href = branches[index] + "/";
-            newa.innerHTML = branches[index] + "/";
-            var newli = document.createElement("LI");
-            newli.appendChild(newa);
-            document.getElementById("branchscroll").appendChild(newli);
-            var newimg = document.createElement("IMG");
-            newimg.classList.add("button");
-            newimg.style.width = "50px";
-            newimg.style.height = "50px";
-            newimg.id = "del" + branches[index];
-            newimg.src  = "icons/deletebutton.svg";
-
-            newli.appendChild(newimg);
-            newimg.onclick = function() {
-                var branchname = this.id.substring(3);
-                var httpc = new XMLHttpRequest();
-                httpc.open("GET","deletebranch.php?filename=" + branchname, true);
-                httpc.send();//send text to deletebranch.php
-                this.parentElement.parentElement.removeChild(this.parentElement);
-            }    
-            
-        }
-    }
-};
-
-httpc.open("GET","dir.php?type=dir", true);
-httpc.send();//send text to newbranch.php
-
-
-document.getElementById("branchnameinput").onchange = function() {
-
-    var newbranchname = this.value;
-
-    var newa = document.createElement("A");
-    newa.href = newbranchname + "/";
-    newa.innerHTML = newbranchname + "/";
-    var newli = document.createElement("LI");
-    newli.appendChild(newa);
-    document.getElementById("branchlist").appendChild(newli);
-    var newimg = document.createElement("IMG");
-    newimg.classList.add("button");
-    newimg.style.width = "50px";
-    newimg.style.height = "50px";
-    newimg.id = "del" + newbranchname;
-    newimg.src  = "icons/deletebutton.svg";
-    newli.appendChild(newimg);
-    newimg.onclick = function() {
-        var branchname = this.id.substring(3);
-        var httpc = new XMLHttpRequest();
-        httpc.open("GET","deletebranch.php?filename=" + branchname, true);
-        httpc.send();//send text to deletebranch.php
-        this.parentElement.parentElement.removeChild(this.parentElement);
-    }    
-
-    var httpc = new XMLHttpRequest();
-    httpc.open("GET","newbranch.php?filename=" + newbranchname, true);
-    httpc.send();//send text to newbranch.php
-
-    this.style.display = "none";
-}
 
 uploadImages = [];
 var httpc = new XMLHttpRequest();
@@ -505,7 +381,7 @@ var httpc = new XMLHttpRequest();
                 mainmap.draw();
             }
             var newimg = document.createElement("IMG");
-            newimg.src = "icons/deletebutton.svg";
+            newimg.src = "iconsymbols/deletebutton.svg";
             newuploadbox.appendChild(newimg);
             newimg.classList.add("button");
             newimg.classList.add("deletebutton");
@@ -526,16 +402,16 @@ var httpc = new XMLHttpRequest();
 httpc.open("GET", "dir.php?filename=uploadimages", true);
 httpc.send();
 
-symbolfeed = [];
-var httpc = new XMLHttpRequest();
-    httpc.onreadystatechange = function() {
+symbols = [];
+var httpc4 = new XMLHttpRequest();
+httpc4.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        uploadImages = JSON.parse(this.responseText);
-        for(var index = 0;index < uploadImages.length;index++) {
+        symbols = JSON.parse(this.responseText);
+        for(var index = 0;index < symbols.length;index++) {
             var newuploadbox = document.createElement("DIV");
             newuploadbox.classList.add("uploadbox");
             var newimg = document.createElement("IMG");
-            newimg.src = "symbolfeed/" + uploadImages[index];
+            newimg.src = "symbols/" + symbols[index];
             newimg.classList.add("uploadimage");
             newimg.classList.add("button");
             newuploadbox.appendChild(newimg);
@@ -545,53 +421,13 @@ var httpc = new XMLHttpRequest();
                 mainmap.array[mainmap.linkindex].src = this.src;
                 mainmap.draw();
             }
-            var newimg = document.createElement("IMG");
-            newimg.src = "icons/deletebutton.svg";
-            newuploadbox.appendChild(newimg);
-            newimg.classList.add("button");
-            newimg.classList.add("deletebutton");
-            newimg.onclick = function(){
-                var imageurl =this.parentElement.getElementsByClassName("uploadimage")[0].src; 
-                var imagename = "symbolfeed/" + imageurl.split("symbolfeed/")[1];
-                var httpc = new XMLHttpRequest();
-                var url = "deletefile.php";         
-                httpc.open("POST", url, true);
-                httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-                httpc.send("filename=" + imagename);//send text to deletefile.php
-                this.parentElement.parentElement.removeChild(this.parentElement);
-            }
 
         }
     }
 };
-httpc.open("GET", "dir.php?filename=symbolfeed", true);
-httpc.send();
 
-var httpc3 = new XMLHttpRequest();
-    httpc3.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        deck = JSON.parse(this.responseText);
-        for(var index = 0;index < deck.length;index++) {
-            var newa = document.createElement("A");
-            newa.href = deck[index].url;
-            newa.innerHTML = deck[index].name;
-            var newli = document.createElement("LI");
-            newli.appendChild(newa);
-            document.getElementById("pagelist").appendChild(newli);
-            var newa = document.createElement("A");
-            newa.href = deck[index].replicator;
-            newa.innerHTML = " (replicator)";
-            newli.appendChild(newa);
-        }
-
-        document.getElementById("decknameinput").value = deck[pageindex].name;
-        document.getElementById("deckurlinput").value = deck[pageindex].url;
-        document.getElementById("deckreplicatorinput").value = deck[pageindex].replicator;
-
-    }
-};
-httpc3.open("GET", "fileloader.php?filename=data/deck.txt", true);
-httpc3.send();
+httpc4.open("GET", "dir.php?filename=symbols", true);
+httpc4.send();
 
 
 </script>
@@ -603,7 +439,6 @@ input,table,select{
     font-family:courier;
     font-size:16px;
 }
-
 #mainmap{
     position:absolute;
     left:0px;
@@ -621,45 +456,8 @@ input,table,select{
     z-index:1;
     overflow:hidden;
 }
-#margin{
-    position:absolute;
-    right:0px;
-    bottom:0px;
-    border:solid;
-    border-color:red;
-    border-width:0.2px;
-    overflow:hidden;
-}
-#arrayeditbar{
-    position:absolute;
-    right:0px;
-    bottom:0px;
-    top:0px;
-    left:0px;
-    overflow:scroll;
-    font-family:courier;
-}
-#linkarrayscroll{
-    position:absolute;
-    right:50%;
-    bottom:0px;
-    top:80px;
-    left:0px;
-    overflow:scroll;
-    font-family:courier;
-}
-#linkarrayscroll img{
-    max-width:50%;
-}
-.arraylink{
-    border:solid;
-    border-width:0.1px;
-    border-radius:10px;
-    margin-top:15px;
-}
 .button{
     cursor:pointer;
-    margin-bottom:1em;
 }
 .button:hover{
     background-color:#50ff50;
@@ -671,17 +469,16 @@ input,table,select{
     position:absolute;
     left:0px;
     right:0px;
-    top:0px;
-    bottom:50%;
+    bottom:25%;
+    height:25%;
     z-index:2;
     width:100%;
-
 }
 #rotatebar{
     position:absolute;
     left:0px;
     right:0px;    
-    height:50%;
+    height:25%;
     bottom:0px;
     z-index:20;
     width:100%;
@@ -691,7 +488,7 @@ input,table,select{
     left:0px;
     right:0px;
     top:0px;
-    bottom:0px;
+    height:100%;
     z-index:-2;
     width:100%;
 
@@ -715,21 +512,14 @@ input,table,select{
     bottom:0%;
 }
 #feedscroll{
-    width:50%;
+    width:80%;
     height:100%;
     position:absolute;
     right:0px;
     top:0px;
     overflow:scroll;
 }
-#branchscroll{
-    width:50%;
-    height:100%;
-    position:absolute;
-    right:0px;
-    top:0px;
-    overflow:scroll;
-}
+
 .uploadimage{
     max-width:50%;
     display:block;
@@ -739,33 +529,96 @@ input,table,select{
 .deletebutton{
     width:50px;
 }
-#marginsquare1{
-    position:absolute;
-    left:0px;
-    top:0px;
-}
-#marginsquare2{
-    position:absolute;
-    right:0px;
-    bottom:0px;
-}
 .uploadbox{
     border:solid;
     border-width:0.5px;
     border-radius:10px;
     margin-top:1em;
 }
-#deckscroll{
-    width:50%;
-    height:100%;
+@media only screen and (orientation: portrait) {
+    #box1{
+        width:33%;
+        position:absolute;
+        left:0px;
+        bottom:0px;
+        height:15em;
+        overflow:hidden;
+    }
+    #box2{
+        width:33%;
+        position:absolute;
+        left:33%;
+        bottom:0px;
+        height:15em;
+        overflow:hidden;
+
+    }
+    #box3{
+        width:33%;
+        position:absolute;
+        right:0px;
+        bottom:0px;
+        height:15em;
+        overflow:hidden;
+    }
+    #mainmap{
+        border-bottom:solid;
+        border-width:0.1px;
+    }
+}
+@media only screen and (orientation: landscape) {
+    #box1{
+        width:25em;
+        position:absolute;
+        right:0px;
+        top:0px;
+        height:33%;
+        overflow:hidden;
+    }
+    #box2{
+        width:25em;
+        position:absolute;
+        right:0px;
+        top:33%;
+        height:33%;
+        overflow:hidden;
+
+    }
+    #box3{
+        width:25em;
+        position:absolute;
+        right:0px;
+        bottom:0px;
+        height:33%;
+        overflow:hidden;
+        
+    }
+    #mainmap{
+        border-right:solid;
+        border-width:0.1px;
+    }
+
+}
+#rotatezoombox{
     position:absolute;
+    left:0px;
     right:0px;
-    top:100%;
-    overflow:scroll;
+    top:0px;
+    bottom:0px;
+    overflow:hidden;
+    border:solid;
 }
-#buttonrow2{
-    width:300px;
+#rotatezoomtable tr{
+    width:80%;
+    margin:auto;
 }
+#rotatezoomtable td{
+    width:5%;
+}
+#rotatezoomtable img{
+    width:50%;
+}
+
 </style>
 </body>
 </html>
