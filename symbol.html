@@ -80,9 +80,9 @@ if(innerWidth > innerHeight){
     landscape = true;
 }
 else{
-    mapWidth = innerWidth;
+    squareWidth = innerWidth;
     document.getElementById("margin").style.height = (innerHeight - squareWidth).toString() + "px";
-    document.getElementById("margin").style.width = (innerHeight).toString() + "px";
+    document.getElementById("margin").style.width = (innerWidth).toString() + "px";
     document.getElementById("square").style.height = squareWidth.toString() + "px";
     document.getElementById("square").style.width = squareWidth.toString() + "px";
     marginWidth = innerHeight - squareWidth;
@@ -95,6 +95,13 @@ var newGVM = new GVM(0.98*squareWidth,0.98*squareWidth,0.96*squareWidth,-Math.PI
 newGVM.importbytecode(font);
 newGVM.importbytecode(shapetable);
 newGVM.importbytecode(shapetablesymbols);
+hypercube = [];
+for(var index = 0;index < 01377;index++){
+    if(newGVM.hypercube[index].length  > 0 ){
+        hypercube.push( "0" + index.toString(8) +  ":" + newGVM.hypercube[index]);
+    }
+}
+
 
 newGVM.x0 = configxy.x0rel*newGVM.width;
 newGVM.y0 = configxy.y0rel*newGVM.width;

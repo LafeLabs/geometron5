@@ -151,7 +151,7 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
 
     this.hypercube = [];
     for(var index = 0;index < 1024;index++){
-        this.hypercube.push("0341,");
+        this.hypercube.push("");
     }
 
     for(var index = 0;index < bytecode.length;index++) {

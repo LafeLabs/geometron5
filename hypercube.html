@@ -135,6 +135,14 @@ var newGVM = new GVM(0.4*squareWidth,0.4*squareWidth,0.2*squareWidth,-Math.PI/2,
 
 newGVM.importbytecode(shapetable);
 newGVM.importbytecode(font);
+newGVM.importbytecode(shapetablesymbols);
+
+hypercube = [];
+for(var index = 0;index < 01377;index++){
+    if(newGVM.hypercube[index].length  > 0 ){
+        hypercube.push( "0" + index.toString(8) +  ":" + newGVM.hypercube[index]);
+    }
+}
 
 //newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,",newGVM);
 
@@ -184,6 +192,38 @@ document.getElementById("actioninput").onkeydown = function(a) {
     document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
 }
 
+document.getElementById("printinput").onkeydown = function(a) {
+    var charCode = a.keyCode || a.which;
+
+    if(charCode == 010) {
+        newGVM.cursorAction(010);   
+    }
+    if(charCode == 045){
+        newGVM.cursorAction(020);             
+    }
+    if(charCode == 047){
+        newGVM.cursorAction(021);   
+    }
+    if(charCode == 046){
+        //up arrow: next
+        newGVM.address++;
+        newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
+        newGVM.drawGlyph(newGVM.glyph);
+    }
+    if(charCode == 050){
+        //down arrow: prev address
+        newGVM.address--;
+        newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
+        newGVM.drawGlyph(newGVM.glyph);
+
+    }
+
+    spellGVM.spellGlyph(newGVM.glyph);    
+    document.getElementById("addressinput").value = "0" + newGVM.address.toString(8);
+
+    document.getElementById("spellinput").value = newGVM.hypercube[newGVM.address];
+}
+
 tableName = "shapestemp";
 document.getElementById("tablenameinput").value = tableName;
 document.getElementById("addressinput").value = "0" + newGVM.address.toString(8);
@@ -195,6 +235,7 @@ document.getElementById("addressinput").onchange = function() {
     newGVM.address = parseInt(this.value,8);
     newGVM.glyph = newGVM.hypercube[newGVM.address] + "0207,";
     newGVM.drawGlyph(newGVM.glyph);
+    spellGVM.hypercube = newGVM.hypercube;
     spellGVM.spellGlyph(newGVM.glyph);    
 
 }
@@ -212,6 +253,26 @@ document.getElementById("actioninput").onkeypress = function(a) {
     this.value = "";
     newGVM.saveGlyph();
 }
+
+
+document.getElementById("stackinput").onkeypress = function(a) {
+    var charCode = a.keyCode || a.which;
+    var localCursorAction = charCode;     
+    newGVM.cursorAction(localCursorAction);   
+    spellGVM.spellGlyph(newGVM.glyph);    
+    this.value = "";
+    newGVM.saveGlyph();
+}
+
+document.getElementById("printinput").onkeypress = function(a) {
+    var charCode = a.keyCode || a.which;
+    var localCursorAction = charCode + 01000;     
+    newGVM.cursorAction(localCursorAction);   
+    spellGVM.spellGlyph(newGVM.glyph);    
+    this.value = "";
+    newGVM.saveGlyph();
+}
+
 
 document.getElementById("actioninput").select();
 
