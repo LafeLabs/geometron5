@@ -55,6 +55,9 @@
         <a href = "hypercube.html">
             <img style = "width:50px;" src = "iconsymbols/hypercubeicon.svg"/>
         </a>               
+        <a href = "styleeditor.html">
+            <img style = "width:50px;" src = "iconsymbols/styleeditor.svg"/>
+        </a>
         <img id = "savebutton" class = "button" style = "width:50px;" src = "iconsymbols/savebutton.svg"/>
     </div>    
     <div id = "spelldiv">
@@ -278,6 +281,17 @@ document.getElementById("savebutton").onclick = function() {
     httpc4.send("data="+encodeURIComponent(invisibleGVM.svgString) +"&filename=symbolfeed/symbol" + timestamp +  ".svg");//send text to filesaver.php
 
 }
+
+var httpc = new XMLHttpRequest();
+httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        currentstyle = JSON.parse(this.responseText);
+        newGVM.style = currentstyle;
+        newGVM.drawGlyph(newGVM.glyph);
+    }
+};
+httpc.open("GET", "fileloader.php?filename=data/currentstyle.txt", true);
+httpc.send();    
 
 document.getElementById("actioninput").select();
 

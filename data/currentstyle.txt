@@ -7,7 +7,7 @@
     "line1": 3,
     "color2": "red",
     "fill2": "red",
-    "line2": 1,
+    "line2": 2,
     "color3": "#FF7900",
     "fill3": "#FF7900",
     "line3": 1,
