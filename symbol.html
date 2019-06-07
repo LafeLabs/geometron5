@@ -61,6 +61,8 @@
         <a href = "symbolfeed.html">
             <img style = "width:50px;" src = "iconsymbols/symbolfeed.svg"/>
         </a>
+        <img id = "stackmodebutton" class = "button" style = "width:50px;" src = "iconsymbols/stackmode.svg"/>
+        <img id = "spellmodebutton" class = "button" style = "width:50px;" src = "iconsymbols/spellmode.svg"/>
 
 
         <img id = "savebutton" class = "button" style = "width:50px;" src = "iconsymbols/savebutton.svg"/>
@@ -192,10 +194,49 @@ document.getElementById("actioninput").onkeydown = function(a) {
 
 symbolEditMode = false;
 
+actionmode = "action";//"spelling","stack"
+
+
+document.getElementById("spellmodebutton").onclick = function() {
+    if(actionmode != "action") {
+        actionmode = "action";
+    }
+    else {
+        actionmode = "spelling";
+    }
+    document.getElementById("actioninput").select();
+
+}
+
+document.getElementById("stackmodebutton").onclick = function() {
+    if(actionmode != "action") {
+        actionmode = "action";
+    }
+    else {
+        actionmode = "stack";
+    }
+
+    document.getElementById("actioninput").select();
+
+}
+
+
 document.getElementById("actioninput").onkeypress = function(a) {
 
     var charCode = a.keyCode || a.which;
-    var localCursorAction = parseInt(newGVM.hypercube[charCode],8);     
+
+    if(actionmode == "action"){
+        localCursorAction = parseInt(newGVM.hypercube[charCode],8);     
+    }    
+
+    if(actionmode == "stack"){
+        localCursorAction = charCode;     
+    }    
+
+    if(actionmode == "spelling"){
+        localCursorAction = charCode + 01000;     
+    }    
+
     newGVM.cursorAction(localCursorAction);   
     spellGVM.spellGlyph(newGVM.glyph);    
     this.value = "";
@@ -298,6 +339,7 @@ httpc.onreadystatechange = function() {
 httpc.open("GET", "fileloader.php?filename=data/currentstyle.txt", true);
 httpc.send();    
 
+
 document.getElementById("actioninput").select();
 
 </script>
@@ -357,6 +399,7 @@ body{
     right:0px;
     bottom:0px;
 }
+
 .button:hover{
     background-color:green;
 }
