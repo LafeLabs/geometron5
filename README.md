@@ -1,5 +1,33 @@
 # Geometron 5
 
+## Workflows:
+
+- create a font, edit one, share with the world
+- create a shape table, edit, share with world
+- create a figure for a scroll
+- create a symbol for a map
+- create an icon
+- edit the style to be used in editor
+- create rapid symbols on mobile for use in mobile on social media
+- create a program for a robot using symbols, document, export, save, share
+- document Geometron, build figures and symbol spellings for documentation
+- create symbols inside an iframe in a Jupyter notebook for use in markdown cells
+- edit existing files, with full JSON documentation so it can be edited with only the svg
+- feed of images which can be viewed, copied and edited by other users, and embedded in maps and scrolls, downloaded, and deleted
+
+## pages
+
+- map(links to other symbol factories, workflow diagram for this instance)
+- scroll(documentation of this instance)
+- symbol(main platform for creation of arbitrary symbols of all shapes and sizes)
+- icon(like symbol but with fixed large size and fixed small save size)
+- hypercube(edit the hypercube)
+- styleeditor(edit the style JSON file)
+- robot(create robot code using ASCII and Arduino)
+- symbolfeed(displays all the symbols with delete button, capture link for markdown, edit, download)
+
+
+
 Geometron 5 is a rewrite of geometron 4, streamlining and drastically enough changing things that I wanted a clean slate.
 
 
@@ -76,12 +104,6 @@ This system is self replicating. Test.
 - add icons for modes instead of words
 - add copy remote scroll option
 
-### feed.html
-
-- add links
-- add text
-- add external feed import functionality, test input/output
-- add system for copy/paste of markdown code from here to drop into scroll in readme
 
 ### symbol.html
 

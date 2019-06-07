@@ -411,7 +411,7 @@ httpc4.onreadystatechange = function() {
             var newuploadbox = document.createElement("DIV");
             newuploadbox.classList.add("uploadbox");
             var newimg = document.createElement("IMG");
-            newimg.src = "symbols/" + symbols[index];
+            newimg.src = "symbolfeed/" + symbols[index];
             newimg.classList.add("uploadimage");
             newimg.classList.add("button");
             newuploadbox.appendChild(newimg);
@@ -426,7 +426,7 @@ httpc4.onreadystatechange = function() {
     }
 };
 
-httpc4.open("GET", "dir.php?filename=symbols", true);
+httpc4.open("GET", "dir.php?filename=symbolfeed", true);
 httpc4.send();
 
 

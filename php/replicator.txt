@@ -7,7 +7,7 @@ $dnaraw = file_get_contents($dnaurl);
 $dna = json_decode($dnaraw);
 
 mkdir("jscode");
-mkdir("icons");
+mkdir("iconsymbols");
 mkdir("data");
 mkdir("php");
 mkdir("symbolfeed");
@@ -22,8 +22,8 @@ foreach($dna->javascript as $value){
     copy($baseurl."jscode/".$value,"jscode/".$value);
 }
 
-foreach($dna->icons as $value){
-    copy($baseurl."icons/".$value,"icons/".$value);
+foreach($dna->iconsymbols as $value){
+    copy($baseurl."iconsymbols/".$value,"iconsymbols/".$value);
 }
 
 foreach($dna->data as $value){
