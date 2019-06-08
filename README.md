@@ -1,19 +1,53 @@
 # Geometron 5
 
-## Workflows:
 
-- create a font, edit one, share with the world
-- create a shape table, edit, share with world
-- create a figure for a scroll
-- create a symbol for a map
-- create an icon
-- edit the style to be used in editor
-- create rapid symbols on mobile for use in mobile on social media
-- create a program for a robot using symbols, document, export, save, share
-- document Geometron, build figures and symbol spellings for documentation
-- create symbols inside an iframe in a Jupyter notebook for use in markdown cells
-- edit existing files, with full JSON documentation so it can be edited with only the svg
-- feed of images which can be viewed, copied and edited by other users, and embedded in maps and scrolls, downloaded, and deleted
+## Use cases for symbols
+
+- Use a symbol in a page
+- use a symbol in a map
+     - arrow points to a thing on a geographic map
+     - arrow points to a thing in a photo
+     - graph theory combining math and arrows
+     - memes that put symbols on top of photographs
+     - symbols to make pages in decks, to compete with PowerPoint
+- copy/paste a symbol into something using png
+- create a specialized figure in a iframe in a jupyter notebook(quantum gates, circuits)
+- embed a png image into a Jupyter notebook
+- create an icon for general use in web pages, such as a link or button
+- create a "general use" vector graphic file of arbitrary size and shape, which can be edited by other Geometron instances and contains the Shape Table and Font as needed
+- create and publish a font
+- create and publish a shape table
+- create a tutorial which teaches the whole Geometron system, and includes figures from geometron as well as spelled glyphs using Geometron symbols
+- create symbols on mobile phone while bored, share on social media instantly
+- program a robot using a language specific to that robot, publish that program
+
+## Use cases for page
+
+- make a page for a physical thing, put the url on the thing
+    - bulletin board for a bus stop
+    - bulletin board for a specific location in a public park
+    - scroll that explains how to make a thing(lore)
+    - scroll that tells the story of a thing(tale)
+    - business informal page
+    - business specific sale/coupon/promotion page
+    - section of the library
+- write and publish a technical paper
+- write a book, print and bind it
+- make a personal motd for a user
+
+## Use cases for Maps
+
+- treasure map, show location of hidden thing
+- shopping center map with link to each business
+- meme factory
+- constructing slide deck to destroy PowerPoint
+- label parts of a thing in a photograph
+- graph theory figure without TeX
+- graph theory figure with TeX formatted math
+- map, e.g. graph theory, embedded in a iframe in a Jupyter notebook cell
+- flow diagram for work flow
+
+
 
 ## pages
 
