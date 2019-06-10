@@ -3,13 +3,14 @@
 
 ## Use cases for symbols
 
-- Use a symbol in a page
+- Use a symbol in a page(illustrate a scroll)
 - use a symbol in a map
      - arrow points to a thing on a geographic map
      - arrow points to a thing in a photo
      - graph theory combining math and arrows
      - memes that put symbols on top of photographs
      - symbols to make pages in decks, to compete with PowerPoint
+     - symbol which represents a map or page used as a symbol in a link to that map or page
 - copy/paste a symbol into something using png
 - create a specialized figure in a iframe in a jupyter notebook(quantum gates, circuits)
 - embed a png image into a Jupyter notebook

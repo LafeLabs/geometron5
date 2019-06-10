@@ -72,7 +72,8 @@ inputs = document.getElementById("styletable").getElementsByTagName("input");
 var httpc = new XMLHttpRequest();
 httpc.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        currentstyle = JSON.parse(this.responseText);
+        currentjson = JSON.parse(this.responseText);
+        currentstyle = currentjson.style;
         inputs[0].value = currentstyle.color0;
         inputs[1].value = currentstyle.fill0;
         inputs[2].value = currentstyle.line0;
@@ -99,7 +100,7 @@ httpc.onreadystatechange = function() {
         inputs[23].value = currentstyle.line7;
     }
 };
-httpc.open("GET", "fileloader.php?filename=data/currentstyle.txt", true);
+httpc.open("GET", "fileloader.php?filename=data/currentjson.txt", true);
 httpc.send();    
 
 inputs[0].onchange = function() {
@@ -202,11 +203,12 @@ inputs[23].onchange = function() {
 
 function savestyle(){
 
+    currentjson.style = currentstyle;
     var url = "filesaver.php";        
     var httpc = new XMLHttpRequest();
     httpc.open("POST", url, true);
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpc.send("data="+encodeURIComponent(JSON.stringify(currentstyle,null,"    "))+"&filename=data/currentstyle.txt");//send text to filesaver.php
+    httpc.send("data="+encodeURIComponent(JSON.stringify(currentjson,null,"    "))+"&filename=data/currentjson.txt");//send text to filesaver.php
 
 }
 
