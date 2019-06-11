@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">    
+<head>
+    <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+
+    <script src="data/shapetable.js"></script>
+    
+</head>
+<body> 
+
+ <table id = "maintable">
+     <tr id = "numbers">
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+     </tr>
+     <tr id = "qwerty">
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>        
+     </tr>
+     <tr id = "asdf">
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>            
+     </tr>
+     <tr id = "zxcv">
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>    
+        <td></td>            
+    </tr>
+ </table>   
+
+<script>
+
+lc = "`1234567890-=qwertyuiop[]\\asdfghjkl;\'zxcvbnm,./";
+uc = "~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?";
+tds = document.getElementById("maintable").getElementsByTagName("TD");
+for(var index = 0;index < tds.length;index++) { 
+    tds[index].innerHTML = uc[index] + "<br/>" + lc[index];
+
+}
+
+</script>
+<style>
+#maintable td{
+    border:solid;
+    width:3em;
+    height:4em;
+}
+#qwerty{
+    position:relative;
+    left:4em;
+}
+#asdf{
+    position:relative;
+    left:5em;
+}
+#zxcv{
+    position:relative;
+    left:7em;
+}
+
+</style>
+</body>
+</html>
