@@ -1,0 +1,168 @@
+<html>
+<head>
+    <!--Stop Google:-->
+    <META NAME="robots" CONTENT="noindex,nofollow">
+
+    <script src="jscode/geometron.js"></script>
+    <script src="data/font.js"></script>
+    <script src="data/keyboard.js"></script>
+    <script src="data/symbols013xx.js"></script>
+    <script src="data/symbols010xx.js"></script>
+    <script src="data/shapetable.js"></script>
+    <script src="data/shapetablesymbols.js"></script>
+
+</head>
+
+<body> 
+
+    <!--
+        shapetableeditor.html:
+    -->
+
+<canvas id = "shapetablecanvas"></canvas>
+<canvas id = "symbolcanvas"></canvas>
+<canvas id = "shapecanvas"></canvas>
+
+<table>
+    <tr>
+        <td>action:</td><td><input id = "actioninput"/></td>
+    </tr>
+    <tr>
+        <td>print:</td><td><input/></td>
+    </tr>
+    <tr>
+        <td>stack:</td><td><input/></td>
+    </tr>
+    <tr>
+        <td>address:</td><td><input id = "addressinput"/></td>
+    </tr>
+</table>
+
+<div id = "spelldiv">
+    <input id = "spellinput"/>
+    <canvas id = "spellcanvas"></canvas>
+</div>
+
+<img style = "width:50px" class = "button" id = "savebutton" src = "iconsymbols/savebutton.svg"/>
+
+<a href = "symbol.html">
+    <img style = "width:50px;" src = "iconsymbols/symbolicon.svg"/>
+</a>
+<a href = "hypercube.html">
+    <img style = "width:50px;" src = "iconsymbols/hypercubeicon.svg"/>
+</a>               
+
+
+<script>
+
+symbolmode = false;//shape mode is symbolmode = false, symbolmode is symbolmode = true
+
+address = 0220;
+
+if(innerWidth < 800){
+    symbolsize = innerWidth/10;
+}
+else{
+    symbolsize = 100;
+}
+
+tablecan = document.getElementById("shapetablecanvas");
+var newg = new GVM(0.25*symbolsize,symbolsize + 0.25*symbolsize,symbolsize,-Math.PI/2,tablecan,symbolsize*8.5,symbolsize*4,hypercube);
+newg.importbytecode(font);
+newg.importbytecode(shapetable);
+newg.importbytecode(shapetablesymbols);
+newg.importbytecode(keyboard);
+
+symcan = document.getElementById("symbolcanvas");
+//GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+cansize = 200;
+var symg = new GVM(2,cansize - 2,cansize-4,-Math.PI/2,symcan,cansize,cansize,hypercube);
+symg.importbytecode(font);
+symg.importbytecode(shapetable);
+symg.importbytecode(shapetablesymbols);
+symg.importbytecode(keyboard);
+symg.drawGlyph("0300,");
+symg.action(01000 + address);
+
+shapecan = document.getElementById("shapecanvas");
+var shapeg = new GVM(cansize*0.5,cansize*0.5,cansize*0.25,-Math.PI/2,shapecan,cansize,cansize,hypercube);
+shapeg.importbytecode(font);
+shapeg.importbytecode(shapetable);
+shapeg.importbytecode(shapetablesymbols);
+shapeg.importbytecode(keyboard);
+shapeg.drawGlyph("0300,");
+shapeg.action(address);
+
+function redrawtable() {
+
+    var ctxlocal = newg.canvas2d.getContext("2d");
+    ctxlocal.clearRect(0,0,newg.width,newg.height);
+    ctxlocal.strokeStyle = newg.style.color0;
+    ctxlocal.fillStyle = newg.style.fill0;
+    ctxlocal.lineWidth = newg.style.line0;
+    newg.svgString = "<svg width=\"" + newg.width.toString() + "\" height=\"" + newg.height.toString() + "\" viewbox = \"0 0 " + newg.width.toString() + " " + newg.height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
+    newg.action(0300);
+
+    for(var index = 0220 ;index < 0230;index++) {
+        newg.actionSequence("0370,01" + index.toString(8) + ",0371,0333,");
+    }
+    newg.action(0300);
+    newg.actionSequence("0331,0336,0336,0331,0337,0337,");
+    for(var index = 0230 ;index < 0240;index++) {
+        newg.actionSequence("0370,01" + index.toString(8) + ",0371,0333,");
+    }
+    newg.action(0300);
+    newg.actionSequence("0331,0336,0336,0331,0337,0337,");
+    newg.actionSequence("0331,0336,0336,0331,0337,0337,");
+    for(var index = 0240 ;index < 0250;index++) {
+        newg.actionSequence("0370,01" + index.toString(8) + ",0371,0333,");
+    }
+
+    newg.svgString += "</svg>";
+
+}
+redrawtable();
+
+currentGlyph = newg.hypercube[address]  + "0207,";
+
+spellsize = 50;
+glyphArray = currentGlyph.split(",");
+glyphLength = glyphArray.length;
+//GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+var spellGVM = new GVM(5,spellsize - 5,spellsize,-Math.PI/2,document.getElementById("spellcanvas"),200,spellsize + 10,hypercube);
+spellGVM.importbytecode(font);
+spellGVM.importbytecode(shapetable);
+spellGVM.importbytecode(shapetablesymbols);
+spellGVM.importbytecode(keyboard);
+
+function redraw() {
+    spellGVM.spellGlyph(currentGlyph);
+    document.getElementById("spellinput").value = newg.hypercube[address];
+    document.getElementById("addressinput").value = "0"  + address.toString(8);
+    if(symbolmode) {
+
+    }
+}
+redraw();
+
+
+
+
+</script>
+<style>
+
+.button{
+    cursor:pointer;
+}
+.button:hover{
+    background-color: green;
+}
+.button:active{
+    background-color:yellow;
+}
+canvas{
+    border:solid;
+}
+</style>
+</body>
+</html>

@@ -203,7 +203,7 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         glyph = localGlyph;
         this.glyph = glyph;
         this.canvas2d.height = this.unit + 2;
-        this.canvas2d.width = this.unit*(glyphArray.length) + 4;
+        this.canvas2d.width = this.unit*(glyphArray.length - 1 ) + 4;
         this.height = this.unit + 2;
         this.x0 = 1;
         this.y0 = this.unit +1;
