@@ -24,70 +24,85 @@
         </td>
     </tr>
 </table>
+<img class = "button" id = "savebutton" src = "iconsymbols/savebutton.svg"/>
+<a href = "symbolfeed/keyboard.svg">keyboard.svg</a>
+
 <script>
 
 lc = "`1234567890-=qwertyuiop[]\\asdfghjkl;\'zxcvbnm,./";
 uc = "~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?";
 
 keywidth = innerWidth/20;
-keyheight = keywidth*1.6;
+document.getElementById("savebutton").style.width = keywidth + "px";
 
 var newcan = document.createElement("canvas");
 document.getElementById("keyboardbox").appendChild(newcan);
 
 var newg = new GVM(0.125*keywidth,keywidth + 0.125*keywidth,keywidth,-Math.PI/2,newcan,keywidth*16.5,keywidth*5,hypercube);
-newg.drawGlyph("0300,");
 
+function redraw() {
 
+    var ctxlocal = newg.canvas2d.getContext("2d");
+    ctxlocal.clearRect(0,0,newg.width,newg.height);
+    ctxlocal.strokeStyle = newg.style.color0;
+    ctxlocal.fillStyle = newg.style.fill0;
+    ctxlocal.lineWidth = newg.style.line0;
+    newg.svgString = "<svg width=\"" + newg.width.toString() + "\" height=\"" + newg.height.toString() + "\" viewbox = \"0 0 " + newg.width.toString() + " " + newg.height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
+    newg.action(0300);
 
-for(var index = 0;index < 13;index++) {
-    newg.actionSequence("0300,");
-    for(var subindex = 0;subindex< index;subindex++){
-        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+    for(var index = 0;index < 13;index++) {
+        newg.actionSequence("0300,");
+        for(var subindex = 0;subindex< index;subindex++){
+            newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+        }
+        newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+        newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+        newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
     }
-    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
-    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
-    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+
+    for(var index = 13;index < 26;index++) {
+        newg.actionSequence("0300,0331,0336,0336,0336,0331,0337,0333,0333,0337,0337,0333,");
+        for(var subindex = 13;subindex< index;subindex++){
+            newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+        }
+        newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+        newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+        newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+    }
+
+    for(var index = 26;index < 37;index++) {
+        newg.actionSequence("0300,0331,0331,0336,0336,0336,0331,0331,0337,0333,0333,0337,0333,0337,0333,");
+        for(var subindex = 26;subindex< index;subindex++){
+            newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+        }
+        newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+        newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+        newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+    }
+
+
+    for(var index = 37;index < 47;index++) {
+        newg.actionSequence("0300,0331,0331,0331,0336,0336,0336,0331,0331,0331,0337,0333,0333,0337,0333,0333,0337,0333,");
+        for(var subindex = 37;subindex< index;subindex++){
+            newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+        }
+        newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+        newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+        newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+        newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+    }
+    newg.svgString += "</svg>";
 }
 
-for(var index = 13;index < 26;index++) {
-    newg.actionSequence("0300,0331,0336,0336,0336,0331,0337,0333,0333,0337,0337,0333,");
-    for(var subindex = 13;subindex< index;subindex++){
-        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
-    }
-    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
-    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
-    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
-}
+redraw();
 
-for(var index = 26;index < 37;index++) {
-    newg.actionSequence("0300,0331,0331,0336,0336,0336,0331,0331,0337,0333,0333,0337,0333,0337,0333,");
-    for(var subindex = 26;subindex< index;subindex++){
-        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
-    }
-    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
-    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
-    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
-}
-
-
-for(var index = 37;index < 47;index++) {
-    newg.actionSequence("0300,0331,0331,0331,0336,0336,0336,0331,0331,0331,0337,0333,0333,0337,0333,0333,0337,0333,");
-    for(var subindex = 37;subindex< index;subindex++){
-        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
-    }
-    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
-    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
-    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
-    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
-}
 
 var symbolg = new GVM(1,keywidth - 1,keywidth - 2,-Math.PI/2,document.getElementById("symbol"),keywidth,keywidth,hypercube);
 symbolg.drawGlyph("0300,");
@@ -111,11 +126,19 @@ document.getElementById("action").onchange = function() {
     localaddress = document.getElementById("key").value.charCodeAt(0);
     if(localaction > 0 && localaction < 01777) {
         newg.hypercube[localaddress] = "0" + localaction.toString(8) + ",";
-        //and save the value here
+        symbolg.drawGlyph("0300,");
+        symbolg.action(01000 + localaction);
+        redraw();
     }
-    symbolg.drawGlyph("0300,");
-    symbolg.action(01000 + localaction);
-    
+}
+
+document.getElementById("savebutton").onclick = function() {
+    redraw();
+    var httpc = new XMLHttpRequest();
+    httpc.open("POST","filesaver.php", true);
+    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc.send("data="+encodeURIComponent(newg.svgString) +"&filename=symbolfeed/keyboard.svg");//send text to filesaver.php
+
 }
 
 </script>
