@@ -5,98 +5,144 @@
     <META NAME="robots" CONTENT="noindex,nofollow">
 
     <script src="data/shapetable.js"></script>
+    <script src="jscode/geometron.js"></script>
+
     
 </head>
 <body> 
-
- <table id = "maintable">
-     <tr id = "numbers">
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-     </tr>
-     <tr id = "qwerty">
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>        
-     </tr>
-     <tr id = "asdf">
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>            
-     </tr>
-     <tr id = "zxcv">
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>    
-        <td></td>            
+<div id = "keyboardbox"></div>
+<table>
+    <tr>
+        <td>
+            <input id = "key"/>
+        </td>
+        <td>
+            <input id = "action"/>
+        </td>
+        <td>
+            <canvas id = "symbol"></canvas>
+        </td>
     </tr>
- </table>   
-
+</table>
 <script>
 
 lc = "`1234567890-=qwertyuiop[]\\asdfghjkl;\'zxcvbnm,./";
 uc = "~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?";
-tds = document.getElementById("maintable").getElementsByTagName("TD");
-for(var index = 0;index < tds.length;index++) { 
-    tds[index].innerHTML = uc[index] + "<br/>" + lc[index];
 
+keywidth = innerWidth/20;
+keyheight = keywidth*1.6;
+
+var newcan = document.createElement("canvas");
+document.getElementById("keyboardbox").appendChild(newcan);
+
+var newg = new GVM(0.125*keywidth,keywidth + 0.125*keywidth,keywidth,-Math.PI/2,newcan,keywidth*16.5,keywidth*5,hypercube);
+newg.drawGlyph("0300,");
+
+
+
+for(var index = 0;index < 13;index++) {
+    newg.actionSequence("0300,");
+    for(var subindex = 0;subindex< index;subindex++){
+        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+    }
+    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+}
+
+for(var index = 13;index < 26;index++) {
+    newg.actionSequence("0300,0331,0336,0336,0336,0331,0337,0333,0333,0337,0337,0333,");
+    for(var subindex = 13;subindex< index;subindex++){
+        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+    }
+    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+}
+
+for(var index = 26;index < 37;index++) {
+    newg.actionSequence("0300,0331,0331,0336,0336,0336,0331,0331,0337,0333,0333,0337,0333,0337,0333,");
+    for(var subindex = 26;subindex< index;subindex++){
+        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+    }
+    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+}
+
+
+for(var index = 37;index < 47;index++) {
+    newg.actionSequence("0300,0331,0331,0331,0336,0336,0336,0331,0331,0331,0337,0333,0333,0337,0333,0333,0337,0333,");
+    for(var subindex = 37;subindex< index;subindex++){
+        newg.actionSequence("0333,0336,0336,0336,0333,0337,0337,0337,");
+    }
+    newg.actionSequence("0333,0200,0332,0336,0336,0336,0330,0333,0337,");
+    newg.actionSequence( (lc.charCodeAt(index)).toString(8) + ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 + parseInt(newg.hypercube[lc.charCodeAt(index)],8)).toString(8) + ",0330,0330,0332,0332,0332,");
+    newg.actionSequence( (uc.charCodeAt(index)).toString(8) +  ",0365,0333,0333,");
+    newg.actionSequence("0" + (01000 +parseInt(newg.hypercube[uc.charCodeAt(index)],8)).toString(8) + ",0336,0330,0330,0333,0330,0337,0337,0337,0331,");
+}
+
+var symbolg = new GVM(1,keywidth - 1,keywidth - 2,-Math.PI/2,document.getElementById("symbol"),keywidth,keywidth,hypercube);
+symbolg.drawGlyph("0300,");
+symbolg.actionSequence("01330,");
+
+document.getElementById("key").value = "a";
+document.getElementById("action").value = "0330";
+document.getElementById("key").select();
+
+document.getElementById("key").onkeypress = function(a) {
+    var charCode = a.keyCode || a.which;
+    var localaction = parseInt(newg.hypercube[charCode],8);
+    document.getElementById("action").value = "0" + localaction.toString(8);
+    this.value = "";
+    symbolg.drawGlyph("0300,");
+    symbolg.action(01000 + localaction);
+}
+
+document.getElementById("action").onchange = function() {
+    var localaction = parseInt(this.value,8);
+    localaddress = document.getElementById("key").value.charCodeAt(0);
+    if(localaction > 0 && localaction < 01777) {
+        newg.hypercube[localaddress] = "0" + localaction.toString(8) + ",";
+        //and save the value here
+    }
+    symbolg.drawGlyph("0300,");
+    symbolg.action(01000 + localaction);
+    
 }
 
 </script>
 <style>
-#maintable td{
-    border:solid;
-    width:3em;
-    height:4em;
-}
-#qwerty{
-    position:relative;
-    left:4em;
-}
-#asdf{
-    position:relative;
-    left:5em;
-}
-#zxcv{
-    position:relative;
-    left:7em;
-}
 
+.button{
+    cursor:pointer;
+}
+.button:hover{
+    background-color: green;
+}
+.button:active{
+    background-color: yellow;
+}
+canvas{
+    border:solid;
+}
+table,input,span{
+    font-family:courier;
+    font-size:2em;
+}
+#key{
+    width:0.5em;
+}
+#action{
+    width:4em;
+}
 </style>
 </body>
 </html>
