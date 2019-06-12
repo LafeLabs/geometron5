@@ -6,6 +6,10 @@
 
     <script src="data/shapetable.js"></script>
     <script src="jscode/geometron.js"></script>
+    <script src="data/keyboard.js"></script>
+
+    <script src="data/font.js"></script>
+    <script src="data/shapetable.js"></script>
 
     
 </head>
@@ -27,6 +31,13 @@
 <img class = "button" id = "savebutton" src = "iconsymbols/savebutton.svg"/>
 <a href = "symbolfeed/keyboard.svg">keyboard.svg</a>
 
+<a href = "symbol.html">
+        <img style = "width:50px;" src = "iconsymbols/symbolicon.svg"/>
+    </a>
+    <a href = "hypercube.html">
+            <img style = "width:50px;" src = "iconsymbols/hypercubeicon.svg"/>
+        </a>               
+
 <script>
 
 lc = "`1234567890-=qwertyuiop[]\\asdfghjkl;\'zxcvbnm,./";
@@ -39,6 +50,10 @@ var newcan = document.createElement("canvas");
 document.getElementById("keyboardbox").appendChild(newcan);
 
 var newg = new GVM(0.125*keywidth,keywidth + 0.125*keywidth,keywidth,-Math.PI/2,newcan,keywidth*16.5,keywidth*5,hypercube);
+
+newg.importbytecode(font);
+newg.importbytecode(shapetable);
+newg.importbytecode(keyboard);
 
 function redraw() {
 
@@ -134,10 +149,22 @@ document.getElementById("action").onchange = function() {
 
 document.getElementById("savebutton").onclick = function() {
     redraw();
+
     var httpc = new XMLHttpRequest();
     httpc.open("POST","filesaver.php", true);
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc.send("data="+encodeURIComponent(newg.svgString) +"&filename=symbolfeed/keyboard.svg");//send text to filesaver.php
+
+    var httpc2 = new XMLHttpRequest();
+    httpc2.open("POST","filesaver.php", true);
+    httpc2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    
+    keyboard = [];
+    for(var index = 040;index < 0177;index++){
+        keyboard.push("0" + index.toString(8) + ":" + newg.hypercube[index]);
+    }
+
+    httpc2.send("data="+encodeURIComponent("keyboard = " + JSON.stringify(keyboard,null,"  ") +  ";")+"&filename=data/keyboard.js");//send text to filesaver.php
 
 }
 

@@ -102,7 +102,6 @@ else{
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 
 
-
 var newGVM = new GVM(0.98*squareWidth,0.98*squareWidth,0.96*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),squareWidth,squareWidth,hypercube);
 
 for(var index = 0;index < 01377;index++){
@@ -144,6 +143,7 @@ var spellGVM = new GVM(10,100,50,-Math.PI/2,document.getElementById("spellcanvas
 spellGVM.importbytecode(font);
 spellGVM.importbytecode(shapetable);
 spellGVM.importbytecode(shapetablesymbols);
+spellGVM.importbytecode(keyboard);
 
 
 
