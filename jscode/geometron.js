@@ -162,7 +162,6 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
 
     this.drawGlyph = function(glyph) {
         
-        this.glyph = glyph;
         this.ctx.clearRect(0,0,this.width,this.height);
         this.ctx.strokeStyle = this.style.color0;
         this.ctx.fillStyle = this.style.fill0;
@@ -188,7 +187,6 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
     
 
     this.spellGlyph = function(glyph) {
-        this.glyph = glyph;
         var localGlyph = "";
         var glyphArray = glyph.split(",");
         for(var index = 0; index < glyphArray.length; index++){
@@ -201,7 +199,6 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             }
         }
         glyph = localGlyph;
-        this.glyph = glyph;
         this.canvas2d.height = this.unit + 2;
         this.canvas2d.width = this.unit*(glyphArray.length - 1 ) + 4;
         this.height = this.unit + 2;

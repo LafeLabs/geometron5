@@ -73,6 +73,10 @@ newg.importbytecode(shapetable);
 newg.importbytecode(shapetablesymbols);
 newg.importbytecode(keyboard);
 
+newg.address = 0220;
+newg.glyph = newg.hypercube[address] + "0207,";
+currentGlyph = newg.hypercube[address] + "0207,";
+
 symcan = document.getElementById("symbolcanvas");
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 cansize = 200;
@@ -82,7 +86,7 @@ symg.importbytecode(shapetable);
 symg.importbytecode(shapetablesymbols);
 symg.importbytecode(keyboard);
 symg.drawGlyph("0300,");
-symg.action(01000 + address);
+symg.action(01000 + newg.address);
 
 shapecan = document.getElementById("shapecanvas");
 var shapeg = new GVM(cansize*0.5,cansize*0.5,cansize*0.25,-Math.PI/2,shapecan,cansize,cansize,hypercube);
@@ -91,7 +95,7 @@ shapeg.importbytecode(shapetable);
 shapeg.importbytecode(shapetablesymbols);
 shapeg.importbytecode(keyboard);
 shapeg.drawGlyph("0300,");
-shapeg.action(address);
+shapeg.action(newg.address);
 
 function redrawtable() {
 
@@ -123,30 +127,76 @@ function redrawtable() {
 }
 redrawtable();
 
-currentGlyph = newg.hypercube[address]  + "0207,";
 
 spellsize = 50;
-glyphArray = currentGlyph.split(",");
-glyphLength = glyphArray.length;
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 var spellGVM = new GVM(5,spellsize - 5,spellsize,-Math.PI/2,document.getElementById("spellcanvas"),200,spellsize + 10,hypercube);
 spellGVM.importbytecode(font);
 spellGVM.importbytecode(shapetable);
 spellGVM.importbytecode(shapetablesymbols);
 spellGVM.importbytecode(keyboard);
+spellGVM.address = 0220;
+spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+symg.glyph = newg.glyph;
+shapeg.glyph = newg.glyph;
 
 function redraw() {
-    spellGVM.spellGlyph(currentGlyph);
-    document.getElementById("spellinput").value = newg.hypercube[address];
-    document.getElementById("addressinput").value = "0"  + address.toString(8);
-    if(symbolmode) {
+    
+    spellGVM.spellGlyph(spellGVM.glyph);
+    document.getElementById("spellinput").value = spellGVM.hypercube[spellGVM.address];
+    document.getElementById("addressinput").value = "0"  + spellGVM.address.toString(8);
+    shapeg.drawGlyph("0300,");
+    shapeg.actionSequence(shapeg.glyph);
+    symg.drawGlyph("0300,");
+    symg.actionSequence(symg.glyph);
 
-    }
 }
 redraw();
 
+document.getElementById("actioninput").onkeydown = function(a) {
+    var charCode = a.keyCode || a.which;
 
+    if(charCode == 010) {
+           
+        if(!symbolmode) {
+            shapeg.cursorAction(010);
+        }
+    }
+    if(charCode == 045){
+        spellGVM.cursorAction(020);             
+    }
+    if(charCode == 047){
+        spellGVM.cursorAction(021);   
+    }
+    if(charCode == 046){
+        //up arrow: next
+        spellGVM.address++;
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        if(symbolmode) {
 
+        }
+        else{
+            shapeg.drawGlyph("0300,");
+            shapeg.actionSequence(spellGVM.glyph);
+        }
+
+    }
+    if(charCode == 050){
+        //down arrow: prev address
+        spellGVM.address--;
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        if(symbolmode) {
+        }
+        else{
+            shapeg.drawGlyph("0300,");
+            shapeg.actionSequence(spellGVM.glyph);
+        }
+
+    }
+    redraw();
+}
+
+document.getElementById("actioninput").select();
 
 </script>
 <style>
