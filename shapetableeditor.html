@@ -28,10 +28,10 @@
         <td>action:</td><td><input id = "actioninput"/></td>
     </tr>
     <tr>
-        <td>print:</td><td><input/></td>
+        <td>print:</td><td><input id = "printinput"/></td>
     </tr>
     <tr>
-        <td>stack:</td><td><input/></td>
+        <td>stack:</td><td><input id = "stackinput"/></td>
     </tr>
     <tr>
         <td>address:</td><td><input id = "addressinput"/></td>
@@ -51,7 +51,8 @@
 <a href = "hypercube.html">
     <img style = "width:50px;" src = "iconsymbols/hypercubeicon.svg"/>
 </a>               
-
+<div id = "importbutton" class = "button">import bytecode</div>
+<textarea id = "textio"></textarea>
 
 <script>
 
@@ -144,11 +145,13 @@ function redraw() {
     
     spellGVM.spellGlyph(spellGVM.glyph);
     document.getElementById("spellinput").value = spellGVM.hypercube[spellGVM.address];
+    document.getElementById("spellinput").style.width =  (spellGVM.hypercube[spellGVM.address].length*0.65).toString() +  "em";
     document.getElementById("addressinput").value = "0"  + spellGVM.address.toString(8);
     shapeg.drawGlyph("0300,");
     shapeg.actionSequence(spellGVM.glyph);
     symg.drawGlyph("0300,");
     symg.actionSequence(spellGVM.hypercube[spellGVM.address + 01000]);
+
 
 }
 redraw();
@@ -212,7 +215,123 @@ document.getElementById("actioninput").onkeypress = function(a) {
 
     redraw();
 }
+document.getElementById("stackinput").onkeypress = function(a) {
+    var charCode = a.keyCode || a.which;
+    var localCursorAction = charCode;     
+    spellGVM.cursorAction(localCursorAction);   
+    spellGVM.spellGlyph(spellGVM.glyph);    
+    this.value = "";
+    spellGVM.saveGlyph();
+    redraw();
+}
 
+document.getElementById("printinput").onkeypress = function(a) {
+    var charCode = a.keyCode || a.which;
+    var localCursorAction = charCode + 01000;     
+    spellGVM.cursorAction(localCursorAction);   
+    spellGVM.spellGlyph(spellGVM.glyph);    
+    this.value = "";
+    spellGVM.saveGlyph();
+    redraw();
+}
+
+document.getElementById("stackinput").onkeydown = function(a) {
+    var charCode = a.keyCode || a.which;
+
+    if(charCode == 010) {
+        spellGVM.cursorAction(010);             
+           
+//        if(!symbolmode) {
+  //          shapeg.cursorAction(010);
+    //    }
+    }
+    if(charCode == 045){
+        spellGVM.cursorAction(020);             
+    }
+    if(charCode == 047){
+        spellGVM.cursorAction(021);   
+    }
+    if(charCode == 046){
+        //up arrow: next
+        spellGVM.address++;
+        if(spellGVM.address > 0247) {
+            spellGVM.address = 0220;
+        }
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        spellGVM.saveGlyph();
+        newg.hypercube = spellGVM.hypercube;
+        symg.hypercube = spellGVM.hypercube;
+        shapeg.hypercube = spellGVM.hypercube;
+        redrawtable();
+
+    }
+    if(charCode == 050){
+        //down arrow: prev address
+        spellGVM.address--;
+        if(spellGVM.address < 0220) {
+            spellGVM.address = 0247;
+        }
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        spellGVM.saveGlyph();
+        newg.hypercube = spellGVM.hypercube;
+        symg.hypercube = spellGVM.hypercube;
+        shapeg.hypercube = spellGVM.hypercube;
+        redrawtable();
+
+    }
+    spellGVM.saveGlyph();
+
+    redraw();
+}
+
+document.getElementById("printinput").onkeydown = function(a) {
+    var charCode = a.keyCode || a.which;
+
+    if(charCode == 010) {
+        spellGVM.cursorAction(010);             
+           
+//        if(!symbolmode) {
+  //          shapeg.cursorAction(010);
+    //    }
+    }
+    if(charCode == 045){
+        spellGVM.cursorAction(020);             
+    }
+    if(charCode == 047){
+        spellGVM.cursorAction(021);   
+    }
+    if(charCode == 046){
+        //up arrow: next
+        spellGVM.address++;
+        if(spellGVM.address > 0247) {
+            spellGVM.address = 0220;
+        }
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        spellGVM.saveGlyph();
+        newg.hypercube = spellGVM.hypercube;
+        symg.hypercube = spellGVM.hypercube;
+        shapeg.hypercube = spellGVM.hypercube;
+        redrawtable();
+
+    }
+    if(charCode == 050){
+        //down arrow: prev address
+        spellGVM.address--;
+        if(spellGVM.address < 0220) {
+            spellGVM.address = 0247;
+        }
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        spellGVM.saveGlyph();
+        newg.hypercube = spellGVM.hypercube;
+        symg.hypercube = spellGVM.hypercube;
+        shapeg.hypercube = spellGVM.hypercube;
+        redrawtable();
+
+    }
+    spellGVM.saveGlyph();
+
+    redraw();
+}
 
 document.getElementById("actioninput").select();
 
@@ -238,7 +357,34 @@ document.getElementById("savebutton").onclick = function(){
     httpc2.send("data="+encodeURIComponent("shapetable = " + JSON.stringify(shapetable,null,"  ") +  ";")+"&filename=data/shapetable.js");//send text to filesaver.php
     document.getElementById("actioninput").select();
 
+    document.getElementById("textio").value = JSON.stringify(shapetable,null,"  ");
+
 }
+
+
+document.getElementById("spellinput").onchange = function() {
+    spellGVM.hypercube[spellGVM.address] = this.value;
+    spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+    newg.hypercube = spellGVM.hypercube;
+    symg.hypercube = spellGVM.hypercube;
+    shapeg.hypercube = spellGVM.hypercube;
+    redraw();
+}
+
+document.getElementById("importbutton").onclick = function() {
+    if(document.getElementById("textio").value.length > 0){
+        var localshapes = JSON.parse(document.getElementById("textio").value);
+        spellGVM.importbytecode(localshapes);
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        newg.hypercube = spellGVM.hypercube;
+        symg.hypercube = spellGVM.hypercube;
+        shapeg.hypercube = spellGVM.hypercube;
+        redraw();
+        redrawtable();
+    }
+}
+
+
 
 </script>
 <style>
@@ -254,6 +400,19 @@ document.getElementById("savebutton").onclick = function(){
 }
 canvas{
     border:solid;
+}
+#actioninput{
+    width:1em;
+}
+#printinput{
+    width:1em;
+}
+#stackinput{
+    width:1em;
+}
+#spellinput{
+    font-family:courier;
+    font-size:1em;
 }
 </style>
 </body>
