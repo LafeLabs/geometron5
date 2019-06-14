@@ -373,6 +373,13 @@ document.getElementById("savebutton").onclick = function(){
     }
 
     httpc2.send("data="+encodeURIComponent("shapetable = " + JSON.stringify(shapetable,null,"  ") +  ";")+"&filename=data/shapetable.js");//send text to filesaver.php
+
+
+    var httpc3 = new XMLHttpRequest();
+    httpc3.open("POST","filesaver.php", true);
+    httpc3.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc3.send("data="+encodeURIComponent(JSON.stringify(shapetable,null,"  "))+"&filename=data/shapetable.txt");//send text to filesaver.php
+
     document.getElementById("actioninput").select();
 
     document.getElementById("textio").value = JSON.stringify(shapetable,null,"  ");
