@@ -180,9 +180,13 @@ document.getElementById("actioninput").onkeydown = function(a) {
     if(charCode == 046){
         //up arrow: next
         spellGVM.address++;
-        if(spellGVM.address > 0247) {
+        if(spellGVM.address > 0247 && spellGVM.address < 01000) {
             spellGVM.address = 0220;
         }
+        if(spellGVM.address > 01247) {
+            spellGVM.address = 01220;
+        }
+
         spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
         spellGVM.saveGlyph();
         newg.hypercube = spellGVM.hypercube;
@@ -196,6 +200,9 @@ document.getElementById("actioninput").onkeydown = function(a) {
         spellGVM.address--;
         if(spellGVM.address < 0220) {
             spellGVM.address = 0247;
+        }
+        if(spellGVM.address > 01000 && spellGVM.address < 01220) {
+            spellGVM.address = 01247;
         }
         spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
         spellGVM.saveGlyph();
@@ -255,9 +262,13 @@ document.getElementById("stackinput").onkeydown = function(a) {
     if(charCode == 046){
         //up arrow: next
         spellGVM.address++;
-        if(spellGVM.address > 0247) {
+        if(spellGVM.address > 0247 && spellGVM.address < 01000) {
             spellGVM.address = 0220;
         }
+        if(spellGVM.address > 01247) {
+            spellGVM.address = 01220;
+        }
+
         spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
         spellGVM.saveGlyph();
         newg.hypercube = spellGVM.hypercube;
@@ -271,6 +282,9 @@ document.getElementById("stackinput").onkeydown = function(a) {
         spellGVM.address--;
         if(spellGVM.address < 0220) {
             spellGVM.address = 0247;
+        }
+        if(spellGVM.address > 01000 && spellGVM.address < 01220) {
+            spellGVM.address = 01247;
         }
         spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
         spellGVM.saveGlyph();
@@ -300,9 +314,13 @@ document.getElementById("printinput").onkeydown = function(a) {
     if(charCode == 046){
         //up arrow: next
         spellGVM.address++;
-        if(spellGVM.address > 0247) {
+        if(spellGVM.address > 0247 && spellGVM.address < 01000) {
             spellGVM.address = 0220;
         }
+        if(spellGVM.address > 01247) {
+            spellGVM.address = 01220;
+        }
+
         spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
         spellGVM.saveGlyph();
         newg.hypercube = spellGVM.hypercube;
@@ -316,6 +334,9 @@ document.getElementById("printinput").onkeydown = function(a) {
         spellGVM.address--;
         if(spellGVM.address < 0220) {
             spellGVM.address = 0247;
+        }
+        if(spellGVM.address > 01000 && spellGVM.address < 01220) {
+            spellGVM.address = 01247;
         }
         spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
         spellGVM.saveGlyph();
