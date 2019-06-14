@@ -44,6 +44,7 @@
 </div>
 
 <img style = "width:50px" class = "button" id = "savebutton" src = "iconsymbols/savebutton.svg"/>
+<img style = "width:50px" class = "button" id = "actionsymbolbutton" src = "iconsymbols/actionsymbol.svg"/>
 
 <a href = "symbol.html">
     <img style = "width:50px;" src = "iconsymbols/symbolicon.svg"/>
@@ -147,10 +148,18 @@ function redraw() {
     document.getElementById("spellinput").value = spellGVM.hypercube[spellGVM.address];
     document.getElementById("spellinput").style.width =  (spellGVM.hypercube[spellGVM.address].length*0.65).toString() +  "em";
     document.getElementById("addressinput").value = "0"  + spellGVM.address.toString(8);
-    shapeg.drawGlyph("0300,");
-    shapeg.actionSequence(spellGVM.glyph);
-    symg.drawGlyph("0300,");
-    symg.actionSequence(spellGVM.hypercube[spellGVM.address + 01000]);
+    if(!symbolmode){
+        shapeg.drawGlyph("0300,");
+        shapeg.actionSequence(spellGVM.glyph);
+        symg.drawGlyph("0300,");
+        symg.actionSequence(spellGVM.hypercube[spellGVM.address + 01000]);
+    }
+    else{
+        shapeg.drawGlyph("0300,");
+        shapeg.actionSequence(spellGVM.hypercube[spellGVM.address - 01000]);
+        symg.drawGlyph("0300,");
+        symg.actionSequence(spellGVM.glyph);
+    }
 
 
 }
@@ -160,11 +169,7 @@ document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
 
     if(charCode == 010) {
-        spellGVM.cursorAction(010);             
-           
-//        if(!symbolmode) {
-  //          shapeg.cursorAction(010);
-    //    }
+        spellGVM.cursorAction(010);                        
     }
     if(charCode == 045){
         spellGVM.cursorAction(020);             
@@ -239,11 +244,7 @@ document.getElementById("stackinput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
 
     if(charCode == 010) {
-        spellGVM.cursorAction(010);             
-           
-//        if(!symbolmode) {
-  //          shapeg.cursorAction(010);
-    //    }
+        spellGVM.cursorAction(010);                        
     }
     if(charCode == 045){
         spellGVM.cursorAction(020);             
@@ -288,11 +289,7 @@ document.getElementById("printinput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
 
     if(charCode == 010) {
-        spellGVM.cursorAction(010);             
-           
-//        if(!symbolmode) {
-  //          shapeg.cursorAction(010);
-    //    }
+        spellGVM.cursorAction(010);                        
     }
     if(charCode == 045){
         spellGVM.cursorAction(020);             
@@ -384,7 +381,21 @@ document.getElementById("importbutton").onclick = function() {
     }
 }
 
+document.getElementById("actionsymbolbutton").onclick = function() {
 
+    symbolmode = !symbolmode;
+    spellGVM.saveGlyph();
+    if(symbolmode){
+        spellGVM.address += 01000;
+    }
+    else{
+        spellGVM.address -= 01000;
+    }
+    spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+    redraw();
+    document.getElementById("actioninput").select();
+
+}
 
 </script>
 <style>
