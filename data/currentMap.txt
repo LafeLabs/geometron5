@@ -187,5 +187,14 @@
         "text": "fonteditor",
         "href": "fonteditor.html",
         "src": ""
+    },
+    {
+        "x": 0.5047732696897375,
+        "y": 0.4880668257756563,
+        "w": 0.14916467780429593,
+        "angle": 0,
+        "text": "setup",
+        "href": "setup.html",
+        "src": ""
     }
 ]
