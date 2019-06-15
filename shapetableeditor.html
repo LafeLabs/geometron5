@@ -18,55 +18,70 @@
     <!--
         shapetableeditor.html:
     -->
-
-<canvas id = "shapetablecanvas"></canvas>
-<canvas id = "symbolcanvas"></canvas>
-<canvas id = "shapecanvas"></canvas>
-
-<table>
-    <tr>
-        <td>action:</td><td><input id = "actioninput"/></td>
-    </tr>
-    <tr>
-        <td>print:</td><td><input id = "printinput"/></td>
-    </tr>
-    <tr>
-        <td>stack:</td><td><input id = "stackinput"/></td>
-    </tr>
-    <tr>
-        <td>address:</td><td><input id = "addressinput"/></td>
-    </tr>
-</table>
-
-<div id = "spelldiv">
-    <input id = "spellinput"/>
-    <canvas id = "spellcanvas"></canvas>
+<div id = "square">
+        <canvas id = "shapetablecanvas"></canvas>
+        <canvas id = "symbolcanvas"></canvas>
+        <canvas id = "shapecanvas"></canvas>
+        <div id = "spelldiv">
+                <input id = "spellinput"/>
+                <canvas id = "spellcanvas"></canvas>
+        </div>    
+</div>
+<div id = "margin">
+        <img style = "width:50px" class = "button" id = "savebutton" src = "iconsymbols/savebutton.svg"/>
+        <img style = "width:50px" class = "button" id = "actionsymbolbutton" src = "iconsymbols/actionsymbol.svg"/>
+        
+        <a href = "symbol.html">
+            <img style = "width:50px;" src = "iconsymbols/symbolicon.svg"/>
+        </a>
+        <a href = "hypercube.html">
+            <img style = "width:50px;" src = "iconsymbols/hypercubeicon.svg"/>
+        </a>
+        <table>
+                <tr>
+                    <td>action:</td><td><input id = "actioninput"/></td>
+                </tr>
+                <tr>
+                    <td>print:</td><td><input id = "printinput"/></td>
+                </tr>
+                <tr>
+                    <td>stack:</td><td><input id = "stackinput"/></td>
+                </tr>
+                <tr>
+                    <td>address:</td><td><input id = "addressinput"/></td>
+                </tr>
+            </table>
+                   
+            <div id = "importbutton" class = "button">import bytecode</div>
+            <textarea id = "textio"></textarea>
+<img style = "max-width:95%;" id  = "keyboardimage" src = "symbolfeed/keyboard.svg"/>
 </div>
 
-<img style = "width:50px" class = "button" id = "savebutton" src = "iconsymbols/savebutton.svg"/>
-<img style = "width:50px" class = "button" id = "actionsymbolbutton" src = "iconsymbols/actionsymbol.svg"/>
 
-<a href = "symbol.html">
-    <img style = "width:50px;" src = "iconsymbols/symbolicon.svg"/>
-</a>
-<a href = "hypercube.html">
-    <img style = "width:50px;" src = "iconsymbols/hypercubeicon.svg"/>
-</a>               
-<div id = "importbutton" class = "button">import bytecode</div>
-<textarea id = "textio"></textarea>
+
+
 
 <script>
 
 symbolmode = false;//shape mode is symbolmode = false, symbolmode is symbolmode = true
+document.getElementById("shapecanvas").style.border = "solid";
 
 address = 0220;
 
-if(innerWidth < 800){
-    symbolsize = innerWidth/10;
+squareWidth = innerWidth;
+if(innerWidth > innerHeight) {
+    squareWidth = innerHeight;
+    document.getElementById("margin").style.height = squareWidth.toString() + "px"; 
+    document.getElementById("margin").style.width = (innerWidth - squareWidth).toString() + "px"; 
 }
 else{
-    symbolsize = 100;
+    document.getElementById("margin").style.height = (innerHeight - squareWidth).toString() + "px"; 
+    document.getElementById("margin").style.width = (squareWidth).toString() + "px"; 
 }
+symbolsize = squareWidth/10;
+
+document.getElementById("square").style.width =  squareWidth.toString() + "px";
+document.getElementById("square").style.height =  squareWidth.toString() + "px";
 
 tablecan = document.getElementById("shapetablecanvas");
 var newg = new GVM(0.25*symbolsize,symbolsize + 0.25*symbolsize,symbolsize,-Math.PI/2,tablecan,symbolsize*8.5,symbolsize*4,hypercube);
@@ -81,8 +96,8 @@ currentGlyph = newg.hypercube[address] + "0207,";
 
 symcan = document.getElementById("symbolcanvas");
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
-cansize = 200;
-var symg = new GVM(2,cansize - 2,cansize-4,-Math.PI/2,symcan,cansize,cansize,hypercube);
+cansize = squareWidth/3;
+var symg = new GVM(4,cansize - 4,cansize-8,-Math.PI/2,symcan,cansize,cansize,hypercube);
 symg.importbytecode(font);
 symg.importbytecode(shapetablesymbols);
 symg.importbytecode(shapetable);
@@ -415,9 +430,14 @@ document.getElementById("actionsymbolbutton").onclick = function() {
     spellGVM.saveGlyph();
     if(symbolmode){
         spellGVM.address += 01000;
+        document.getElementById("symbolcanvas").style.border = "solid";
+        document.getElementById("shapecanvas").style.border = "none";
+
     }
     else{
         spellGVM.address -= 01000;
+        document.getElementById("shapecanvas").style.border = "solid";
+        document.getElementById("symbolcanvas").style.border = "none";
     }
     spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
     redraw();
@@ -427,7 +447,9 @@ document.getElementById("actionsymbolbutton").onclick = function() {
 
 </script>
 <style>
-
+body{
+    overflow:hidden;
+}
 .button{
     cursor:pointer;
 }
@@ -436,9 +458,6 @@ document.getElementById("actionsymbolbutton").onclick = function() {
 }
 .button:active{
     background-color:yellow;
-}
-canvas{
-    border:solid;
 }
 #actioninput{
     width:1em;
@@ -452,6 +471,27 @@ canvas{
 #spellinput{
     font-family:courier;
     font-size:1em;
+}
+#square{
+    position:absolute;
+    left:0px;
+    top:0px;
+    overflow:hidden;
+}
+#spelldiv{
+    overflow:scroll;
+}
+#margin{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+}
+#importbutton{
+    width:10em;
+    font-family:courier;
+    border:solid;
+    border-width:3px;
+    border-radius:5px;
 }
 </style>
 </body>
