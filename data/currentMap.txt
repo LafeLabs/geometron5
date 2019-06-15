@@ -178,5 +178,14 @@
         "text": "shapetableeditor",
         "href": "shapetableeditor.html",
         "src": ""
+    },
+    {
+        "x": 0.5,
+        "y": 0.44272076372315033,
+        "w": 0.14916467780429593,
+        "angle": 0,
+        "text": "fonteditor",
+        "href": "fonteditor.html",
+        "src": ""
     }
 ]

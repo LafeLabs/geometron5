@@ -26,7 +26,6 @@
     <script src="data/font.js"></script>
     <script src="data/keyboard.js"></script>
     <script src="data/shapetable.js"></script>
-    <script src="data/shapetablesymbols.js"></script>
     <script src="data/configxy.js"></script>
 
 </head>
@@ -112,7 +111,6 @@ for(var index = 0;index < 01377;index++){
 
 newGVM.importbytecode(font);
 newGVM.importbytecode(shapetable);
-newGVM.importbytecode(shapetablesymbols);
 newGVM.importbytecode(keyboard);
 
 
@@ -142,7 +140,6 @@ newGVM.drawGlyph(newGVM.glyph);
 var spellGVM = new GVM(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 spellGVM.importbytecode(font);
 spellGVM.importbytecode(shapetable);
-spellGVM.importbytecode(shapetablesymbols);
 spellGVM.importbytecode(keyboard);
 
 
@@ -258,6 +255,7 @@ for(var index = 0;index < controlbuttons.length; index++) {
     newcan.classList.add("button");
     //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
     var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
+    newg.importbytecode(shapetable);
 
     newg.drawGlyph("0300,0" + (controlbuttons[index] + 01000).toString(8) + ",",newg);
 
