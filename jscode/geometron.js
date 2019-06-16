@@ -168,6 +168,7 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
         this.ctx.fillStyle = this.style.fill0;
         this.ctx.lineWidth = this.style.line0;
         this.svgString = "<svg width=\"" + this.width.toString() + "\" height=\"" + this.height.toString() + "\" viewbox = \"0 0 " + this.width.toString() + " " + this.height.toString() + "\"  xmlns=\"http://www.w3.org/2000/svg\">\n";
+        this.svgString += "<!--<json></json>-->";
         this.action(0300);
         this.actionSequence(glyph);
         this.svgString += "</svg>";
@@ -748,7 +749,6 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
 
 
 hypercube = [
-    "040:035,",
     "041:0321,",
     "042:023,",
     "043:0323,",

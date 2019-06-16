@@ -196,5 +196,14 @@
         "text": "setup",
         "href": "setup.html",
         "src": ""
+    },
+    {
+        "x": 0.5047732696897375,
+        "y": 0.5393794749403341,
+        "w": 0.14916467780429593,
+        "angle": 0,
+        "text": "keyboardeditor",
+        "href": "keyboardeditor.html",
+        "src": ""
     }
 ]

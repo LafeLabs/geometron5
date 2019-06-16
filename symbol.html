@@ -62,8 +62,8 @@
         <a href = "setup.html">
             <img style = "width:50px;" src = "iconsymbols/setup.svg"/>
         </a>    
-        <img id = "stackmodebutton" class = "button" style = "width:50px;" src = "iconsymbols/stackmode.svg"/>
-        <img id = "spellmodebutton" class = "button" style = "width:50px;" src = "iconsymbols/spellmode.svg"/>
+
+        <img id = "modebutton" class = "button" style = "width:50px;background-color:#00ff00" src = "iconsymbols/actionmode.svg"/>
 
 
         <img id = "savebutton" class = "button" style = "width:50px;" src = "iconsymbols/savebutton.svg"/>
@@ -134,6 +134,10 @@ spellGVM.hypercube = newGVM.hypercube;
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
 
+    if(charCode == 040) {
+        modeswitch();
+    }
+
     if(charCode == 010) {
         newGVM.cursorAction(010,newGVM);   
     }
@@ -161,30 +165,28 @@ document.getElementById("actioninput").onkeydown = function(a) {
 
 symbolEditMode = false;
 
+
+mode = 0;//0 is action, 1, is spelling, 2 is stack.
+
 actionmode = "action";//"spelling","stack"
 
-
-document.getElementById("spellmodebutton").onclick = function() {
-    if(actionmode != "action") {
-        actionmode = "action";
-    }
-    else {
-        actionmode = "spelling";
-    }
-    document.getElementById("actioninput").select();
-
+document.getElementById("modebutton").onclick = function(){
+    modeswitch();
 }
 
-document.getElementById("stackmodebutton").onclick = function() {
-    if(actionmode != "action") {
-        actionmode = "action";
+function modeswitch(){
+    mode++;
+    mode = mode%3;
+    if(mode == 0){
+        document.getElementById("modebutton").src = "iconsymbols/actionmode.svg";
     }
-    else {
-        actionmode = "stack";
+    if(mode == 1){
+        document.getElementById("modebutton").src = "iconsymbols/spellmode.svg";
     }
-
+    if(mode == 2){
+        document.getElementById("modebutton").src = "iconsymbols/stackmode.svg";
+    }
     document.getElementById("actioninput").select();
-
 }
 
 
@@ -192,23 +194,21 @@ document.getElementById("actioninput").onkeypress = function(a) {
 
     var charCode = a.keyCode || a.which;
 
-    if(actionmode == "action"){
+    if(mode == 0){
         localCursorAction = parseInt(newGVM.hypercube[charCode],8);     
     }    
-
-    if(actionmode == "stack"){
-        localCursorAction = charCode;     
-    }    
-
-    if(actionmode == "spelling"){
+    if(mode == 1){
         localCursorAction = charCode + 01000;     
+    }    
+    if(mode == 2){
+        localCursorAction = charCode;     
     }    
 
     newGVM.cursorAction(localCursorAction);   
     spellGVM.spellGlyph(newGVM.glyph);    
     this.value = "";
     newGVM.saveGlyph();
-    
+    savejson();
 }
 
 //controlbuttons = [0304,0305,0306,0310,0311,0312,0313,0200,0330,0331,0332,0333,0334,0335,0336,0337,020,010,021,0341,0201,0340,030,031,032,033,036,037,0350,0351];
@@ -236,7 +236,7 @@ for(var index = 0;index < controlbuttons.length; index++) {
         }
         spellGVM.spellGlyph(newGVM.glyph);    
         newGVM.saveGlyph();
-
+        savejson();
     }
 
 
@@ -276,6 +276,8 @@ document.getElementById("savebutton").onclick = function() {
 
         //need to inject json data here ... 
     
+    invisibleGVM.svgString = invisibleGVM.svgString.split("<json>")[0] + "<json>" + JSON.stringify(currentjson,null,"  ") + "</json>" + invisibleGVM.svgString.split("</json>")[1];
+        
     var httpc4 = new XMLHttpRequest();
     httpc4.open("POST","filesaver.php", true);
     httpc4.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
