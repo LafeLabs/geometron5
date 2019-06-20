@@ -104,8 +104,6 @@
     <line x1="44" y1="212" x2="57" y2="172" style="stroke:#000000;stroke-width:2" />
     <line x1="70" y1="212" x2="57" y2="172" style="stroke:#000000;stroke-width:2" />
     <line x1="65" y1="196" x2="49" y2="196" style="stroke:#000000;stroke-width:2" />
-<circle cx="54" cy = "222" r = "10.475" stroke = "#000000" stroke-width = "2" fill = "none" />
-<circle cx="65" cy = "212" r = "5.2375" stroke = "#000000" stroke-width = "2" fill = "none" />
     <line x1="91" y1="212" x2="91" y2="170" style="stroke:#000000;stroke-width:2" />
     <line x1="91" y1="170" x2="102" y2="170" style="stroke:#000000;stroke-width:2" />
     <line x1="91" y1="191" x2="102" y2="191" style="stroke:#000000;stroke-width:2" />

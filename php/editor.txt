@@ -34,6 +34,13 @@ EGO DEATH:
     <div class = "html file">symbol.html</div>
     <div class = "html file">hypercube.html</div>
     <div class = "html file">scroll.html</div>
+    <div class = "html file">fonteditor.html</div>
+    <div class = "html file">keyboardeditor.html</div>
+    <div class = "html file">pageeditor.html</div>
+    <div class = "html file">setup.html</div>
+    <div class = "html file">shapetableeditor.html</div>
+    <div class = "html file">styleeditor.html</div>
+    <div class = "html file">symbolfeed.html</div>
 
     <div class = "markdown file">README.md</div>
 
