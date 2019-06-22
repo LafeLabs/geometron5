@@ -124,8 +124,8 @@ else{
     
     squareWidth = innerWidth;
     document.getElementById("margin").style.height = (innerHeight - squareWidth).toString() + "px";
-    document.getElementById("margin").style.width = (innerHeight).toString() + "px";
-    marginWidth = squareWidth - innerWidth;
+    document.getElementById("margin").style.width = (innerWidth).toString() + "px";
+    marginWidth = innerHeight - squareWidth;
     document.getElementById("marginsquare2").style.width = (0.5*squareWidth).toString() + "px";
     document.getElementById("marginsquare2").style.height = marginWidth.toString() + "px";
     document.getElementById("marginsquare1").style.width = (0.5*squareWidth).toString() + "px";
@@ -392,9 +392,9 @@ body{
 }
 #marginsquare1{
     position:absolute;
-    right:0px;
+    left:0px;
     top:0px;
-    overflow:hidden;
+    overflow:scroll;
 }
 #marginsquare2{
     position:absolute;
