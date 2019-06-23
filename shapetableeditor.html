@@ -40,12 +40,6 @@
                 <td>action:</td><td><input id = "actioninput"/></td>
             </tr>
             <tr>
-                <td>print:</td><td><input id = "printinput"/></td>
-            </tr>
-            <tr>
-                <td>stack:</td><td><input id = "stackinput"/></td>
-            </tr>
-            <tr>
                 <td>address:</td><td><input id = "addressinput"/></td>
             </tr>
         </table>
@@ -181,6 +175,9 @@ redraw();
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
 
+    if(charCode == 015) {
+        modeswitch();
+    }
     if(charCode == 010) {
         spellGVM.cursorAction(010);                        
     }
@@ -232,7 +229,17 @@ document.getElementById("actioninput").onkeydown = function(a) {
 
 document.getElementById("actioninput").onkeypress = function(a) {
     var charCode = a.keyCode || a.which;
-    var localCursorAction = parseInt(spellGVM.hypercube[charCode],8);     
+    var localCursorAction = 0177;//do nothing
+    if(mode == 0){
+        localCursorAction = parseInt(spellGVM.hypercube[charCode],8);     
+    }    
+    if(mode == 1){
+        localCursorAction = charCode + 01000;     
+    }    
+    if(mode == 2){
+        localCursorAction = charCode;     
+    }    
+
     spellGVM.cursorAction(localCursorAction);   
     spellGVM.spellGlyph(spellGVM.glyph);    
     this.value = "";
@@ -240,129 +247,7 @@ document.getElementById("actioninput").onkeypress = function(a) {
 
     redraw();
 }
-document.getElementById("stackinput").onkeypress = function(a) {
-    var charCode = a.keyCode || a.which;
-    var localCursorAction = charCode;     
-    spellGVM.cursorAction(localCursorAction);   
-    spellGVM.spellGlyph(spellGVM.glyph);    
-    this.value = "";
-    spellGVM.saveGlyph();
-    redraw();
-}
 
-document.getElementById("printinput").onkeypress = function(a) {
-    var charCode = a.keyCode || a.which;
-    var localCursorAction = charCode + 01000;     
-    spellGVM.cursorAction(localCursorAction);   
-    spellGVM.spellGlyph(spellGVM.glyph);    
-    this.value = "";
-    spellGVM.saveGlyph();
-    redraw();
-}
-
-document.getElementById("stackinput").onkeydown = function(a) {
-    var charCode = a.keyCode || a.which;
-
-    if(charCode == 010) {
-        spellGVM.cursorAction(010);                        
-    }
-    if(charCode == 045){
-        spellGVM.cursorAction(020);             
-    }
-    if(charCode == 047){
-        spellGVM.cursorAction(021);   
-    }
-    if(charCode == 046){
-        //up arrow: next
-        spellGVM.address++;
-        if(spellGVM.address > 0247 && spellGVM.address < 01000) {
-            spellGVM.address = 0220;
-        }
-        if(spellGVM.address > 01247) {
-            spellGVM.address = 01220;
-        }
-
-        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
-        spellGVM.saveGlyph();
-        newg.hypercube = spellGVM.hypercube;
-        symg.hypercube = spellGVM.hypercube;
-        shapeg.hypercube = spellGVM.hypercube;
-        redrawtable();
-
-    }
-    if(charCode == 050){
-        //down arrow: prev address
-        spellGVM.address--;
-        if(spellGVM.address < 0220) {
-            spellGVM.address = 0247;
-        }
-        if(spellGVM.address > 01000 && spellGVM.address < 01220) {
-            spellGVM.address = 01247;
-        }
-        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
-        spellGVM.saveGlyph();
-        newg.hypercube = spellGVM.hypercube;
-        symg.hypercube = spellGVM.hypercube;
-        shapeg.hypercube = spellGVM.hypercube;
-        redrawtable();
-
-    }
-    spellGVM.saveGlyph();
-
-    redraw();
-}
-
-document.getElementById("printinput").onkeydown = function(a) {
-    var charCode = a.keyCode || a.which;
-
-    if(charCode == 010) {
-        spellGVM.cursorAction(010);                        
-    }
-    if(charCode == 045){
-        spellGVM.cursorAction(020);             
-    }
-    if(charCode == 047){
-        spellGVM.cursorAction(021);   
-    }
-    if(charCode == 046){
-        //up arrow: next
-        spellGVM.address++;
-        if(spellGVM.address > 0247 && spellGVM.address < 01000) {
-            spellGVM.address = 0220;
-        }
-        if(spellGVM.address > 01247) {
-            spellGVM.address = 01220;
-        }
-
-        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
-        spellGVM.saveGlyph();
-        newg.hypercube = spellGVM.hypercube;
-        symg.hypercube = spellGVM.hypercube;
-        shapeg.hypercube = spellGVM.hypercube;
-        redrawtable();
-
-    }
-    if(charCode == 050){
-        //down arrow: prev address
-        spellGVM.address--;
-        if(spellGVM.address < 0220) {
-            spellGVM.address = 0247;
-        }
-        if(spellGVM.address > 01000 && spellGVM.address < 01220) {
-            spellGVM.address = 01247;
-        }
-        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
-        spellGVM.saveGlyph();
-        newg.hypercube = spellGVM.hypercube;
-        symg.hypercube = spellGVM.hypercube;
-        shapeg.hypercube = spellGVM.hypercube;
-        redrawtable();
-
-    }
-    spellGVM.saveGlyph();
-
-    redraw();
-}
 
 document.getElementById("actioninput").select();
 
@@ -441,6 +326,29 @@ document.getElementById("actionsymbolbutton").onclick = function() {
     redraw();
     document.getElementById("actioninput").select();
 
+}
+
+mode = 0;//0 is action, 1, is spelling, 2 is stack.
+
+actionmode = "action";//"spelling","stack"
+
+document.getElementById("modebutton").onclick = function(){
+    modeswitch();
+}
+
+function modeswitch(){
+    mode++;
+    mode = mode%3;
+    if(mode == 0){
+        document.getElementById("modebutton").src = "iconsymbols/actionmode.svg";
+    }
+    if(mode == 1){
+        document.getElementById("modebutton").src = "iconsymbols/spellmode.svg";
+    }
+    if(mode == 2){
+        document.getElementById("modebutton").src = "iconsymbols/stackmode.svg";
+    }
+    document.getElementById("actioninput").select();
 }
 
 </script>
