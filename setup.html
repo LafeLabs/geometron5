@@ -190,7 +190,7 @@ for(var index = 0;index < 0377;index++) {
         //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
         var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
         newg.importbytecode(shapetable);
-
+        newg.importbytecode(font);
         newg.drawGlyph("0300,0" + (index + 01000).toString(8) + ",");
         newcan.id = "source0" + index.toString(8);
 
@@ -203,7 +203,9 @@ for(var index = 0;index < 0377;index++) {
             newcan.id = "control" + this.id.substring(6);
             //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
             var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
-            
+            newg.importbytecode(shapetable);
+            newg.importbytecode(font);
+
             newg.drawGlyph("0300,0" + (01000 + parseInt(this.id.substring(6),8)).toString(8) + ",");
             currentjson.controlbuttons.push( parseInt(this.id.substring(6) , 8) );
 

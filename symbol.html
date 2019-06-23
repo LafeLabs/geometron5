@@ -222,6 +222,7 @@ function loadcontrolbuttons(){
         //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
         var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
         newg.importbytecode(shapetable);
+        newg.importbytecode(font);
 
         newg.drawGlyph("0300,0" + (currentjson.controlbuttons[index] + 01000).toString(8) + ",",newg);
 
