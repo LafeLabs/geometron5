@@ -24,7 +24,6 @@
     <script src="data/symbols013xx.js"></script>
     <script src="data/symbols010xx.js"></script>
     <script src="data/shapetable.js"></script>
-    <script src="data/controlbuttons.js"></script>
 
     <!--    <script src="https://pastebin.com/raw/7fvF1seM"></script>-->
 </head>
@@ -152,31 +151,33 @@ for(var index = 0;index < 01377;index++){
 
 buttonSize = 30;
 
-for(var index = 0;index< controlbuttons.length;index++) {
-  
-    var newcan = document.createElement("canvas");
-    document.getElementById("controlsymbols").appendChild(newcan);
-    newcan.classList.add("button");
-    newcan.classList.add("sourcebutton");
-    //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
-    var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
-    newg.importbytecode(shapetable);
-    newg.drawGlyph("0300,0" + (controlbuttons[index] + 01000).toString(8) + ",");
-    newcan.id = "control0" + controlbuttons[index].toString(8);
+function loadcontrolbuttons() {
+    for(var index = 0;index< currentjson.controlbuttons.length;index++) {    
+        var newcan = document.createElement("canvas");
+        document.getElementById("controlsymbols").appendChild(newcan);
+        newcan.classList.add("button");
+        newcan.classList.add("sourcebutton");
+        //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+        var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
+        newg.importbytecode(shapetable);
+        newg.drawGlyph("0300,0" + (currentjson.controlbuttons[index] + 01000).toString(8) + ",");
+        newcan.id = "control0" + currentjson.controlbuttons[index].toString(8);
 
-    newcan.onclick = function() {
-        var thiscommand = parseInt(this.id.substring(7),8);
-        var newarray = [];
-        for(var index = 0;index < controlbuttons.length;index++) {
-           if(controlbuttons[index] != thiscommand){
-               newarray.push(controlbuttons[index]);
-           } 
+        newcan.onclick = function() {
+            var thiscommand = parseInt(this.id.substring(7),8);
+            var newarray = [];
+            for(var index = 0;index < currentjson.controlbuttons.length;index++) {
+            if(currentjson.controlbuttons[index] != thiscommand){
+                newarray.push(currentjson.controlbuttons[index]);
+            } 
+            }
+            currentjson.controlbuttons = newarray;
+            this.parentElement.removeChild(this);
+            savejson();
         }
-        controlbuttons = newarray;
-        this.parentElement.removeChild(this);
-        savecontrolbuttons();
     }
 }
+
 
 for(var index = 0;index < 0377;index++) {
     
@@ -204,34 +205,25 @@ for(var index = 0;index < 0377;index++) {
             var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
             
             newg.drawGlyph("0300,0" + (01000 + parseInt(this.id.substring(6),8)).toString(8) + ",");
-            controlbuttons.push( parseInt(this.id.substring(6) , 8) );
+            currentjson.controlbuttons.push( parseInt(this.id.substring(6) , 8) );
 
             newcan.onclick = function() {
                 var thiscommand = parseInt(this.id.substring(7),8);
                 var newarray = [];
-                for(var index = 0;index < controlbuttons.length;index++) {
-                    if(controlbuttons[index] != thiscommand){
-                        newarray.push(controlbuttons[index]);
+                for(var index = 0;index < currentjson.controlbuttons.length;index++) {
+                    if(currentjson.controlbuttons[index] != thiscommand){
+                        newarray.push(currentjson.controlbuttons[index]);
                     } 
                 }
-                controlbuttons = newarray;
+                currentjson.controlbuttons = newarray;
                 this.parentElement.removeChild(this);
-                savecontrolbuttons();
+                savejson();
             }
-            savecontrolbuttons();
+            savejson();
         }
     }
 }
 
-function savecontrolbuttons() {
-
-    var data = encodeURIComponent("controlbuttons = " + JSON.stringify(controlbuttons,null," ") + ";");
-    var httpc = new XMLHttpRequest();
-    httpc.open("POST", "filesaver.php", true);
-    httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpc.send("data=" + data +"&filename=data/controlbuttons.js");//send text to filesaver.php
-
-}
 
 var httpc = new XMLHttpRequest();
 httpc.onreadystatechange = function() {
@@ -253,6 +245,7 @@ httpc.onreadystatechange = function() {
         newGVM.drawGlyph("0300,0341,0200,");
         filltable();
         redraw();
+        loadcontrolbuttons();
     }
 };
 httpc.open("GET", "fileloader.php?filename=data/currentjson.txt", true);

@@ -20,7 +20,6 @@
     <META NAME="robots" CONTENT="noindex,nofollow">
 
     <script src="jscode/geometron.js"></script>
-    <script src="data/controlbuttons.js"></script>
     <script src="data/font.js"></script>
     <script src="data/keyboard.js"></script>
     <script src="data/shapetable.js"></script>
@@ -211,36 +210,39 @@ document.getElementById("actioninput").onkeypress = function(a) {
     savejson();
 }
 
-//controlbuttons = [0304,0305,0306,0310,0311,0312,0313,0200,0330,0331,0332,0333,0334,0335,0336,0337,020,010,021,0341,0201,0340,030,031,032,033,036,037,0350,0351];
 
 buttonSize = marginWidth/8;
-for(var index = 0;index < controlbuttons.length; index++) {
+
+function loadcontrolbuttons(){
     
-    var newcan = document.createElement("canvas");
-    document.getElementById("controldiv").appendChild(newcan);
-    newcan.classList.add("button");
-    //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
-    var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
-    newg.importbytecode(shapetable);
+    for(var index = 0;index < currentjson.controlbuttons.length; index++) {    
+        var newcan = document.createElement("canvas");
+        document.getElementById("controldiv").appendChild(newcan);
+        newcan.classList.add("button");
+        //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+        var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
+        newg.importbytecode(shapetable);
 
-    newg.drawGlyph("0300,0" + (controlbuttons[index] + 01000).toString(8) + ",",newg);
+        newg.drawGlyph("0300,0" + (currentjson.controlbuttons[index] + 01000).toString(8) + ",",newg);
 
-    newcan.id = "button0" + controlbuttons[index].toString(8);
-    newcan.onclick = function(){
-        var thisaction = parseInt(this.id.substring(6),8);
-        if(thisaction >= 040 && thisaction < 0177) {
-            newGVM.cursorAction(thisaction + 01000);
+        newcan.id = "button0" + currentjson.controlbuttons[index].toString(8);
+        newcan.onclick = function(){
+            var thisaction = parseInt(this.id.substring(6),8);
+            if(thisaction >= 040 && thisaction < 0177) {
+                newGVM.cursorAction(thisaction + 01000);
+            }
+            else{
+                newGVM.cursorAction(thisaction);
+            }
+            spellGVM.spellGlyph(newGVM.glyph);    
+            newGVM.saveGlyph();
+            savejson();
         }
-        else{
-            newGVM.cursorAction(thisaction);
-        }
-        spellGVM.spellGlyph(newGVM.glyph);    
-        newGVM.saveGlyph();
-        savejson();
+
+
     }
-
-
 }
+
 
 //document.getElementById("foo").src = newGVM.pngcode(newGVM);
 
@@ -316,7 +318,7 @@ httpc.onreadystatechange = function() {
         for(var index = 0;index < shapetable.length;index++) {
             currentjson.shapes.push(shapetable[index]);
         }
-        
+        loadcontrolbuttons();
     }
 };
 httpc.open("GET", "fileloader.php?filename=data/currentjson.txt", true);
