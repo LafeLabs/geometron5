@@ -306,6 +306,11 @@ httpc.onreadystatechange = function() {
         newGVM.unit = currentjson.unitrel*newGVM.width;    
         newGVM.theta0 = currentjson.theta0;
         newGVM.glyph = currentjson.glyph + ",0207,";    
+
+        spellGVM.importbytecode(currentjson.shapes);
+        newGVM.importbytecode(currentjson.shapes);
+        invisibleGVM.importbytecode(currentjson.shapes);
+
         newGVM.drawGlyph(newGVM.glyph);
         spellGVM.spellGlyph(newGVM.glyph);
         document.getElementById("backgroundimage").src = currentjson.backgroundimage;

@@ -1,15 +1,16 @@
-<html>
+<!doctype html>
+<html lang="en">    
 <head>
     <!--Stop Google:-->
     <META NAME="robots" CONTENT="noindex,nofollow">
 
     <script src="jscode/geometron.js"></script>
     <script src="data/font.js"></script>
+
     <script src="data/keyboard.js"></script>
     <script src="data/symbols013xx.js"></script>
     <script src="data/symbols010xx.js"></script>
-    <script src="data/shapetable.js"></script>
-    <script src="data/shapetablesymbols.js"></script>
+
 
 </head>
 
@@ -78,8 +79,6 @@ document.getElementById("square").style.height =  squareWidth.toString() + "px";
 tablecan = document.getElementById("shapetablecanvas");
 var newg = new GVM(0.25*symbolsize,symbolsize + 0.25*symbolsize,symbolsize,-Math.PI/2,tablecan,symbolsize*8.5,symbolsize*4,hypercube);
 newg.importbytecode(font);
-newg.importbytecode(shapetablesymbols);
-newg.importbytecode(shapetable);
 newg.importbytecode(keyboard);
 
 newg.address = 0220;
@@ -90,21 +89,19 @@ symcan = document.getElementById("symbolcanvas");
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 cansize = squareWidth/3;
 var symg = new GVM(4,cansize - 4,cansize-8,-Math.PI/2,symcan,cansize,cansize,hypercube);
+symg.address = 0220;
 symg.importbytecode(font);
-symg.importbytecode(shapetablesymbols);
-symg.importbytecode(shapetable);
 symg.importbytecode(keyboard);
-symg.drawGlyph("0300,");
-symg.action(01000 + newg.address);
+//symg.drawGlyph("0300,");
+//symg.action(01000 + newg.address);
 
 shapecan = document.getElementById("shapecanvas");
 var shapeg = new GVM(cansize*0.5,cansize*0.5,cansize*0.25,-Math.PI/2,shapecan,cansize,cansize,hypercube);
+shapeg.address = 0220;
 shapeg.importbytecode(font);
-shapeg.importbytecode(shapetablesymbols);
-shapeg.importbytecode(shapetable);
 shapeg.importbytecode(keyboard);
-shapeg.drawGlyph("0300,");
-shapeg.action(newg.address);
+//shapeg.drawGlyph("0300,");
+//shapeg.action(newg.address);
 
 function redrawtable() {
 
@@ -134,15 +131,12 @@ function redrawtable() {
     newg.svgString += "</svg>";
 
 }
-redrawtable();
 
 
 spellsize = 50;
 //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
 var spellGVM = new GVM(5,spellsize - 5,spellsize,-Math.PI/2,document.getElementById("spellcanvas"),200,spellsize + 10,hypercube);
 spellGVM.importbytecode(font);
-spellGVM.importbytecode(shapetablesymbols);
-spellGVM.importbytecode(shapetable);
 spellGVM.importbytecode(keyboard);
 spellGVM.address = 0220;
 spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
@@ -170,7 +164,6 @@ function redraw() {
 
 
 }
-redraw();
 
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
@@ -258,29 +251,26 @@ document.getElementById("savebutton").onclick = function(){
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc.send("data="+encodeURIComponent(newg.svgString) +"&filename=symbolfeed/shapetable.svg");//send text to filesaver.php
 
-    var httpc2 = new XMLHttpRequest();
-    httpc2.open("POST","filesaver.php", true);
-    httpc2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    
-    shapetable = [];
+
+    currentjson.shapes = [];
     for(var index = 0220;index < 0250;index++){
-        shapetable.push("0" + index.toString(8) + ":" + spellGVM.hypercube[index]);
+        currentjson.shapes.push("0" + index.toString(8) + ":" + spellGVM.hypercube[index]);
     }
     for(var index = 01220;index < 01250;index++){
-        shapetable.push("0" + index.toString(8) + ":" + spellGVM.hypercube[index]);
+        currentjson.shapes.push("0" + index.toString(8) + ":" + spellGVM.hypercube[index]);
     }
 
-    httpc2.send("data="+encodeURIComponent("shapetable = " + JSON.stringify(shapetable,null,"  ") +  ";")+"&filename=data/shapetable.js");//send text to filesaver.php
+    var httpc4 = new XMLHttpRequest();
+    httpc4.open("POST","filesaver.php", true);
+    httpc4.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    httpc4.send("data="+encodeURIComponent(JSON.stringify(currentjson,null,"  "))+"&filename=data/currentjson.txt");//send text to filesaver.php
 
-
-    var httpc3 = new XMLHttpRequest();
-    httpc3.open("POST","filesaver.php", true);
-    httpc3.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    httpc3.send("data="+encodeURIComponent(JSON.stringify(shapetable,null,"  "))+"&filename=data/shapetable.txt");//send text to filesaver.php
-
+    
     document.getElementById("actioninput").select();
 
-    document.getElementById("textio").value = JSON.stringify(shapetable,null,"  ");
+    document.getElementById("textio").value = JSON.stringify(currentjson.shapes,null,"  ");
+
+
 
 }
 
@@ -350,6 +340,35 @@ function modeswitch(){
     }
     document.getElementById("actioninput").select();
 }
+
+
+var httpc = new XMLHttpRequest();
+httpc.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        currentjson = JSON.parse(this.responseText);
+        currentstyle = currentjson.style;
+
+        spellGVM.importbytecode(currentjson.shapes);
+        newg.hypercube = spellGVM.hypercube;
+        symg.hypercube = spellGVM.hypercube;
+        shapeg.hypercube = spellGVM.hypercube;
+
+        newg.style = currentstyle;
+        symg.style = currentstyle;
+        shapeg.style = currentstyle;
+                
+        spellGVM.address = 0220;
+        spellGVM.glyph = spellGVM.hypercube[spellGVM.address] + "0207,";
+        symg.glyph = newg.glyph;
+        shapeg.glyph = newg.glyph;
+
+        redraw();
+        redrawtable();
+
+    }
+};
+httpc.open("GET", "fileloader.php?filename=data/currentjson.txt", true);
+httpc.send();    
 
 </script>
 <style>
