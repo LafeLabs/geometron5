@@ -23,9 +23,7 @@
     <script src="data/keyboard.js"></script>
     <script src="data/symbols013xx.js"></script>
     <script src="data/symbols010xx.js"></script>
-    <script src="data/shapetable.js"></script>
 
-    <!--    <script src="https://pastebin.com/raw/7fvF1seM"></script>-->
 </head>
 <body> 
 
@@ -138,7 +136,6 @@ document.getElementById("square").style.height = (squareWidth).toString() + "px"
 
 var newGVM = new GVM(0.4*squareWidth,0.4*squareWidth,0.2*squareWidth,-Math.PI/2,document.getElementById("maincanvas"),0.8*squareWidth,0.8*squareWidth,hypercube);
 
-newGVM.importbytecode(shapetable);
 newGVM.importbytecode(font);
 
 hypercube = [];
@@ -159,7 +156,7 @@ function loadcontrolbuttons() {
         newcan.classList.add("sourcebutton");
         //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
         var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
-        newg.importbytecode(shapetable);
+        newg.importbytecode(currentjson.shapes);
         newg.drawGlyph("0300,0" + (currentjson.controlbuttons[index] + 01000).toString(8) + ",");
         newcan.id = "control0" + currentjson.controlbuttons[index].toString(8);
 
@@ -179,52 +176,55 @@ function loadcontrolbuttons() {
 }
 
 
-for(var index = 0;index < 0377;index++) {
-    
-    if(newGVM.hypercube[index + 01000].length  > 1) {
-
-        var newcan = document.createElement("canvas");
-        document.getElementById("sourcesymbols").appendChild(newcan);
-        newcan.classList.add("button");
-        newcan.classList.add("sourcebutton");
-        //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
-        var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
-        newg.importbytecode(shapetable);
-        newg.importbytecode(font);
-        newg.drawGlyph("0300,0" + (index + 01000).toString(8) + ",");
-        newcan.id = "source0" + index.toString(8);
-
-        newcan.onclick = function(){
+function loadsymbolbuttons(){
+    for(var index = 0;index < 0377;index++) {       
+        if(newGVM.hypercube[index + 01000].length  > 1) {
 
             var newcan = document.createElement("canvas");
-            document.getElementById("controlsymbols").appendChild(newcan);
+            document.getElementById("sourcesymbols").appendChild(newcan);
             newcan.classList.add("button");
             newcan.classList.add("sourcebutton");
-            newcan.id = "control" + this.id.substring(6);
             //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
             var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
-            newg.importbytecode(shapetable);
+            newg.importbytecode(currentjson.shapes);
             newg.importbytecode(font);
+            newg.drawGlyph("0300,0" + (index + 01000).toString(8) + ",");
+            newcan.id = "source0" + index.toString(8);
 
-            newg.drawGlyph("0300,0" + (01000 + parseInt(this.id.substring(6),8)).toString(8) + ",");
-            currentjson.controlbuttons.push( parseInt(this.id.substring(6) , 8) );
+            newcan.onclick = function(){
 
-            newcan.onclick = function() {
-                var thiscommand = parseInt(this.id.substring(7),8);
-                var newarray = [];
-                for(var index = 0;index < currentjson.controlbuttons.length;index++) {
-                    if(currentjson.controlbuttons[index] != thiscommand){
-                        newarray.push(currentjson.controlbuttons[index]);
-                    } 
+                var newcan = document.createElement("canvas");
+                document.getElementById("controlsymbols").appendChild(newcan);
+                newcan.classList.add("button");
+                newcan.classList.add("sourcebutton");
+                newcan.id = "control" + this.id.substring(6);
+                //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
+                var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
+                newg.importbytecode(currentjson.shapes);
+                newg.importbytecode(font);
+
+                newg.drawGlyph("0300,0" + (01000 + parseInt(this.id.substring(6),8)).toString(8) + ",");
+                currentjson.controlbuttons.push( parseInt(this.id.substring(6) , 8) );
+
+                newcan.onclick = function() {
+                    var thiscommand = parseInt(this.id.substring(7),8);
+                    var newarray = [];
+                    for(var index = 0;index < currentjson.controlbuttons.length;index++) {
+                        if(currentjson.controlbuttons[index] != thiscommand){
+                            newarray.push(currentjson.controlbuttons[index]);
+                        } 
+                    }
+                    currentjson.controlbuttons = newarray;
+                    this.parentElement.removeChild(this);
+                    savejson();
                 }
-                currentjson.controlbuttons = newarray;
-                this.parentElement.removeChild(this);
                 savejson();
             }
-            savejson();
         }
     }
 }
+
+
 
 
 var httpc = new XMLHttpRequest();
@@ -244,9 +244,13 @@ httpc.onreadystatechange = function() {
         newGVM.unit = currentjson.unitrel*newGVM.width;    
         newGVM.theta0 = currentjson.theta0;
         newGVM.glyph = currentjson.glyph;    
+        newGVM.importbytecode(currentjson.shapes);
+
         newGVM.drawGlyph("0300,0341,0200,");
+
         filltable();
         redraw();
+        loadsymbolbuttons();
         loadcontrolbuttons();
     }
 };

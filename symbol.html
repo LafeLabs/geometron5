@@ -22,7 +22,6 @@
     <script src="jscode/geometron.js"></script>
     <script src="data/font.js"></script>
     <script src="data/keyboard.js"></script>
-    <script src="data/shapetable.js"></script>
 
 </head>
 <body> 
@@ -110,7 +109,6 @@ for(var index = 0;index < 01377;index++){
 }
 
 newGVM.importbytecode(font);
-newGVM.importbytecode(shapetable);
 newGVM.importbytecode(keyboard);
 
 
@@ -118,17 +116,14 @@ invisibleWidth = 200;
 var invisibleGVM = new GVM(0.98*invisibleWidth,0.98*invisibleWidth,0.96*invisibleWidth,-Math.PI/2,document.getElementById("invisiblecanvas"),invisibleWidth,invisibleWidth,hypercube);
 
 
-//newGVM.drawGlyph("0200,0333,0341,0350,0335,0101,0103,0101,0102,0365,0207,");
 
 
 var spellGVM = new GVM(10,100,50,-Math.PI/2,document.getElementById("spellcanvas"),200,200,hypercube);
 spellGVM.importbytecode(font);
-spellGVM.importbytecode(shapetable);
 spellGVM.importbytecode(keyboard);
 
 spellGVM.hypercube = newGVM.hypercube;
 
-//document.getElementById("textout").value = newGVM.bytecode(0220,0247,newGVM);
 
 document.getElementById("actioninput").onkeydown = function(a) {
     var charCode = a.keyCode || a.which;
@@ -221,7 +216,7 @@ function loadcontrolbuttons(){
         newcan.classList.add("button");
         //GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode)
         var newg = new GVM(1,buttonSize - 1,buttonSize-2,-Math.PI/2,newcan,buttonSize,buttonSize,hypercube);
-        newg.importbytecode(shapetable);
+        newg.importbytecode(currentjson.shapes);
         newg.importbytecode(font);
 
         newg.drawGlyph("0300,0" + (currentjson.controlbuttons[index] + 01000).toString(8) + ",",newg);
@@ -245,7 +240,6 @@ function loadcontrolbuttons(){
 }
 
 
-//document.getElementById("foo").src = newGVM.pngcode(newGVM);
 
 document.getElementById("savebutton").onclick = function() {
 
@@ -320,10 +314,7 @@ httpc.onreadystatechange = function() {
         else{
             document.getElementById("backgroundimage").style.display = "none";
         }
-        currentjson.shapes = [];
-        for(var index = 0;index < shapetable.length;index++) {
-            currentjson.shapes.push(shapetable[index]);
-        }
+
         loadcontrolbuttons();
     }
 };
