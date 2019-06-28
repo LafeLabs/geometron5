@@ -36,3 +36,9 @@ foreach($dna->php as $value){
 }
 
 ?>
+<a href = "index.html">CLICK TO GO TO MAP OF SYMBOL FACTORY</a>
+<style>
+a{
+    font-size:3em;
+}
+</style>

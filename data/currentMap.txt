@@ -18,93 +18,75 @@
         "src": ""
     },
     {
-        "x": 0.15871121718377088,
-        "y": 0.26730310262529833,
-        "w": 0.14916467780429593,
-        "angle": 0,
-        "text": "hypercube",
-        "href": "hypercube.html",
-        "src": ""
-    },
-    {
-        "x": 0.5023866348448688,
-        "y": 0.13126491646778043,
-        "w": 0.14916467780429593,
+        "x": 0.21957040572792363,
+        "y": 0.18615751789976134,
+        "w": 0.16825775656324582,
         "angle": 0,
         "text": "styleeditor",
         "href": "styleeditor.html",
-        "src": ""
+        "src": "http://localhost:8000/iconsymbols/styleeditor.svg"
     },
     {
-        "x": 0.5047732696897375,
-        "y": 0.2494033412887828,
+        "x": 0.05608591885441527,
+        "y": 0.19689737470167065,
         "w": 0.14916467780429593,
         "angle": 0,
         "text": "symbol",
         "href": "symbol.html",
-        "src": ""
+        "src": "http://localhost:8000/iconsymbols/symbolicon.svg"
     },
     {
-        "x": 0.5011933174224343,
-        "y": 0.28042959427207637,
-        "w": 0.14916467780429593,
-        "angle": 0,
-        "text": "documentation",
-        "href": "scroll.html",
-        "src": ""
-    },
-    {
-        "x": 0.5,
-        "y": 0.3269689737470167,
+        "x": 0.40572792362768495,
+        "y": 0.1957040572792363,
         "w": 0.14916467780429593,
         "angle": 0,
         "text": "symbolfeed",
         "href": "symbolfeed.html",
-        "src": ""
+        "src": "http://localhost:8000/iconsymbols/symbolfeed.svg"
     },
     {
-        "x": 0.4988066825775656,
-        "y": 0.4021479713603819,
-        "w": 0.14916467780429593,
+        "x": 0.5751789976133651,
+        "y": 0.18496420047732698,
+        "w": 0.15871121718377088,
         "angle": 0,
         "text": "shapetableeditor",
         "href": "shapetableeditor.html",
-        "src": ""
+        "src": "http://localhost:8000/iconsymbols/shapetableeditor.svg"
     },
     {
-        "x": 0.5,
-        "y": 0.44272076372315033,
-        "w": 0.14916467780429593,
+        "x": 0.059665871121718374,
+        "y": 0.418854415274463,
+        "w": 0.3424821002386635,
         "angle": 0,
         "text": "fonteditor",
         "href": "fonteditor.html",
         "src": ""
     },
     {
-        "x": 0.5047732696897375,
-        "y": 0.4880668257756563,
-        "w": 0.14916467780429593,
+        "x": 0.7255369928400954,
+        "y": 0.1730310262529833,
+        "w": 0.1873508353221957,
         "angle": 0,
         "text": "setup",
         "href": "setup.html",
-        "src": ""
+        "src": "http://localhost:8000/iconsymbols/setup.svg"
     },
     {
-        "x": 0.5047732696897375,
-        "y": 0.5393794749403341,
-        "w": 0.14916467780429593,
+        "x": 0.06324582338902147,
+        "y": 0.36515513126491644,
+        "w": 0.2852028639618138,
         "angle": 0,
         "text": "keyboardeditor",
         "href": "keyboardeditor.html",
         "src": ""
     },
     {
-        "x": 0.27684964200477324,
-        "y": 0.5990453460620525,
-        "w": 0.5381861575178998,
+        "x": 0.059665871121718374,
+        "y": 0.6288782816229117,
+        "w": 0.5286396181384249,
         "angle": 0,
-        "text": "keyboardeditor",
-        "href": "keyboardeditor.html",
-        "src": "http://localhost:8000/symbolfeed/keyboard.svg"
+        "text": "../",
+        "href": "../",
+        "src": ""
     }
 ]
