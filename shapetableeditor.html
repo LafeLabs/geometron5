@@ -233,12 +233,14 @@ document.getElementById("actioninput").onkeypress = function(a) {
         localCursorAction = charCode;     
     }    
 
-    spellGVM.cursorAction(localCursorAction);   
-    spellGVM.spellGlyph(spellGVM.glyph);    
-    this.value = "";
-    spellGVM.saveGlyph();
+    if(spellGVM.address != localCursorAction) {
+        spellGVM.cursorAction(localCursorAction);   
+        spellGVM.spellGlyph(spellGVM.glyph);    
+        this.value = "";
+        spellGVM.saveGlyph();
+        redraw();
 
-    redraw();
+    }
 }
 
 
