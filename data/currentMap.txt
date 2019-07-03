@@ -24,7 +24,7 @@
         "angle": 0,
         "text": "styleeditor",
         "href": "styleeditor.html",
-        "src": "http://localhost:8000/iconsymbols/styleeditor.svg"
+        "src": "iconsymbols/styleeditor.svg"
     },
     {
         "x": 0.05608591885441527,
@@ -33,7 +33,7 @@
         "angle": 0,
         "text": "symbol",
         "href": "symbol.html",
-        "src": "http://localhost:8000/iconsymbols/symbolicon.svg"
+        "src": "iconsymbols/symbolicon.svg"
     },
     {
         "x": 0.40572792362768495,
@@ -42,7 +42,7 @@
         "angle": 0,
         "text": "symbolfeed",
         "href": "symbolfeed.html",
-        "src": "http://localhost:8000/iconsymbols/symbolfeed.svg"
+        "src": "iconsymbols/symbolfeed.svg"
     },
     {
         "x": 0.5751789976133651,
@@ -51,7 +51,7 @@
         "angle": 0,
         "text": "shapetableeditor",
         "href": "shapetableeditor.html",
-        "src": "http://localhost:8000/iconsymbols/shapetableeditor.svg"
+        "src": "iconsymbols/shapetableeditor.svg"
     },
     {
         "x": 0.059665871121718374,
@@ -69,7 +69,7 @@
         "angle": 0,
         "text": "setup",
         "href": "setup.html",
-        "src": "http://localhost:8000/iconsymbols/setup.svg"
+        "src": "iconsymbols/setup.svg"
     },
     {
         "x": 0.06324582338902147,
