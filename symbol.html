@@ -68,6 +68,7 @@
     </div>    
     <div id = "spelldiv">
         <canvas id = "spellcanvas"></canvas>
+        <input id = "spellinput"/>
     </div>
     <div id = "controldiv">
 
@@ -153,6 +154,9 @@ document.getElementById("actioninput").onkeydown = function(a) {
 
     spellGVM.spellGlyph(newGVM.glyph,spellGVM);    
     savejson();
+    document.getElementById("spellinput").value = currentjson.glyph;
+    document.getElementById("spellinput").style.width = 0.8*currentjson.glyph.length.toString() + "em";
+
 }
 
 
@@ -202,7 +206,11 @@ document.getElementById("actioninput").onkeypress = function(a) {
     spellGVM.spellGlyph(newGVM.glyph);    
     this.value = "";
     newGVM.saveGlyph();
+
     savejson();
+    document.getElementById("spellinput").value = currentjson.glyph;
+    document.getElementById("spellinput").style.width = 0.8*currentjson.glyph.length.toString() + "em";
+
 }
 
 
@@ -307,6 +315,8 @@ httpc.onreadystatechange = function() {
 
         newGVM.drawGlyph(newGVM.glyph);
         spellGVM.spellGlyph(newGVM.glyph);
+        document.getElementById("spellinput").value = currentjson.glyph;
+        document.getElementById("spellinput").style.width = 0.8*currentjson.glyph.length.toString() + "em";
         document.getElementById("backgroundimage").src = currentjson.backgroundimage;
         if(currentjson.backgroundimage.length >  1) {
             document.getElementById("backgroundimage").style.display = "block";
@@ -324,6 +334,14 @@ httpc.send();
 
 document.getElementById("actioninput").select();
 
+document.getElementById("spellinput").onchange = function() {
+    currentjson.glyph = this.value;
+    newGVM.glyph = currentjson.glyph + ",0207,";    
+    newGVM.drawGlyph(newGVM.glyph);
+    spellGVM.spellGlyph(newGVM.glyph);
+    savejson();
+
+}
 
 function savejson(){
     
@@ -372,6 +390,10 @@ body{
     position:absolute;
     top:90px;
     left:0px;
+}
+#spellinput{
+    font-family:courier;
+    font-size:16px;
 }
 #controldiv{
     position:absolute;
