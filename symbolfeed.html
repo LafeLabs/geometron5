@@ -22,6 +22,7 @@
 -->
 
 <input id = "urlinput"/>
+<img id = "editbutton" style = "width:50px;" class=  "button" src = "iconsymbols/editor.svg"/>
 <div id = "symbolscroll">
 
 </div>
@@ -48,6 +49,36 @@ httpc4.onreadystatechange = function() {
 httpc4.open("GET", "dir.php?filename=symbolfeed", true);
 httpc4.send();
 
+currentjson = {};
+
+document.getElementById("editbutton").onclick = function() {
+
+    thisurl = document.getElementById("urlinput").value;
+    if(thisurl.substr(-4) == ".svg"){
+        imagename = thisurl.split("symbolfeed/")[1];
+        imageurl = "symbolfeed/" + imagename;
+        var httpc2 = new XMLHttpRequest();
+        httpc2.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                svgraw = this.responseText;
+                jsondata = svgraw.split("<json>")[1].split("</json>")[0];
+                currentjson = JSON.parse(jsondata);
+                data = encodeURIComponent(jsondata);
+     
+                var httpc = new XMLHttpRequest();
+                var url = "filesaver.php";        
+                httpc.open("POST", url, true);
+                httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+                httpc.send("data="+data+"&filename=data/currentjson.txt");//send text to filesaver.php
+               // window.location.href = "symbol.html";
+            }
+        };
+        httpc2.open("GET", "fileloader.php?filename=" + imageurl, true);
+        httpc2.send();
+
+    }
+
+}
 
 </script>
 <style>

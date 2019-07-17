@@ -1,5 +1,6 @@
-{
-  "glyph": "0332,0337,0341,0333,0341,0336,0332,0341,",
+<svg width="400" height="400" viewbox = "0 0 400 400"  xmlns="http://www.w3.org/2000/svg">
+<!--<json>{
+  "glyph": "0332,0337,0340,0341,0333,0340,0341,0336,0332,01015,01015,01015,01015,01015,01015,01015,01015,01015,0333,0337,0200,",
   "shapes": [
     "0220:0330,0336,0336,0347,0337,0337,",
     "0221:0336,0336,0333,0337,0200,0330,0330,0336,0332,0337,0337,",
@@ -54,8 +55,8 @@
   "y0rel": 0.5,
   "unitrel": 0.1,
   "theta0": -1.570796,
-  "width": 500,
-  "height": 500,
+  "width": 400,
+  "height": 400,
   "scale": 1,
   "backgroundimage": "",
   "style": {
@@ -109,4 +110,8 @@
     151,
     146
   ]
-}
+}</json>--><circle cx="160" cy = "200" r = "2" stroke = "#000000" stroke-width = "2" fill = "#000000" />
+<circle cx="160" cy = "200" r = "80" stroke = "#000000" stroke-width = "2" fill = "none" />
+<circle cx="240" cy = "200" r = "2" stroke = "#000000" stroke-width = "2" fill = "#000000" />
+<circle cx="240" cy = "200" r = "80" stroke = "#000000" stroke-width = "2" fill = "none" />
+	<path d = "M240 200 L240 120 L160 120 L160 200 L240 200 Z" stroke = "#000000" stroke-width = "2" fill = "none" /></svg>

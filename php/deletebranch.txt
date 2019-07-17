@@ -2,7 +2,6 @@
 
 $branchname = $_GET["filename"];//get url
 
-
 $files = scandir(getcwd()."/".$branchname);
 $jsfiles = scandir(getcwd()."/".$branchname."/jscode");
 $iconfiles = scandir(getcwd()."/".$branchname."/icons");
@@ -10,7 +9,9 @@ $phpfiles = scandir(getcwd()."/".$branchname."/php");
 $datafiles = scandir(getcwd()."/".$branchname."/data");
 $uploadfiles = scandir(getcwd()."/".$branchname."/uploadimages");
 $symbolfiles = scandir(getcwd()."/".$branchname."/symbolfeed");
+$iconsymbols = scandir(getcwd()."/".$branchname."/iconsymbols");
 $cssfiles = scandir(getcwd()."/".$branchname."/css");
+$symbols = scandir(getcwd()."/".$branchname."/symbols");
 
 
 foreach($jsfiles as $value){
@@ -48,6 +49,16 @@ foreach($cssfiles as $value){
 }
 rmdir($branchname."/css");
 
+
+foreach($iconsymbols as $value){
+    unlink($branchname."/iconsymbols/".$value);
+}
+rmdir($branchname."/iconsymbols");
+
+foreach($symbols as $value){
+    unlink($branchname."/symbols/".$value);
+}
+rmdir($branchname."/symbols");
 
 foreach($files as $value){
     unlink($branchname."/".$value);
