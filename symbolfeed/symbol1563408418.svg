@@ -1,6 +1,6 @@
-<svg width="838" height="838" viewbox = "0 0 838 838"  xmlns="http://www.w3.org/2000/svg">
+<svg width="500" height="500" viewbox = "0 0 500 500"  xmlns="http://www.w3.org/2000/svg">
 <!--<json>{
-  "glyph": "0332,0337,0340,0341,0333,0340,0341,0336,0332,01015,01015,01015,01015,01015,01015,01015,01015,01015,",
+  "glyph": "0333,0333,0331,0331,0331,0331,0333,0337,0337,0337,0200,0336,0200,0336,0200,0336,0200,0336,0200,0336,0200,0336,0200,0336,",
   "shapes": [
     "0220:0330,0336,0336,0347,0337,0337,",
     "0221:0336,0336,0333,0337,0200,0330,0330,0336,0332,0337,0337,",
@@ -55,8 +55,8 @@
   "y0rel": 0.5,
   "unitrel": 0.1,
   "theta0": -1.570796,
-  "width": 838,
-  "height": 838,
+  "width": 500,
+  "height": 500,
   "scale": 1,
   "backgroundimage": "",
   "style": {
@@ -110,8 +110,4 @@
     151,
     146
   ]
-}</json>--><circle cx="335" cy = "419" r = "2" stroke = "#000000" stroke-width = "2" fill = "#000000" />
-<circle cx="335" cy = "419" r = "167.60000000000002" stroke = "#000000" stroke-width = "2" fill = "none" />
-<circle cx="503" cy = "419" r = "2" stroke = "#000000" stroke-width = "2" fill = "#000000" />
-<circle cx="503" cy = "419" r = "167.60000000000002" stroke = "#000000" stroke-width = "2" fill = "none" />
-</svg>
+}</json>-->	<path d = "M400 450 L400 50 L0 50 L0 450 L400 450 Z" stroke = "#000000" stroke-width = "2" fill = "none" />	<path d = "M400 450 L400 250 L200 250 L200 450 L400 450 Z" stroke = "#000000" stroke-width = "2" fill = "none" />	<path d = "M400 450 L400 350 L300 350 L300 450 L400 450 Z" stroke = "#000000" stroke-width = "2" fill = "none" />	<path d = "M400 450 L400 400 L350 400 L350 450 L400 450 Z" stroke = "#000000" stroke-width = "2" fill = "none" />	<path d = "M400 450 L400 425 L375 425 L375 450 L400 450 Z" stroke = "#000000" stroke-width = "2" fill = "none" />	<path d = "M400 450 L400 438 L387 438 L387 450 L400 450 Z" stroke = "#000000" stroke-width = "2" fill = "none" />	<path d = "M400 450 L400 444 L394 444 L394 450 L400 450 Z" stroke = "#000000" stroke-width = "2" fill = "none" /></svg>
