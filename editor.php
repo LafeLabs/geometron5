@@ -31,7 +31,6 @@ EGO DEATH:
 <div id = "filescroll">
 
     <div class = "html file">index.html</div>
-    <div class = "html file">symbol.html</div>
     <div class = "html file">hypercube.html</div>
     <div class = "html file">scroll.html</div>
     <div class = "html file">fonteditor.html</div>
@@ -45,8 +44,7 @@ EGO DEATH:
     <div class = "markdown file">README.md</div>
 
     <div class = "javascript file">jscode/geometron.js</div>
-    <div class = "javascript file">jscode/mapfactory.js</div>
-    
+
     <div class = "php file">php/editor.txt</div>
     <div class = "php file">php/dir.txt</div>
     <div class = "php file">php/upload.txt</div>

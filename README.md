@@ -2,8 +2,8 @@
 
 ## to do list, July 31, 2019
 
-- remove map
-- make main symbol editor at index.html instead of symbol.html
+- remove map  --done
+- make main symbol editor at index.html instead of symbol.html--done
 - add full hypercube editor
 - remove useless stuff
 - smooth out process of export and import of svg with json in it
@@ -13,6 +13,8 @@
 - assume that this is always a symbol/ sub directory of a map factory or thing, connect up files appropriately so they automatically load, smooth out work flow of symbols/ directory in thing and map factory elements
 - update pageeditor.html and scroll.html to match the software in thing/ and mapfactory5/
 
+
+[editor.php](editor.php)
 
 
 ## Use cases for symbols
