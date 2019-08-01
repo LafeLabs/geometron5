@@ -1,5 +1,19 @@
 # Geometron 5
 
+## to do list, July 31, 2019
+
+- remove map
+- make main symbol editor at index.html instead of symbol.html
+- add full hypercube editor
+- remove useless stuff
+- smooth out process of export and import of svg with json in it
+- make this document, README.md a full and useful documentation
+- add software for easy export of glyph spelling for documentation of geometron in geometron
+- build a centralized library with all existing examples, link to that library in this document
+- assume that this is always a symbol/ sub directory of a map factory or thing, connect up files appropriately so they automatically load, smooth out work flow of symbols/ directory in thing and map factory elements
+- update pageeditor.html and scroll.html to match the software in thing/ and mapfactory5/
+
+
 
 ## Use cases for symbols
 
