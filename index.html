@@ -238,9 +238,13 @@ function loadcontrolbuttons(){
             else{
                 newGVM.cursorAction(thisaction);
             }
-            spellGVM.spellGlyph(newGVM.glyph);    
+                    
+            spellGVM.spellGlyph(newGVM.glyph);
             newGVM.saveGlyph();
             savejson();
+            
+            document.getElementById("spellinput").value = currentjson.glyph;
+            document.getElementById("spellinput").style.width = 0.8*currentjson.glyph.length.toString() + "em";
         }
 
 

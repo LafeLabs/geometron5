@@ -40,6 +40,7 @@ A Geometron is a geometric virtual machine which has two 8x8x8 cubes of operatio
 
     
 function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
+    this.pendown = false;
     this.address = 0277;
     this.glyph = "";
     this.cleanGlyph = "";
@@ -624,6 +625,12 @@ function GVM(x0,y0,unit,theta0,canvas2d,width,height,bytecode) {
             this.ctx.stroke();		
             this.svgString += "Z\""+ " stroke = \"" + this.ctx.strokeStyle + "\" stroke-width = \"" + (this.ctx.lineWidth).toString() + "\" fill = \"" + "none" + "\" "+"/>";
 
+        }
+        if(address == 0356){
+            this.pendown = true;
+        }
+        if(address == 0357){
+            this.pendown = false;
         }
         if(address == 0360) {
             //first part of bezier in middle of a path
