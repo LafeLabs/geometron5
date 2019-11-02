@@ -24,6 +24,11 @@ EGO DEATH:
 <div id = "linkscroll">
     <a href = "text2php.php">text2php.php</a>
     <a href = "index.html">index.html</a>
+    <a href = "fonteditor.html">fonteditor.html</a>
+    <a href = "setup.html">setup.html</a>
+    <a href = "keyboardeditor.html">keyboardeditor.html</a>
+    <a href = "hypercube.html">hypercube.html</a>
+    <a href = "keyboardeditor.html">keyboardeditor.html</a>
     <a href = "dnagenerator.php">dnagenerator.php</a>
 </div>
 <div id = "namediv"></div>

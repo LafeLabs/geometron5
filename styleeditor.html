@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <!--Stop Google:-->
     <META NAME="robots" CONTENT="noindex,nofollow">
+            <script src="jscode/geometron.js"></script>
+
     <title>Style Editor</title>
     <a href = "index.html">
         <img style = "width:50px;" src = "iconsymbols/symbolicon.svg"/>
@@ -65,6 +67,8 @@
         </tr>
 
     </table>
+    
+    <canvas id = "outputcanvas"></canvas>
 <script>    
 
 inputs = document.getElementById("styletable").getElementsByTagName("input");
@@ -210,6 +214,30 @@ function savestyle(){
     httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     httpc.send("data="+encodeURIComponent(JSON.stringify(currentjson,null,"    "))+"&filename=data/currentjson.txt");//send text to filesaver.php
 
+    redraw();
+}
+
+
+newcan = document.getElementById("outputcanvas");
+newg = new GVM(10,420,50,-Math.PI/2,newcan,80,440,hypercube);
+
+ctxlocal = newg.canvas2d.getContext("2d");
+ctxlocal.clearRect(0,0,newg.width,newg.height);
+ctxlocal.strokeStyle = newg.style.color0;
+ctxlocal.fillStyle = newg.style.fill0;
+ctxlocal.lineWidth = newg.style.line0;
+newg.actionSequence("0300,01327,0330,0332,01326,0330,0332,01325,0330,0332,01324,0330,0332,01323,0330,0332,01322,0330,0332,01321,0330,0332,01320,");
+
+
+function redraw(){
+
+    ctxlocal.clearRect(0,0,newg.width,newg.height);
+    ctxlocal.strokeStyle = currentstyle.color0;
+    ctxlocal.fillStyle = currentstyle.fill0;
+    ctxlocal.lineWidth = currentstyle.line0;
+    newg.style = currentstyle;
+    newg.actionSequence("0300,01327,0330,0332,01326,0330,0332,01325,0330,0332,01324,0330,0332,01323,0330,0332,01322,0330,0332,01321,0330,0332,01320,");
+    
 }
 
 </script>
@@ -221,7 +249,13 @@ function savestyle(){
 
 </script>
 <style>
-
+#outputcanvas{
+    position:absolute;
+    right:0px;
+    top:0px;
+    border:solid;
+    z-index:2;
+}
 </style>
 </body>
 </html>
