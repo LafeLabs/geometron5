@@ -27,6 +27,7 @@ EGO DEATH:
     <a href = "fonteditor.html">fonteditor.html</a>
     <a href = "setup.html">setup.html</a>
     <a href = "keyboardeditor.html">keyboardeditor.html</a>
+    <a href = "symbolfeed.html">symbolfeed.html</a>
     <a href = "hypercube.html">hypercube.html</a>
     <a href = "keyboardeditor.html">keyboardeditor.html</a>
     <a href = "dnagenerator.php">dnagenerator.php</a>
@@ -53,6 +54,7 @@ EGO DEATH:
     <div class = "php file">php/editor.txt</div>
     <div class = "php file">php/dir.txt</div>
     <div class = "php file">php/upload.txt</div>
+    <div class = "php file">php/uploadsymbol.txt</div>
     <div class = "php file">php/replicator.txt</div>
     <div class = "php file">php/deckreplicator.txt</div>
     <div class = "php file">php/newbranch.txt</div>
